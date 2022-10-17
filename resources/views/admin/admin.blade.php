@@ -26,9 +26,10 @@
     <h1 class="page-header__title">Идём<span>в</span>кино</h1>
     <span class="page-header__subtitle">Администраторррская</span>
 
-    <div>Привет, {{$user['name']}}</div><br>
-    <div> Ваш ID : {{$user->id}}</div><br>
-    <div>Email: {{$user->email}}</div><br>
+    <div class="">Администратор: {{$user['name']}}, Email: {{$user->email}}</div><br>
+    <!--<div> Ваш ID : {{$user->id}}</div><br>
+    <div>Email: {{$user->email}}</div><br>-->
+
 
 </header>
 
@@ -194,31 +195,31 @@
             </p>
             <div class="conf-step__movies">
                 <div class="conf-step__movie">
-                    <img class="conf-step__movie-poster" alt="poster" src="i/poster.png">
+                    <img class="conf-step__movie-poster" alt="poster" src="{{ asset('i/poster.png')}}">
                     <h3 class="conf-step__movie-title">Звёздные войны XXIII: Атака клонированных клонов</h3>
                     <p class="conf-step__movie-duration">130 минут</p>
                 </div>
 
                 <div class="conf-step__movie">
-                    <img class="conf-step__movie-poster" alt="poster" src="i/poster.png">
+                    <img class="conf-step__movie-poster" alt="poster" src="{{ asset('i/poster.png')}}">
                     <h3 class="conf-step__movie-title">Миссия выполнима</h3>
                     <p class="conf-step__movie-duration">120 минут</p>
                 </div>
 
                 <div class="conf-step__movie">
-                    <img class="conf-step__movie-poster" alt="poster" src="i/poster.png">
+                    <img class="conf-step__movie-poster" alt="poster" src="{{ asset('i/poster.png')}}">
                     <h3 class="conf-step__movie-title">Серая пантера</h3>
                     <p class="conf-step__movie-duration">90 минут</p>
                 </div>
 
                 <div class="conf-step__movie">
-                    <img class="conf-step__movie-poster" alt="poster" src="i/poster.png">
+                    <img class="conf-step__movie-poster" alt="poster" src="{{ asset('i/poster.png')}}">
                     <h3 class="conf-step__movie-title">Движение вбок</h3>
                     <p class="conf-step__movie-duration">95 минут</p>
                 </div>
 
                 <div class="conf-step__movie">
-                    <img class="conf-step__movie-poster" alt="poster" src="i/poster.png">
+                    <img class="conf-step__movie-poster" alt="poster" src="{{ asset('i/poster.png')}}">
                     <h3 class="conf-step__movie-title">Кот Да Винчи</h3>
                     <p class="conf-step__movie-duration">100 минут</p>
                 </div>
@@ -277,5 +278,6 @@
 
 
 
-<script src="js/accordeon.js"></script>
+<script src="{{ asset('js/accordeon.js')}}"></script>
 </body>
+</html>
