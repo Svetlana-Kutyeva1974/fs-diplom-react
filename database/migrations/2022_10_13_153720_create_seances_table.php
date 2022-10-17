@@ -17,9 +17,9 @@ class CreateSeancesTable extends Migration
             $table->id();
             $table->timestamps();
             //$table->integer('id_seance')->unique();
-            $table->time('timeSeance');
-            $table->integer('id_hall')->unique();
-            $table->integer('id_film')->unique();
+            $table->dateTime('startSeance');
+            $table->integer('hall_id')->unique();
+            $table->integer('film_id')->unique();
         });
     }
 

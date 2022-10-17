@@ -14,6 +14,7 @@ class Film extends Model
         'title',
         'description',
         'duration',
+        'imagePath'
         //'id_seance',
     ];
 
@@ -23,8 +24,9 @@ class Film extends Model
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
 
-    public function seances()
+    public function seance()
     {
         return $this->hasMany('App\Seance', 'film_id');
+        // return $this->hasMany('App\Seance');
     }
 }

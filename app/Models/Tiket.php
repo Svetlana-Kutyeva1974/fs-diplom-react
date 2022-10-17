@@ -11,6 +11,7 @@ class Tiket extends Model
     public $table = 'tickets';
     protected  $fillable = [
         'count',
+        'qrCod',
         //'id_seance',
         //'id_seat',
         //'id_film',
@@ -21,9 +22,18 @@ class Tiket extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function seances()
+    public function seance()
     {
         return $this->belongsTo('App\Seance');
     }
 
+    /**
+     * Return characteristik seat of this tiket
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function seat()
+    {
+        return $this->belongsTo('App\Seat');
+    }
 }

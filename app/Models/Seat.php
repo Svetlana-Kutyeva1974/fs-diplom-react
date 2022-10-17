@@ -10,9 +10,19 @@ class Seat extends Model
     use HasFactory;
     public $table = 'seats';
     protected  $fillable = [
-        'id',
+        'type',
+        'free',
         'colNumber',
         'rowNumber',
         //'id_seance',
     ];
+    /**
+     * Returns the hall where is the seat
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function hall()
+    {
+        return $this->belongsTo('App\Hall');
+    }
 }

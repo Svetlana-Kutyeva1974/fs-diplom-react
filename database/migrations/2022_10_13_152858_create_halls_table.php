@@ -16,9 +16,11 @@ class CreateHallsTable extends Migration
         Schema::create('halls', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            //$table->integer('id_hall');
+            $table->string('nameHall');
             $table->integer('col');
             $table->integer('row');
+            $table->integer('countVip');
+            $table->integer('countNormal');
         });
     }
 

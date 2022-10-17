@@ -10,9 +10,11 @@ class Hall extends Model
     use HasFactory;
     public $table = 'halls';
     protected  $fillable = [
-        'id',
+        'nameHall',
         'col',
         'row',
+        'countVip',
+        'countNormal',
         //'id_seance',
     ];
     /**
@@ -20,8 +22,17 @@ class Hall extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function seances()
+    public function seance()
     {
-        return $this->hasMany('App\Seance');
+        return $this->hasMany('App\Seance', 'hall_id');
+    }
+    /**
+     * Return seats in this room
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function seat()
+    {
+        return $this->hasMany('App\Seat');
     }
 }

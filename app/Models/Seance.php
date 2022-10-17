@@ -10,9 +10,9 @@ class Seance extends Model
     use HasFactory;
     public $table = 'seances';
     protected  $fillable = [
-        'timeSeance',
-        //'id_film',
-        //'id_hall',
+        'startSeance',
+        //'film_id',
+        //'hall_id',
     ];
 
     /**
@@ -20,7 +20,7 @@ class Seance extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function films()
+    public function film()
     {
         return $this->belongsTo('App\Film','id','film_id');
     }
@@ -41,7 +41,7 @@ class Seance extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function tickets()
+    public function ticket()
     {
         return $this->hasMany('App\Ticket');
     }
