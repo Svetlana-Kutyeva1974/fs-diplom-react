@@ -20,7 +20,9 @@ class CreateFilmsTable extends Migration
             $table->string('title');
             $table->string('description');
             $table->string('duration');
-            $table->integer('imagePath')->unique();
+            $table->string('origin');
+            $table->string('imagePath')->unique();
+            $table->string('imageText')->unique();
             $table->integer('seance_id')->unique();
         });
     }

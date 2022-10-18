@@ -14,7 +14,9 @@ class Film extends Model
         'title',
         'description',
         'duration',
-        'imagePath'
+        'imagePath',
+        'imageText',
+        'origin',
         //'id_seance',
     ];
 

@@ -26,10 +26,16 @@
     <h1 class="page-header__title">Идём<span>в</span>кино</h1>
     <span class="page-header__subtitle">Администраторррская</span>
 
-    <div class="">Администратор: {{$user['name']}}, Email: {{$user->email}}</div><br>
+    <div class="my">Администратор: {{$user->name}}, Email:
+        <span class="my__lower">{{$user->email}}</span>
+        <span>
+            <a class="my" href="{{ url('/') }}">
+                Выход
+            </a>
+    </span>
+    </div>
     <!--<div> Ваш ID : {{$user->id}}</div><br>
     <div>Email: {{$user->email}}</div><br>-->
-
 
 </header>
 

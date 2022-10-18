@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
-class AdminController extends Controller
+class LoginAdminController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,7 +22,7 @@ class AdminController extends Controller
         /*if (! $user->is_admin) {
         return redirect('/');
         }*/
-        return view('admin.admin', compact('user'));
+        return view('admin.loginAdmin', compact('user'));
     }
 
     /**
@@ -30,7 +30,7 @@ class AdminController extends Controller
      *
      * @return Response
      */
-    public function create()
+    /*public function create()
     {
         Admin::create([
             'name' => Str::random(16).'user',
@@ -40,7 +40,7 @@ class AdminController extends Controller
             //'updated_at' => date("Y-m-d H:i:s"),
         ]);
         return redirect()->back();
-    }
+    }*/
 
     /**
      * Store a newly created resource in storage.

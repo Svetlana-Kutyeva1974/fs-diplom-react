@@ -10,11 +10,10 @@ class Tiket extends Model
     use HasFactory;
     public $table = 'tickets';
     protected  $fillable = [
-        'count',
         'qrCod',
-        //'id_seance',
-        //'id_seat',
-        //'id_film',
+        //'seance_id',
+        //'seat_id',
+        //'film_id',
     ];
 
     /**
