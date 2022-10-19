@@ -20,7 +20,9 @@ class CheckIsAdmin
         //return $next($request);
         $user = Auth::user();
         dump("Отладочная информация : ".$user);
-        if (Auth::check()) {
+        //sleep(5);
+
+        //if (Auth::check()) {
             // Пользователь вошёл в систему...
             $user = Auth::user();
             //dump('пользователь в системе, перенаправление на окно просмотра панели администратора...');
@@ -28,20 +30,28 @@ class CheckIsAdmin
             /*if (!$user->is_admin) {
                 return redirect('/');
             } else {*/
+            //Мы использовали фассад Auth,
+            // но еще информацию о пользователе можно получить из запроса $request->user();
+            if(!Auth::user()->isAdmin()){
+                //dd('not admin');
+                return redirect('/');
+                //return redirect()->route('admin.home');
+            }
+        //dd(Auth::user()->isAdmin());
                 return $next($request);
             //}//}
 
             //!!! важно, здесь надо просто продолжить, а не делать редирект
             //return redirect()->route('user');return redirect()->route('user', ['user' => $user]);
-        } else {
+        //} else {
             //dump('пользователь не в системе, перенаправление на окно главной страницы...');
             //sleep(7);
             //return redirect('/');
-            return redirect()->route('loginAdmin');
+            //return redirect()->route('loginAdmin');
             //метод get при перенаправке, а у нас считывание формы, поэтому просто показываем представление:
 
             //return response()->view('admin.loginAdmin', compact('user'));
-        }
+       // }
     }
 
     /*

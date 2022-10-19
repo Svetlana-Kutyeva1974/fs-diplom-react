@@ -18,10 +18,20 @@ Route::any('/', function () {
     return view('welcome');
 });
 
+/*
 Route::group([ 'middleware' => 'admin'  ],  function () {
     Route::any('/admin', [\App\Http\Controllers\AdminController::class, 'index'])->name('admin');
     //->name('admin');дали название роуту
 });
+*/
+//Route::get('/admin', [\App\Http\Controllers\AdminController::class, 'index'])->name('admin.home')->middleware('auth');;
+// Админка
+/*Route::group(['middleware' => ['auth', 'admin'], 'namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'], function()
+{
+    Route::get('/admin', [\App\Http\Controllers\AdminController::class, 'index'])->name('admin.home');
+});
+*/
+
 
 Route::any('/admin/loginAdmin', [\App\Http\Controllers\LoginAdminController::class, 'index'])->name('loginAdmin');
 
@@ -30,15 +40,15 @@ Auth::routes();
 
 Route::any('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-/*
+
 Route::group([ 'middleware' => 'auth'  ],  function () {
     Route::group([
         'middleware' => 'admin',
         'prefix' => 'admin',
     ], function () {
         Route::get('/', function () {
-            return view('admin.admin', ['user' => Auth::user()]);
-        });
+            return view('admin.home', ['user' => Auth::user()]);
+        })->name('admin.home');
    });
 });
-*/
+

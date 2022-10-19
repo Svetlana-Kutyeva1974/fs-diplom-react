@@ -29,7 +29,7 @@
     <div class="my">Администратор: {{$user->name}}, Email:
         <span class="my__lower">{{$user->email}}</span>
         <span>
-            <a class="my" href="{{ url('/') }}">
+            <a class="my" href="{{ '/' }}">
                 Выход
             </a>
     </span>
@@ -287,3 +287,11 @@
 <script src="{{ asset('js/accordeon.js')}}"></script>
 </body>
 </html>
+
+<!--
+@auth
+    @if(Auth::user()->isAdmin())
+        Это видит только админ
+@endif
+@endauth
+-->

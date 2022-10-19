@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use http\Env\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -37,4 +39,38 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+    /*public function authenticated(Request $request, $user)
+    {
+        $credentials = $request->only('email', 'password');
+        if(Auth::user()->isAdmin()){
+            return redirect()->route('admin.home');
+        }
+        return redirect('/');
+    }*/
+
+
+     /**
+     * Аутентификация пользователя
+     */
+     /*
+    public function authenticate(Request $request) {
+        $request->validate([
+            'email' => 'required|string|email',
+            'password' => 'required|string',
+        ]);
+
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+            return redirect()
+                ->route('/')
+                ->with('success', 'Вы вошли в личный кабинет');
+        }
+
+        return redirect()
+            ->route('login')
+            ->withErrors('Неверный логин или пароль');
+    }
+     */
 }

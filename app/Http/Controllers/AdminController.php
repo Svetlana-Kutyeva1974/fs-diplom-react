@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Admin;
 use Illuminate\Http\Request;
+//use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -22,7 +23,7 @@ class AdminController extends Controller
         /*if (! $user->is_admin) {
         return redirect('/');
         }*/
-        return view('admin.admin', compact('user'));
+        return view('admin.home', compact('user'));
     }
 
     /**
