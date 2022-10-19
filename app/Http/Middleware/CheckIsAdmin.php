@@ -18,13 +18,15 @@ class CheckIsAdmin
     public function handle(Request $request, Closure $next)
     {
         //return $next($request);
-        $user = Auth::user();
-        dump("Отладочная информация : ".$user);
+
+        //$user = Auth::user();
+
+        //dump("Отладочная информация : ".$user);
         //sleep(5);
 
         //if (Auth::check()) {
             // Пользователь вошёл в систему...
-            $user = Auth::user();
+            //$user = Auth::user();
             //dump('пользователь в системе, перенаправление на окно просмотра панели администратора...');
             //if (Auth::user()['email'] === 'kutyovas@yandex.ru') {
             /*if (!$user->is_admin) {
@@ -34,6 +36,8 @@ class CheckIsAdmin
             // но еще информацию о пользователе можно получить из запроса $request->user();
             if(!Auth::user()->isAdmin()){
                 //dd('not admin');
+                //$currentURL = URL::current();//(new \Illuminate\Http\Request->url();
+                //dd($currentURL);
                 return redirect('/');
                 //return redirect()->route('admin.home');
             }

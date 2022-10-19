@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
-use http\Env\Request;
+//use http\Env\Request;
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 
@@ -42,7 +43,7 @@ class LoginController extends Controller
 
     /*public function authenticated(Request $request, $user)
     {
-        $credentials = $request->only('email', 'password');
+        //$credentials = $request->only('email', 'password');
         if(Auth::user()->isAdmin()){
             return redirect()->route('admin.home');
         }
@@ -53,8 +54,8 @@ class LoginController extends Controller
      /**
      * Аутентификация пользователя
      */
-     /*
-    public function authenticate(Request $request) {
+
+    public function authenticated(Request $request) {
         $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|string',
@@ -63,14 +64,17 @@ class LoginController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            return redirect()
-                ->route('/')
-                ->with('success', 'Вы вошли в личный кабинет');
+            if(Auth::user()->isAdmin()){
+                return redirect()->route('admin.home');
+            }
+            return redirect('/');
+            //return redirect('/')
+               // ->with('success', 'Вы вошли в личный кабинет');
         }
 
         return redirect()
             ->route('login')
             ->withErrors('Неверный логин или пароль');
     }
-     */
+
 }
