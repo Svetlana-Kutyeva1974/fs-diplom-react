@@ -41,7 +41,7 @@ class CheckIsAdmin
                 return redirect('/');
                 //return redirect()->route('admin.home');
             }
-        //dd(Auth::user()->isAdmin());
+            //dd(Auth::user()->isAdmin());
                 return $next($request);
             //}//}
 

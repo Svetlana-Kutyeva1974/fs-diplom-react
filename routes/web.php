@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\IndexController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -13,10 +14,13 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+/*
 Route::any('/', function () {
-    return view('welcome');
+    return view('index');
 });
+*/
+Route::get('/', IndexController::class);
+
 
 /*
 Route::group([ 'middleware' => 'admin'  ],  function () {

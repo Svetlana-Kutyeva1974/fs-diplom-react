@@ -34,6 +34,7 @@
             @if (Route::has('login'))
                 <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
                     @auth
+
                         <a href="{{ url('/home') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Home</a>
                     @else
                         <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</a>
@@ -146,6 +147,7 @@
                 @if (Route::has('login'))
                     <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
                         @auth
+                            <span class="text-sm text-gray-700 dark:text-gray-500">Пользователь: {{ auth()->user()->name }} |</span>
                             <a href="{{ url('/home') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Home</a>
 
                            <!-- <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">-->
@@ -171,7 +173,8 @@
                 @endif
         </header>
 
-        <nav class="page-nav">
+        <x-client.calendar></x-client.calendar>
+        <!--<nav class="page-nav">
             <a class="page-nav__day page-nav__day_today" href="#">
                 <span class="page-nav__day-week">Пн</span><span class="page-nav__day-number">31</span>
             </a>
@@ -192,9 +195,13 @@
             </a>
             <a class="page-nav__day page-nav__day_next" href="#">
             </a>
-        </nav>
+        </nav>-->
 
         <main>
+            <x-client.card origin="США" duration="130 минут" alt="Звёздные войны постер" src="i/poster1.jpg" synopsis="Две сотни лет назад малороссийские хутора разоряла шайка нехристей-ляхов во главе с могущественным колдуном." title="Звёздные войны XXIII: Атака клонированных клонов">
+
+            </x-client.card>
+            <!--
             <section class="movie">
                 <div class="movie__info">
                     <div class="movie__poster">
@@ -231,7 +238,7 @@
                     </ul>
                 </div>
             </section>
-
+            -->
             <section class="movie">
                 <div class="movie__info">
                     <div class="movie__poster">
