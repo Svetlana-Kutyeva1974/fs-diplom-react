@@ -33,6 +33,6 @@ class Hall extends Model
      */
     public function seat()
     {
-        return $this->hasMany('App\Seat');
+        return $this->hasMany('App\Seat', 'hall_id');
     }
 }

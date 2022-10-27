@@ -20,7 +20,7 @@ class FilmSeeder extends Seeder
             'duration' => 130,
             'origin' => 'CША',
             'imageText' => 'Звёздные войны постер',
-            'imagePath' => 'poster1.jpg'
+            'imagePath' => 'i/poster1.jpg'
         ]);
 
         DB::table('films')->insert([
@@ -29,16 +29,16 @@ class FilmSeeder extends Seeder
             'duration' => 96,
             'origin' => 'Франция',
             'imageText' => 'Альфа постер',
-            'imagePath' => 'poster2.jpg'
+            'imagePath' => 'i/poster2.jpg'
         ]);
 
         DB::table('films')->insert([
-            'title' => 'Звёздные войны XXIII: Атака клонированных клонов',
-            'description' => 'Две сотни лет назад малороссийские хутора разоряла шайка нехристей-ляхов во главе с могущественным колдуном.',
-            'duration' => 130,
-            'origin' => 'CША',
-            'imageText' => 'Звёздные войны постер',
-            'imagePath' => 'poster1.jpg'
+            'title' => 'Хищник',
+            'description' => 'Самые опасные хищники Вселенной, прибыв из глубин космоса, высаживаются на улицах маленького городка, чтобы начать свою кровавую охоту. Генетически модернизировав себя с помощью ДНК других видов, охотники стали ещё сильнее, умнее и беспощаднее.',
+            'duration' => 101,
+            'origin' => 'Канада, CША',
+            'imageText' => 'Хищник постер',
+            'imagePath' => 'i/poster1.jpg'
         ]);
     }
 }

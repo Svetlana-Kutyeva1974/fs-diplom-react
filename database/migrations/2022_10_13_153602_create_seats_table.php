@@ -21,7 +21,7 @@ class CreateSeatsTable extends Migration
             $table->boolean('free')->default(true);
             $table->integer('colNumber');
             $table->integer('rowNumber');
-            $table->integer('hall_id');//связь
+            $table->integer('hall_id')->default(1);//связь
         });
     }
 

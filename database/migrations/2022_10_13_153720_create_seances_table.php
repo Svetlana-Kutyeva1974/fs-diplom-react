@@ -18,8 +18,8 @@ class CreateSeancesTable extends Migration
             $table->timestamps();
             //$table->integer('id_seance')->unique();
             $table->dateTime('startSeance');
-            $table->integer('hall_id')->unique();
-            $table->integer('film_id')->unique();
+            $table->integer('hall_id');
+            $table->integer('film_id');
         });
     }
 

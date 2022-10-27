@@ -28,7 +28,8 @@ class Film extends Model
 
     public function seance()
     {
-        return $this->hasMany('App\Seance', 'film_id');
+        return $this->hasMany(Seance::class, 'film_id');
         // return $this->hasMany('App\Seance');
+        //return $this->belongsToMany('App\Seance', 'film_id');
     }
 }

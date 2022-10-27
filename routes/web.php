@@ -20,7 +20,7 @@ Route::any('/', function () {
 });
 */
 Route::get('/', IndexController::class);
-
+//Route::get('/film', FilmController::class, 'index');
 
 /*
 Route::group([ 'middleware' => 'admin'  ],  function () {
@@ -56,3 +56,11 @@ Route::group([ 'middleware' => 'auth'  ],  function () {
    });
 });
 
+Route::get('/hall', function () {
+    return view('components.client.hall');
+})->name('hall');
+/*
+Route::get('/hall/{nameHall}/{seance}', function ($nameHall, $seance ) {
+    return view('components.client.hall', ['nameHall' => $nameHall, 'seance'=> $seance->id]);
+})->name('hall');
+*/

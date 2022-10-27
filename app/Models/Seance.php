@@ -11,8 +11,8 @@ class Seance extends Model
     public $table = 'seances';
     protected  $fillable = [
         'startSeance',
-        //'film_id',
-        //'hall_id',
+        'film_id',
+        'hall_id',
     ];
 
     /**
@@ -22,7 +22,10 @@ class Seance extends Model
      */
     public function film()
     {
-        return $this->belongsTo('App\Film','id','film_id');
+        //return $this->belongsTo('App\Film','id','film_id');
+        //return $this->belongsTo(Film::class,'hall_id','film_id');
+        return $this->belongsTo(Film::class);
+        //return $this->belongsTo(Film::class, 'film_id','id');
     }
 
     /**

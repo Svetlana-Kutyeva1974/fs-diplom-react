@@ -14,7 +14,7 @@ class Seat extends Model
         'free',
         'colNumber',
         'rowNumber',
-        //'id_seance',
+        'hall_id',
     ];
     /**
      * Returns the hall where is the seat

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tiket;
+use App\Models\Ticket;
 use Illuminate\Http\Request;
 
-class TiketController extends Controller
+class TicketController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,21 +41,33 @@ class TiketController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Tiket  $tiket
+     * @param  \App\Models\Ticket  $tiket
      * @return \Illuminate\Http\Response
      */
-    public function show(Tiket $tiket)
+    //public function show(Ticket $tiket)
+    public function show($seance, $hall, $date)
     {
-        //
+        try {
+            $tickets = Ticket::where('date', '=', $date)
+                ->where('seance_id', '=', $seance)->get();
+            return response()->json([
+                'status' => 'ok',
+                'data' => $tickets,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+            ], 500);
+        }
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Tiket  $tiket
+     * @param  \App\Models\Ticket  $tiket
      * @return \Illuminate\Http\Response
      */
-    public function edit(Tiket $tiket)
+    public function edit(Ticket $tiket)
     {
         //
     }
@@ -64,10 +76,10 @@ class TiketController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Tiket  $tiket
+     * @param  \App\Models\Ticket  $tiket
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Tiket $tiket)
+    public function update(Request $request, Ticket $tiket)
     {
         //
     }
@@ -75,10 +87,10 @@ class TiketController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Tiket  $tiket
+     * @param  \App\Models\Ticket  $tiket
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Tiket $tiket)
+    public function destroy(Ticket $tiket)
     {
         //
     }

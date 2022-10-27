@@ -5,15 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Tiket extends Model
+class Ticket extends Model
 {
     use HasFactory;
     public $table = 'tickets';
     protected  $fillable = [
         'qrCod',
-        //'seance_id',
-        //'seat_id',
-        //'film_id',
+        'seance_id',
+        'seat_id',
+        'film_id',
     ];
 
     /**

@@ -13,7 +13,9 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.4",
-      "ext-http": "*"
+      "ext-http": "*",
+      "ext-json": "*",
+        "ext-mysql_xdevapi": "*"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
