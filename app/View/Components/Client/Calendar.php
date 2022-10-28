@@ -6,14 +6,19 @@ use Illuminate\View\Component;
 
 class Calendar extends Component
 {
+    public $halls, $seances, $dateCurrent, $dateChosen, $films;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($halls='', $seances='', $films='', $dateCurrent, $dateChosen='')
     {
-        //
+        $this->halls = $halls;
+        $this->films = $films;
+        $this->seances = $seances;
+        $this->dateChosen = $dateChosen;
+        $this->dateCurrent = $dateCurrent;
     }
 
     /**

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\IndexController;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,7 +20,21 @@ Route::any('/', function () {
     return view('index');
 });
 */
-Route::get('/', IndexController::class);
+
+
+
+//Route::get('/', IndexController::class)->name('index');// invoke если такой был
+Route::get('/', [\App\Http\Controllers\IndexController::class, 'index'])->name('index');
+
+
+/*
+Route::group([
+    'middleware' => 'guest',
+], function($dateCurrent, $dateChosen, &$films, &$halls, &$seances ){
+  return view('index',['films' => $films, 'halls' => $halls, 'seances'=> $seances, 'dateCurrent' => $dateCurrent, 'dateChosen'=> $dateChosen]);
+});
+*/
+
 //Route::get('/film', FilmController::class, 'index');
 
 /*

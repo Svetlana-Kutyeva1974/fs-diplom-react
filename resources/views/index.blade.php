@@ -61,8 +61,9 @@
                     </div>
                 @endif
         </header>
+        <div>{{$dateCurrent}}</div>
 
-        <x-client.calendar></x-client.calendar>
+        <x-client.calendar :seances="$seances" :halls="$halls" :films="$films" dateCurrent="{{$dateCurrent}}" dateChosen="{{$dateChosen}}"></x-client.calendar>
         <!--<nav class="page-nav">
             <a class="page-nav__day page-nav__day_today" href="#">
                 <span class="page-nav__day-week">Пн</span><span class="page-nav__day-number">31</span>
@@ -88,16 +89,9 @@
 
         <main>
             @foreach ($films as $film)
-                 <x-client.card :seances="$seances" :film="$film" :halls="$halls"  hh="{{$halls[0]->nameHall}}" ss="{{substr($seances[0]->startSeance, -8,5)}}" origin="{{$films[0]->origin}}" duration="{{$films[0]->duration}} минут" alt="{{$films[0]->imageText}}" src="{{$films[0]->imagePath}}" synopsis="{{$films[0]->description}}" title="{{$films[0]->title}}">
+                 <x-client.card :seances="$seances" :film="$film" :halls="$halls">
                  </x-client.card>
             @endforeach
-           {{-- @include('components.client.card', ['hall' => $halls[0]->nameHall, 'seances' => $seances])   print_r($film1_hall1);--}}
-              {{--  {{'Массив виндексблейд'}}{{$halls->count()}}
-            <div>
-                    @php    print_r($seances);
-                    echo "\n";
-                    var_dump($seances[0]->startSeance);
-                    @endphp</div>--}}
         </main>
         <!-- конец страницы клиента -->
     </body>

@@ -9,7 +9,7 @@
             <h2 class="movie__title">{{$film->title}}</h2>
             <p class="movie__synopsis">{{$film->description}}</p>
             <p class="movie__data">
-                <span class="movie__data-duration">{{$film->duration}}</span>
+                <span class="movie__data-duration">{{$film->duration}} минут</span>
                 <span class="movie__data-origin">{{$film->origin}}</span>
             </p>
         </div>

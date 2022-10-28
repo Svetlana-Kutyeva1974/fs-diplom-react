@@ -12,11 +12,11 @@ use function MongoDB\BSON\toJSON;
 
 class Card extends Component
 {
-    public $alt, $src, $title, $synopsis, $duration, $origin, $halls, $seance, $film, $hh, $ss;
+    public $halls, $seances, $film;
     //public $rel= (array) null;
     //public $rel= (object) null;
     //public $rel= (array) null;
-    public $seances;
+    //public $seance;
     /*public $rel= (object) [
         "id" => "Foo value",
         "startSeance" => "Bar value"
@@ -27,7 +27,7 @@ class Card extends Component
      *
      * @return void
      */
-    public function __construct($seances,   $ss='', $hh='', $alt , $src, $synopsis, $title, $origin, $duration, $halls="", $film='', $seance='' )
+    public function __construct($seances='', $halls="", $film='')
     {
        // dump($hh);
         //dump($ss);
@@ -35,19 +35,19 @@ class Card extends Component
         //var_dump($seances);
         //var_dump($halls);
         //dump($film);
-        $this->alt = $alt;
-        $this->src = $src;
-        $this->synopsis = $synopsis;
-        $this->title = $title;
-        $this->origin = $origin;
-        $this->duration = $duration;
+        //$this->alt = $alt;
+        //$this->src = $src;
+        //$this->synopsis = $synopsis;
+        //$this->title = $title;
+        //$this->origin = $origin;
+        //$this->duration = $duration;
         $this->halls = $halls;
         $this->film = $film;
-        $this->seance = $seance;
-        $this->hh = $hh;
-        $this->ss = $ss;
-        //$this->rel = $rel;
         $this->seances = $seances;
+        //$this->seance = $seance;
+        //$this->hh = $hh;
+        //$this->ss = $ss;
+        //$this->rel = $rel;
 
     }
 
