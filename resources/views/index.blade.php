@@ -61,35 +61,15 @@
                     </div>
                 @endif
         </header>
-        <div>{{$dateCurrent}}</div>
+        <div>{{'текущая дата ind'}}{{$dateCurrent}}</div>
+        <div>{{'выбрана дата ind'}}{{$dateChosen}}</div>
+
 
         <x-client.calendar :seances="$seances" :halls="$halls" :films="$films" dateCurrent="{{$dateCurrent}}" dateChosen="{{$dateChosen}}"></x-client.calendar>
-        <!--<nav class="page-nav">
-            <a class="page-nav__day page-nav__day_today" href="#">
-                <span class="page-nav__day-week">Пн</span><span class="page-nav__day-number">31</span>
-            </a>
-            <a class="page-nav__day" href="#">
-                <span class="page-nav__day-week">Вт</span><span class="page-nav__day-number">1</span>
-            </a>
-            <a class="page-nav__day page-nav__day_chosen" href="#">
-                <span class="page-nav__day-week">Ср</span><span class="page-nav__day-number">2</span>
-            </a>
-            <a class="page-nav__day" href="#">
-                <span class="page-nav__day-week">Чт</span><span class="page-nav__day-number">3</span>
-            </a>
-            <a class="page-nav__day" href="#">
-                <span class="page-nav__day-week">Пт</span><span class="page-nav__day-number">4</span>
-            </a>
-            <a class="page-nav__day page-nav__day_weekend" href="#">
-                <span class="page-nav__day-week">Сб</span><span class="page-nav__day-number">5</span>
-            </a>
-            <a class="page-nav__day page-nav__day_next" href="#">
-            </a>
-        </nav>-->
 
         <main>
             @foreach ($films as $film)
-                 <x-client.card :seances="$seances" :film="$film" :halls="$halls">
+                 <x-client.card :seances="$seances" :film="$film" :halls="$halls" dateCurrent="{{$dateCurrent}}" dateChosen="{{$dateChosen}}">
                  </x-client.card>
             @endforeach
         </main>

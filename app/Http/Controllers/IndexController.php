@@ -12,16 +12,22 @@ use mysql_xdevapi\Collection;
 
 class IndexController extends Controller
 {
-    public function index(Request $request)//: JsonResponse
+    //public function index(Request $request)//: JsonResponse
+    public function __invoke(Request $request)
     {
-        //dd($request->all());//
+        dump($request->all());//
         $films = DB::table('films')->get();
         $seances = DB::table('seances')->get();
         $halls = DB::table('halls')->get();
         $seats = DB::table('seats')->get();
         $seances1 = Seance::all();
         $fl = Film::all()->first();
-        return view('index',['films' => $films, 'halls' => $halls, 'seances'=> $seances, 'dateCurrent' => substr('2022-12-05 16:00:22', 0, 10), 'dateChosen'=> substr('2022-12-05 16:00:22', 0, 10)]);
+        //'dateCurrent' => substr('2022-12-05 16:00:22', 0, 10)
+        $dateCurrent = $request->dateCurrent ?? substr(Carbon::now(), 0, 10);//'2022-11-05 16:00:22'
+        $dateChosen = $request->dateChosen ?? substr(Carbon::now(), 0, 10);//'2022-11-05 16:00:22'
+        dump($seats);
+        //dd($dateCurrent);
+        return view('index',['films' => $films, 'halls' => $halls, 'seances'=> $seances, 'dateCurrent' => $dateCurrent, 'dateChosen'=> $dateChosen]);
     }
 
     public function show(Film $film)

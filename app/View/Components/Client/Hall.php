@@ -12,19 +12,19 @@ use function MongoDB\BSON\toJSON;
 
 class Card extends Component
 {
-    public $halls, $seances, $film, $dateChosen, $dateCurrent;
+    public $hall, $seance, $film, $dateChosen;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($seances='', $halls='', $film='', $dateChosen='', $dateCurrent='')
+    public function __construct($seance='', $hall='', $film='', $dateChosen='')
     {
-        $this->halls = $halls;
+        $this->hall = $hall;
         $this->film = $film;
-        $this->seances = $seances;
+        $this->seance = $seance;
         $this->dateChosen = $dateChosen;
-        $this->dateCurrent = $dateCurrent;
+        //$this->dateCurrent = $dateCurrent;
     }
 
     /**
@@ -34,6 +34,6 @@ class Card extends Component
      */
     public function render()
     {
-        return view('components.client.card');
+        return view('components.client.hall');
     }
 }

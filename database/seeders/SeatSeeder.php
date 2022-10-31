@@ -18,7 +18,7 @@ class SeatSeeder extends Seeder
             'hall_id' => 1,
             'colNumber' => 12,
             'rowNumber' => '10',
-            'type' => '1000',
+            'type' => 'VIP',
             //'free' => true,
         ]);
         DB::table('seats')->insert([

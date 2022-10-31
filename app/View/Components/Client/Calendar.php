@@ -12,7 +12,7 @@ class Calendar extends Component
      *
      * @return void
      */
-    public function __construct($halls='', $seances='', $films='', $dateCurrent, $dateChosen='')
+    public function __construct($halls='', $seances='', $films='', $dateCurrent='', $dateChosen='')
     {
         $this->halls = $halls;
         $this->films = $films;

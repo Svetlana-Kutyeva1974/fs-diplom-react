@@ -23,8 +23,8 @@ Route::any('/', function () {
 
 
 
-//Route::get('/', IndexController::class)->name('index');// invoke если такой был
-Route::get('/', [\App\Http\Controllers\IndexController::class, 'index'])->name('index');
+Route::get('/', IndexController::class)->name('index');// invoke если такой был
+//Route::get('/', [\App\Http\Controllers\IndexController::class, 'index'])->name('index');
 
 
 /*
@@ -71,9 +71,14 @@ Route::group([ 'middleware' => 'auth'  ],  function () {
    });
 });
 
-Route::get('/hall', function () {
-    return view('components.client.hall');
+
+/*Route::get('/hall', function () {
+    return view('components.client.hall', );
 })->name('hall');
+*/
+Route::get('/hall', [App\Http\Controllers\SeatController::class, 'index'])->name('hall');
+
+
 /*
 Route::get('/hall/{nameHall}/{seance}', function ($nameHall, $seance ) {
     return view('components.client.hall', ['nameHall' => $nameHall, 'seance'=> $seance->id]);

@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Film;
+use App\Models\Hall;
+use App\Models\Seance;
 use App\Models\Seat;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class SeatController extends Controller
@@ -12,9 +16,16 @@ class SeatController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        dump($request->all());
+        $film = $request->film ?? Film::all()->first();//
+        $hall = $request->hall ?? Hall::all()->first();
+        $seance = $request->seance ?? Seance::all()->where('startSeance', Carbon::now())->first();
+        $dateChosen = $request->dateChosen ?? substr(Carbon::now(), 0, 10);//'2022-11-05 16:00:22'
+        $seat = $request->seat ?? Seat::all();
+        dump($seat.'seatttttt');
+        return view('client.hall', ['seat'=> $seat, 'film' => $film, 'hall' => $hall, 'seance'=> $seance,  'dateChosen'=> $dateChosen]);
     }
 
     /**
