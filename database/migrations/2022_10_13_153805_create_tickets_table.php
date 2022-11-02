@@ -20,10 +20,11 @@ class CreateTicketsTable extends Migration
             //$table->integer('colNumber');
             //$table->integer('rowNumber');
             $table->string('qrCod');//
+            $table->integer('count');
             //$table->integer('count');
             $table->integer('film_id');
             $table->integer('seance_id');
-            $table->integer('seat_id');//связь
+            //$table->integer('seat_id');//связь
         });
     }
 

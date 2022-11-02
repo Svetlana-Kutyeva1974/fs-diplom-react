@@ -21,35 +21,35 @@ class TicketSeeder extends Seeder
             'qrCod' => Hash::make('qrCod'),
             'seance_id' => 1,
             'film_id' => 1,
-            'seat_id' => 1,
+            'count' => 1000,
         ]);
 
         DB::table('tickets')->insert([
             'qrCod' => Hash::make('qrCod'),
             'seance_id' => 1,
             'film_id' => 2,
-            'seat_id' => 2,
+            'count' => 500,
         ]);
 
         DB::table('tickets')->insert([
             'qrCod' => Hash::make('qrCod'),
             'seance_id' => 1,
             'film_id' => 2,
-            'seat_id' => 3,
+            'count' => 1000,
         ]);
 
         DB::table('tickets')->insert([
             'qrCod' => Hash::make('qrCod'),
             'seance_id' => 3,
             'film_id' => 1,
-            'seat_id' => 4,
+            'count' => 500,
         ]);
 
         DB::table('tickets')->insert([
             'qrCod' => Hash::make('qrCod'),
             'seance_id' => 2,
             'film_id' => 1,
-            'seat_id' => 5,
+            'count' => 500,
         ]);
     }
 }

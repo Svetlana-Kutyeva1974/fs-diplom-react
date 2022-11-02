@@ -2,28 +2,23 @@
 
 namespace App\View\Components\Client;
 
-use App\Models\Film;
-use App\Models\Hall;
-use App\Models\Seance;
 use Illuminate\View\Component;
-use stdClass;
-use function MongoDB\BSON\fromJSON;
-use function MongoDB\BSON\toJSON;
 
-class Halls extends Component
+class Buttons extends Component
 {
-    public $hall, $seance, $film, $dateChosen;
+    public $hall, $seance, $dateChosen, $film, $seats;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($seance='', $hall='', $film='', $dateChosen='')
+    public function __construct($seats='', $hall='', $seance='', $film='',  $dateChosen='')
     {
         $this->hall = $hall;
         $this->film = $film;
         $this->seance = $seance;
         $this->dateChosen = $dateChosen;
+        $this->seats = $seats;
         //$this->dateCurrent = $dateCurrent;
     }
 
@@ -34,6 +29,6 @@ class Halls extends Component
      */
     public function render()
     {
-        return view('components.client.hall');
+        return view('components.client.buttons');
     }
 }

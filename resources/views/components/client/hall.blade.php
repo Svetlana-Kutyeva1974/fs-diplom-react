@@ -32,6 +32,9 @@
         </div>
         <div class="buying-scheme">
             <div class="buying-scheme__wrapper">
+
+
+
                 <div class="buying-scheme__row">
                     <span class="buying-scheme__chair buying-scheme__chair_disabled"></span><span class="buying-scheme__chair buying-scheme__chair_disabled"></span>
                     <span class="buying-scheme__chair buying-scheme__chair_disabled"></span><span class="buying-scheme__chair buying-scheme__chair_disabled"></span>

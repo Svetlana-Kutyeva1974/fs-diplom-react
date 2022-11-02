@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Film;
+use App\Models\Hall;
+use App\Models\Seance;
+use App\Models\Seat;
 use App\Models\Ticket;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class TicketController extends Controller
@@ -12,8 +17,16 @@ class TicketController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $film = $request->film ?? Film::all()->first();//
+        $hall = $request->hall ?? Hall::all()->first();
+        $dateChosen = $request->dateChosen ?? substr(Carbon::now(), 0, 10);//'2022-11-05 16:00:22'
+        $seance = $request->seance ?? Seance::all()->where('startSeance', Carbon::now())->first();
+
+        $seats = $request->seats ?? Seat::all()->where('seance_id', $seance['id'])->where('hall_id', $hall['id']);
+        $selected = $request->selected ?? [];
+        return view('client.ticket',['selected'=> $selected, 'film' => $film, 'hall' => $hall, 'seance'=> $seance, 'dateChosen'=> $dateChosen, 'seats'=> $seats]);
         //
     }
 

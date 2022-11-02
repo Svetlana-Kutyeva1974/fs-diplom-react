@@ -15,6 +15,8 @@ class Seat extends Model
         'colNumber',
         'rowNumber',
         'hall_id',
+        'seance_id',
+        'ticket_id',
     ];
     /**
      * Returns the hall where is the seat

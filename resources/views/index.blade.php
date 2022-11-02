@@ -69,7 +69,7 @@
 
         <main>
             @foreach ($films as $film)
-                 <x-client.card :seances="$seances" :film="$film" :halls="$halls" dateCurrent="{{$dateCurrent}}" dateChosen="{{$dateChosen}}">
+                 <x-client.card :seances="$seances" :film="$film" :halls="$halls" :seats="$seats" dateCurrent="{{$dateCurrent}}" dateChosen="{{$dateChosen}}">
                  </x-client.card>
             @endforeach
         </main>

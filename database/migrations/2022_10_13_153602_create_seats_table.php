@@ -17,11 +17,13 @@ class CreateSeatsTable extends Migration
             $table->id();
             $table->timestamps();
             //$table->integer('id_seat')->unique();
-            $table->string('type');
+            $table->string('type');//VIP/NORM/FAIL
             $table->boolean('free')->default(true);
             $table->integer('colNumber');
             $table->integer('rowNumber');
-            $table->integer('hall_id')->default(1);//связь
+            $table->integer('hall_id');//связь
+            $table->integer('ticket_id')->default(0);//связь
+            $table->integer('seance_id');//связь
         });
     }
 

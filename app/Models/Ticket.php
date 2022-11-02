@@ -11,6 +11,7 @@ class Ticket extends Model
     public $table = 'tickets';
     protected  $fillable = [
         'qrCod',
+        'count',
         'seance_id',
         'seat_id',
         'film_id',
