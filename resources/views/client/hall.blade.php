@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,6 +17,9 @@
     <h1 class="page-header__title">Идём<span>в</span>кино</h1>
 </header>
 
+@php
+    $selected = [];
+@endphp
 <main>
     <section class="buying">
         <div class="buying__info">
@@ -32,7 +34,7 @@
         </div>
         <div class="buying-scheme">
             <div class="buying-scheme__wrapper">
-                <x-client.buttons :seats="$seats" :seance="$seance" :film="$film" :hall="$hall"  dateChosen="{{$dateChosen}}">
+                <x-client.buttons :seats="$seats" :seance="$seance" :film="$film" :hall="$hall"  dateChosen="{{$dateChosen}}" :selected="$selected">
                 </x-client.buttons>
             </div>
 
@@ -56,16 +58,16 @@
 </main>
 
 </body>
-<script>
+{{--<script>
     function arr(){
         //console.log(id);
 
         //document.getElementById('button').classList.toggle('buying-scheme__chair_selected')
         Array.of(document.querySelectorAll('buying-scheme__chair_selected')).forEach((element, index, array) => {
-            console.log(element[index], element[index].classList); // 100, 200, 300
+            //console.log(element[index], element[index].classList); // 100, 200, 300
             //element[index].classList.remove('buying-scheme__chair_standart');
             element[index].classList.toggle('buying-scheme__chair_selected');
-            console.log(element[index], element[index].classList); // 100, 200, 300
+            //console.log(element[index], element[index].classList); // 100, 200, 300
             console.log(index); // 0, 1, 2
             console.log(array); // same myArray object 3 times
 
@@ -73,9 +75,30 @@
     }
 
 </script>
+--}}
+{{--<script>
+    function arr2($hall){
+        //console.log(id);
+        const selected = [];
+        //document.getElementById('button').classList.toggle('buying-scheme__chair_selected')
+        Array.of(document.querySelectorAll('buying-scheme__chair_selected')).forEach((element, index, array) => {
+            //console.log(element[index], element[index].classList); // 100, 200, 300
+            //element[index].classList.remove('buying-scheme__chair_standart');
+            //selected.push([index, array]);
+            //console.log(element[index], element[index].classList); // 100, 200, 300
+            console.log(index); // 0, 1, 2
+            console.log(array); // same myArray object 3 times
+
+        });
+       /* "location.href='{{route('ticket', ['hall'=> $hall, 'seance'=> $seance, 'film'=> $film, 'dateChosen'=> $dateChosen, 'seats'=> $seats->where('hall_id', $hall['id'])->where('seance_id', $seance['id']), 'selected' => $])}}'"
+    */
+    }
+
+</script>--}}
 </html>
 
-
+    {{--
 @php
     echo "<script>arr();</script>";
 @endphp
+--}}

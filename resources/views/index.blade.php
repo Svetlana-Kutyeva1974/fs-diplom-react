@@ -65,6 +65,7 @@
         <div>{{'выбрана дата ind'}}{{$dateChosen}}</div>
 
 
+
         <x-client.calendar :seances="$seances" :halls="$halls" :films="$films" dateCurrent="{{$dateCurrent}}" dateChosen="{{$dateChosen}}"></x-client.calendar>
 
         <main>

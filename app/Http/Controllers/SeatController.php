@@ -28,7 +28,7 @@ class SeatController extends Controller
         $seats = $request->seats ?? Seat::all()->where('seance_id', $seance['id'])->where('hall_id', $hall['id']);
 
         dump($seats.'  seatttttt');
-        //dump($seat->where('seance_id', $seance['id']).'   vibor');
+        //dump($seat->where('seance_id', $seance['id']));
         dump('местаааааааааааа');
         dump($seance);
 

@@ -1,5 +1,6 @@
 {{--$hall['row']--}}
 {{--$seats->where('rowNumber', 1)--}}
+
 @for ($i = 1; $i <= $hall['row']; $i++)
     <div class="buying-scheme__row">
         @foreach ($seats->where('rowNumber', $i) as $item)
@@ -11,7 +12,7 @@
                     @else
             @switch($item['type'])
                 @case('VIP')
-                                <button type="button" class="buying-scheme__chair buying-scheme__chair_vip">
+                                <button onclick = "cl(id)" id="[{{$item['rowNumber']}},{{$item['colNumber']}}]" type="button" class="buying-scheme__chair buying-scheme__chair_vip">
                         @break
                 @case('FAIL')
                                         <button type="button" class="buying-scheme__chair buying-scheme__chair_disabled">
@@ -25,11 +26,14 @@
     </div>
 @endfor
 
+
 <script>
     function cl(id){
         console.log(id);
         if(!(document.getElementById(id).classList.contains('buying-scheme__chair_disabled') || document.getElementById(id).classList.contains('buying-scheme__chair_taken'))) {
             document.getElementById(id).classList.toggle('buying-scheme__chair_selected');
+
+            @php echo array_push($selected, "{{id}}"); @endphp;
         }
         //document.getElementById('button').classList.toggle('buying-scheme__chair_selected')
         /*Array.of(document.querySelectorAll('button')).forEach((element, index, array) => {
@@ -43,6 +47,8 @@
            //route('hall', ['hall' => $hall, 'seance'=> $item, 'film'=> $film, 'dateChosen'=> $dateChosen, 'seats'=> $seats->where('hall_id', $hall->id)->where('seance_id', $item->id)])
 
     });*/
+         //const d = " @php array_push($selected, "{{id}}"); @endphp";
+        //console.log(d);
     }
 
 </script>

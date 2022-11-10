@@ -19,7 +19,7 @@ class TicketController extends Controller
      */
     public function index(Request $request)
     {
-        $film = $request->film ?? Film::all()->first();//
+        $film = $request->film ?? Film::all()->first();
         $hall = $request->hall ?? Hall::all()->first();
         $dateChosen = $request->dateChosen ?? substr(Carbon::now(), 0, 10);//'2022-11-05 16:00:22'
         $seance = $request->seance ?? Seance::all()->where('startSeance', Carbon::now())->first();
