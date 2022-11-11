@@ -61,9 +61,6 @@
         </div>
     @endif
 </header>
-{{--<div>{{'текущая дата ind'}}{{$dateCurrent}}</div>
-<div>{{'выбрана дата ind'}}{{$dateChosen}}</div>--}}
-
 
 <span id="title">
     @section('title')

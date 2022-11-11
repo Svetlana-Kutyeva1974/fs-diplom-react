@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Car;
 use App\Models\Film;
 use App\Models\Hall;
 use App\Models\Seance;
 use App\Models\Seat;
 use App\Models\Ticket;
+use App\Models\UserIn;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class TicketController extends Controller
 {
@@ -20,20 +24,20 @@ class TicketController extends Controller
     public function index(Request $request)
     {
         dump($request->all());
-        $film = $request['amp;film'] ?? Film::all()->first();
+        $film = $request['film'] ?? Film::all()->first();//$request['amp;dateChosen']
         $hall = $request['hall'] ?? Hall::all()->first();
         //dump($request['amp;film']);
-        $dateChosen = $request['amp;dateChosen'] ?? substr(Carbon::now(), 0, 10);//'2022-11-05 16:00:22'
+        $dateChosen = $request['dateChosen'] ?? substr(Carbon::now(), 0, 10);//'2022-11-05 16:00:22'
         //dump($dateChosen);
-        $seance = $request['amp;seance'] ?? Seance::all()->where('startSeance', Carbon::now())->first();
+        $seance = $request['seance'] ?? Seance::all()->where('startSeance', Carbon::now())->first();
        // dump($seance);
 
         //dd($selected);
         $seatnull= ($seance == null) ? null : Seat::all()->where('seance_id', $seance['id'])->where('hall_id', $hall['id']);
          //dump($seatnull);
-        $seats = $request['amp;seats'] ?? $seatnull;
+        $seats = $request['seats'] ?? $seatnull;
         //dump($request['amp;seats']);
-        $selected = $request['amp;selected'] ?? [];
+        $selected = $request['selected'] ?? [];
 
         //dump(json_decode($selected));
         return view('client.ticket',['selected'=> $selected, 'film' => $film, 'hall' => $hall, 'seance'=> $seance, 'dateChosen'=> $dateChosen, 'seats'=> $seats]);
@@ -45,8 +49,19 @@ class TicketController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
+        $tiket = new Ticket();//return Ticket::create($request->validated());
+        Ticket::create([
+            'qrCode' => $request['data'],//Str::random(16).'user',
+            'film_id' => $request['film_id'],
+            'seat_id' => $request['seat_id'],//Hash::make('секрет').'@gmail.ru',
+            'seance_id' => $request['seance_id'],//Hash::make('секрет'),
+            'created_at' => date("Y-m-d H:i:s"),//Carbon::now()
+            'updated_at' => date("Y-m-d H:i:s"),//Carbon::now()
+        ]);
+        return redirect()->route('ticket');
+
         //
     }
 
