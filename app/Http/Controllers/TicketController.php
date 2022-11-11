@@ -19,13 +19,23 @@ class TicketController extends Controller
      */
     public function index(Request $request)
     {
-        $film = $request->film ?? Film::all()->first();
-        $hall = $request->hall ?? Hall::all()->first();
-        $dateChosen = $request->dateChosen ?? substr(Carbon::now(), 0, 10);//'2022-11-05 16:00:22'
-        $seance = $request->seance ?? Seance::all()->where('startSeance', Carbon::now())->first();
+        dump($request->all());
+        $film = $request['amp;film'] ?? Film::all()->first();
+        $hall = $request['hall'] ?? Hall::all()->first();
+        //dump($request['amp;film']);
+        $dateChosen = $request['amp;dateChosen'] ?? substr(Carbon::now(), 0, 10);//'2022-11-05 16:00:22'
+        //dump($dateChosen);
+        $seance = $request['amp;seance'] ?? Seance::all()->where('startSeance', Carbon::now())->first();
+       // dump($seance);
 
-        $seats = $request->seats ?? Seat::all()->where('seance_id', $seance['id'])->where('hall_id', $hall['id']);
-        $selected = $request->selected ?? [];
+        //dd($selected);
+        $seatnull= ($seance == null) ? null : Seat::all()->where('seance_id', $seance['id'])->where('hall_id', $hall['id']);
+         //dump($seatnull);
+        $seats = $request['amp;seats'] ?? $seatnull;
+        //dump($request['amp;seats']);
+        $selected = $request['amp;selected'] ?? [];
+
+        //dump(json_decode($selected));
         return view('client.ticket',['selected'=> $selected, 'film' => $film, 'hall' => $hall, 'seance'=> $seance, 'dateChosen'=> $dateChosen, 'seats'=> $seats]);
         //
     }

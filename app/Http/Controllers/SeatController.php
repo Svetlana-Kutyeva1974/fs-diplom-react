@@ -27,12 +27,12 @@ class SeatController extends Controller
 
         $seats = $request->seats ?? Seat::all()->where('seance_id', $seance['id'])->where('hall_id', $hall['id']);
 
-        dump($seats.'  seatttttt');
+        //dump($seats.'  seatttttt');
         //dump($seat->where('seance_id', $seance['id']));
-        dump('местаааааааааааа');
-        dump($seance);
+        //dump('местаааааааааааа');
+        //dump($seance);
 
-        dump($seance['id'].'    по id');
+        //dump($seance['id'].'    по id');
         return view('client.hall', ['seats'=> $seats, 'film' => $film, 'hall' => $hall, 'seance'=> $seance,  'dateChosen'=> $dateChosen]);
     }
 

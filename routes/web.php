@@ -78,6 +78,7 @@ Route::group([ 'middleware' => 'auth'  ],  function () {
 */
 Route::get('/hall', [App\Http\Controllers\SeatController::class, 'index'])->name('hall');
 Route::get('/ticket', [App\Http\Controllers\TicketController::class, 'index'])->name('ticket');
+Route::get('/ticket/{id}', [App\Http\Controllers\TicketController::class, 'index'])->name('create');
 
 
 /*

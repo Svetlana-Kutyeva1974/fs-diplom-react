@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{--<!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
@@ -60,20 +60,25 @@
                         @endauth
                     </div>
                 @endif
-        </header>
-        <div>{{'текущая дата ind'}}{{$dateCurrent}}</div>
-        <div>{{'выбрана дата ind'}}{{$dateChosen}}</div>
+        </header>--}}
+        {{--<div>{{'текущая дата ind'}}{{$dateCurrent}}</div>
+        <div>{{'выбрана дата ind'}}{{$dateChosen}}</div>--}}
 
 
-
+@extends('layouts.header')
+     {{--}} @section('title')
         <x-client.calendar :seances="$seances" :halls="$halls" :films="$films" dateCurrent="{{$dateCurrent}}" dateChosen="{{$dateChosen}}"></x-client.calendar>
+      @endsection--}}
+        {{--}}<main id="content">--}}
+@section('content')
+    <x-client.calendar :seances="$seances" :halls="$halls" :films="$films" dateCurrent="{{$dateCurrent}}" dateChosen="{{$dateChosen}}"></x-client.calendar>
 
-        <main>
-            @foreach ($films as $film)
+    @foreach ($films as $film)
                  <x-client.card :seances="$seances" :film="$film" :halls="$halls" :seats="$seats" dateCurrent="{{$dateCurrent}}" dateChosen="{{$dateChosen}}">
                  </x-client.card>
             @endforeach
-        </main>
+@endsection
+        {{--}}</main>--}}
         <!-- конец страницы клиента -->
-    </body>
-</html>
+    {{--}}</body>
+</html>--}}
