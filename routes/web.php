@@ -27,7 +27,7 @@ Route::get('/', IndexController::class)->name('index');// invoke если так
 //Route::get('/', [\App\Http\Controllers\IndexController::class, 'index'])->name('index');
 
 
-/*
+/*=================
 Route::group([
     'middleware' => 'guest',
 ], function($dateCurrent, $dateChosen, &$films, &$halls, &$seances ){
@@ -49,7 +49,7 @@ Route::group([ 'middleware' => 'admin'  ],  function () {
 {
     Route::get('/admin', [\App\Http\Controllers\AdminController::class, 'index'])->name('admin.home');
 });
-*/
+================*/
 
 
 Route::any('/admin/loginAdmin', [\App\Http\Controllers\LoginAdminController::class, 'index'])->name('loginAdmin');
@@ -59,7 +59,7 @@ Auth::routes();
 
 Route::any('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-
+/*Было до разработки админки
 Route::group([ 'middleware' => 'auth'  ],  function () {
     Route::group([
         'middleware' => 'admin',
@@ -67,9 +67,23 @@ Route::group([ 'middleware' => 'auth'  ],  function () {
     ], function () {
         Route::get('/', function () {
             return view('admin.home', ['user' => Auth::user()]);
+            //Route::get('/', [App\Http\Controllers\AdminController::class, 'index']);
         })->name('admin.home');
    });
 });
+*/
+
+Route::group([ 'middleware' => 'auth'  ],  function () {
+    Route::group([
+        'middleware' => 'admin',
+        'prefix' => 'admin',
+    ], function () {
+        Route::get('/', [App\Http\Controllers\AdminController::class, 'index'])->name('admin.home');
+        Route::any('/createHall', [App\Http\Controllers\HallController::class, 'create'])->name('admin.createHall');
+        Route::any('/updateHall', [App\Http\Controllers\HallController::class, 'update'])->name('admin.updateHall');
+    });
+});
+
 
 
 /*Route::get('/hall', function () {

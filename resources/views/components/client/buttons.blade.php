@@ -2,13 +2,24 @@
 {{--$seats->where('rowNumber', 1)--}}
 <div class="buying-scheme">
     <div class="buying-scheme__wrapper">
+        {{--dump($hall['open'])--}}
 
+        {{var_dump($hall['typeOfSeats'])}}
+        {{var_dump(json_decode($hall['typeOfSeats']))}}
+        {{var_dump(json_decode($hall['typeOfSeats'])->{"1,4"})}}
+        {{--}}@foreach($hall as $key => $value) {
+        echo "Item=" . $key . ", Value=" . $value;
+        }
+        @endforeach--}}
         @for ($i = 1; $i <= $hall['row']; $i++)
+
             <div class="buying-scheme__row">
                 @foreach ($seats->where('rowNumber', $i) as $item)
+
                     {{--'передали'--}}{{--$item--}}
                     {{--<span class="buying-scheme__chair buying-scheme__chair_standart"></span>--}}
                     @if(!$item['free'])
+
                         <button onclick = "cl(id)" id="{{$item['rowNumber']}},{{$item['colNumber']}}" type="button" class="buying-scheme__chair buying-scheme__chair_taken">
                             {{--<button onclick = "cl(id)" id="{{($item['rowNumber']-1)*$hall['col']+ $item['colNumber']}}" type="button" class="buying-scheme__chair buying-scheme__chair_taken">--}}
                             @else

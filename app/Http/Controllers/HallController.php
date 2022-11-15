@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Film;
 use App\Models\Hall;
+use App\Models\ToDo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class HallController extends Controller
 {
@@ -22,9 +26,47 @@ class HallController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $user = Auth::user();
+        if (! $user->is_admin) {
+        return redirect('/');
+        } else {
+            //var_dump($request->validated());
+            var_dump($request->all());
+            var_dump($request["name"]);
+            $all = $request->all();
+            //$newHall = Hall::create($all);
+            dump('zal:');
+            //var_dump($newHall);
+            $seats =[];
+            for ($i = 1; $i <= 10; $i++) {
+                //$seats =[$i][];
+                for ($j = 1; $j <= 12; $j++) {
+                    //$ii="$i$j";
+                    $seats["$i,$j"] = ['NORM','VIP', 'FAIL'][array_rand(['NORM','VIP', 'FIRE'])];
+                }
+            }
+            //dump($seats);
+            $seats = json_encode($seats);
+            //$newHall['typeOfSeats'] = $seats;
+            dump('zal:');
+            //var_dump($newHall['typeOfSeats']);
+
+            DB::table('halls')->insert([
+                'nameHall' => $request["name"],
+                'col' => 12,
+                'row' => '10',
+                'countVip' => 1000,
+                'countNormal' => 500,
+                'open'=> false,
+                'typeOfSeats' => $seats,
+            ]);
+           // dd($seats);
+            //return redirect()->route('admin.home');
+            return redirect()->back();
+        }
+        //return view('admin.ticket',['selected'=> $selected, 'film' => $film, 'hall' => $hall, 'seance'=> $seance, 'dateChosen'=> $dateChosen, 'seats'=> $seats]);
     }
 
     /**
@@ -35,7 +77,13 @@ class HallController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // {
+        //            $all = $request->all();
+        //            $newHall = Film::create($all);
+        //            return response()->json([
+        //                    'success' => true,
+        //                    'data' => $newFilm,
+        //            ]);
     }
 
     /**
@@ -55,9 +103,10 @@ class HallController extends Controller
      * @param  \App\Models\Hall  $hall
      * @return \Illuminate\Http\Response
      */
-    public function edit(Hall $hall)
+    public function edit(Request $request, Hall $hall)
     {
-        //
+        dump($hall);
+        dd($request);
     }
 
     /**

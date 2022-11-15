@@ -26,6 +26,6 @@ mix.copyDirectory('resources/i', 'public/i');
 mix.copyDirectory('resources/css', 'public/css');
 
 mix.styles(
-    ['resources/css/normilize.css', 'resources/css/styles.css'],
+    ['resources/css/normilize.css', 'resources/css/styles.css', 'resources/css/normilizeAdmin.css', 'resources/css/stylesAdmin.css'],
     'public/css/all.css'
 );

@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Car;
 use App\Models\Film;
 use App\Models\Hall;
 use App\Models\Seance;
 use App\Models\Seat;
 use App\Models\Ticket;
-use App\Models\UserIn;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -84,7 +82,7 @@ class TicketController extends Controller
      */
     //public function show(Ticket $tiket)
     public function show($seance, $hall, $date)
-    {
+    {/*
         try {
             $tickets = Ticket::where('date', '=', $date)
                 ->where('seance_id', '=', $seance)->get();
@@ -97,6 +95,7 @@ class TicketController extends Controller
                 'status' => 'error',
             ], 500);
         }
+    */
     }
 
     /**

@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+
+
 });
 
 // ** Public routes ** //
@@ -32,5 +34,10 @@ Route::get('/tickets/{seance}/{date}', [\App\Http\Controllers\TicketController::
 Route::post('/tickets', [\App\Http\Controllers\TicketController::class, 'store']);
 
 Route::get('seance', [\App\Http\Controllers\SeanceController::class, 'seances'])->name('seance');
+
+//Route::middleware('auth:sanctum')->get('/user', function () {
+Route::post('halls', [HallController::class, 'store']);
+Route::put('halls/{id}', [HallController::class, 'update']);
+Route::delete('halls/{id}', [HallController::class, 'destroy']);
 
 //https://maxyc.ru/programming/laravel/restful-api-laravel/ crud

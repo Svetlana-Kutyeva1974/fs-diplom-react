@@ -15,6 +15,8 @@ class Hall extends Model
         'row',
         'countVip',
         'countNormal',
+        'open',
+        'typesOfSeats'
         //'id_seance',
     ];
     /**

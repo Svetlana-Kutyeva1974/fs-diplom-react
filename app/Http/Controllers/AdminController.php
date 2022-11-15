@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Models\Film;
+use App\Models\Seance;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 //use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -17,13 +21,33 @@ class AdminController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
+
         /*if (! $user->is_admin) {
         return redirect('/');
         }*/
-        return view('admin.home', compact('user'));
+        //return view('admin.home', compact('user'));
+
+            //dump($request->all());//
+            $films = DB::table('films')->get();
+            $seances = DB::table('seances')->get();
+            $halls = DB::table('halls')->get();
+            $seats = DB::table('seats')->get();
+            $seances1 = Seance::all();
+            $fl = Film::all()->first();
+            //'dateCurrent' => substr('2022-12-05 16:00:22', 0, 10)
+            $dateCurrent = $request->dateCurrent ?? substr(Carbon::now(), 0, 10);//'2022-11-05 16:00:22'
+            $dateChosen = $request->dateChosen ?? substr(Carbon::now(), 0, 10);//'2022-11-05 16:00:22'
+            //dump($halls);
+            //dump($seats);
+            //dump($seances);
+            //dump($films);
+            //dd($dateCurrent);
+            return view('admin.home',['user'=> $user, 'films' => $films, 'halls' => $halls, 'seances'=> $seances, 'dateCurrent' => $dateCurrent, 'dateChosen'=> $dateChosen, 'seats'=> $seats]);
+
+
     }
 
     /**

@@ -47,43 +47,17 @@
         <div class="conf-step__wrapper">
             <p class="conf-step__paragraph">Доступные залы:</p>
             <ul class="conf-step__list">
-                @foreach ($halls as $hall)
-                <li>{{$hall->nameHall}}
-                    <button id="{{$hall->id}}"  class="conf-step__button conf-step__button-trash"></button>
+                <li>Зал 1
+                    <button class="conf-step__button conf-step__button-trash"></button>
                 </li>
-                @endforeach
+                <li>Зал 2
+                    <button class="conf-step__button conf-step__button-trash"></button>
+                </li>
             </ul>
-            <button id= "create" onclick = "cl(id)"  class="conf-step__button conf-step__button-accent">Создать зал</button>
-
+            <button class="conf-step__button conf-step__button-accent">Создать зал</button>
         </div>
-        {{-- Конец Меню создания зала--}}
-        <div class="popup">
-            <div class="popup__container">
-                <div class="popup__content">
-                    <div class="popup__header">
-                        <h2 class="popup__title">
-                            Добавление зала
-                            <a class="popup__dismiss" href="#"><img src="i/close.png" alt="Закрыть"></a>
-                        </h2>
 
-                    </div>
-                    <div class="popup__wrapper">
-                        <form action="{{route('admin.createHall')}}" method="POST" accept-charset="utf-8">
-                            @csrf
-                            <label class="conf-step__label conf-step__label-fullsize" for="name">
-                                Название зала
-                                <input class="conf-step__input" type="text" placeholder="Например, «Зал 1»" name="name" required="">
-                            </label>
-                            <div class="conf-step__buttons text-center">
-                                <input type="submit" value="Добавить зал" class="conf-step__button conf-step__button-accent">
-                                <button class="conf-step__button conf-step__button-regular">Отменить</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {{-- Конец Меню создания зала--}}
+
     </section>
 
     <section class="conf-step">
@@ -198,34 +172,23 @@
         <div class="conf-step__wrapper">
             <p class="conf-step__paragraph">Выберите зал для конфигурации:</p>
             <ul class="conf-step__selectors-box">
-                @foreach ($halls as $hall)
-                    <li>
-                        @if($hall->id === "2" )
-                            <input id="{{$hall->id}}" onclick = "clickRadio(id)" type="radio" class="conf-step__radio" name="prices-hall" value="{{$hall->nameHall}}" checked><span class="conf-step__selector">{{$hall->nameHall}}</span></li>
-                        @else
-                    <input id="{{$hall->id}}" onclick = "clickRadio(id)" type="radio" class="conf-step__radio" name="prices-hall" value="{{$hall->nameHall}}"><span class="conf-step__selector">{{$hall->nameHall}}</span></li>
-                         @endif
-                    </li>
-                @endforeach
-                {{--}}
                 <li><input type="radio" class="conf-step__radio" name="prices-hall" value="Зал 1"><span class="conf-step__selector">Зал 1</span></li>
                 <li><input type="radio" class="conf-step__radio" name="prices-hall" value="Зал 2" checked><span class="conf-step__selector">Зал 2</span></li>
-                --}}
             </ul>
 
             <p class="conf-step__paragraph">Установите цены для типов кресел:</p>
             <div class="conf-step__legend">
-                <label class="conf-step__label">Цена, рублей<input id="countNormal" type="text" class="conf-step__input count" placeholder="0" ></label>
+                <label class="conf-step__label">Цена, рублей<input type="text" class="conf-step__input" placeholder="0" ></label>
                 за <span class="conf-step__chair conf-step__chair_standart"></span> обычные кресла
             </div>
             <div class="conf-step__legend">
-                <label class="conf-step__label">Цена, рублей<input id="countVip" type="text" class="conf-step__input count" placeholder="0" value="1000"></label>
+                <label class="conf-step__label">Цена, рублей<input type="text" class="conf-step__input" placeholder="0" value="350"></label>
                 за <span class="conf-step__chair conf-step__chair_vip"></span> VIP кресла
             </div>
 
             <fieldset class="conf-step__buttons text-center">
                 <button class="conf-step__button conf-step__button-regular">Отмена</button>
-                <input id="update" onclick = "clickUpdate()" type="submit" value="Сохранить" class="conf-step__button conf-step__button-accent">
+                <input type="submit" value="Сохранить" class="conf-step__button conf-step__button-accent">
             </fieldset>
         </div>
     </section>
@@ -324,157 +287,8 @@
 
 
 <script src="{{ asset('js/accordeon.js')}}"></script>
-
-<script>
-    function cl(id){
-        console.log(id);
-        document.getElementById(id).closest('.conf-step');
-        console.log(document.getElementById(id).closest('.conf-step'));
-        console.log(document.getElementById(id).closest('.conf-step').children[2]);
-        /*document.getElementById(id).closest('.conf-step').children[2].style.display = "block";
-        document.getElementById(id).closest('.conf-step').children[2].style.position = "absolute";
-        document.getElementById(id).closest('.conf-step').children[2].style.width = "50%";
-        document.getElementById(id).closest('.conf-step').children[2].style.height = "70%";
-         */
-        document.getElementById(id).closest('.conf-step').children[2].classList.add("active");
-    }
-</script>
-
-<script>
-    function clickRadio(id){
-        console.log('clickradio', id);
-        ///console.log(document.querySelectorAll('div.conf-step__legend'));
-        //console.log(document.querySelectorAll('p.conf-step__paragraph'));
-       // console.log(document.querySelectorAll('.conf-step__input'));
-
-        //document.getElementsByClassName('.conf-step__chair_standart');
-        //console.log(document.getElementsByClassName('conf-step__chair_standart'));
-        console.log(document.getElementById('countNormal'));
-        document.getElementById('countNormal').value = '{{$hall->countNormal}}';
-        document.getElementById('countVip').value = '{{$hall->countVip}}';
-        //console.log(document.getElementById('conf-step__chair_standart').closest('.conf-step__label').children);
-       // document.getElementById('conf-step__chair_standart').closest('.conf-step__label').children[0].value = $hall->countNormal;
-
-       // console.log(document.getElementById('conf-step__chair_vip').closest('.conf-step__label').children);
-       // document.getElementById('conf-step__chair_vip').closest('.conf-step__label').children[0].value = '$hall->countVip';
-
-        //document.getElementById(id).closest('.conf-step').children[2].classList.add("active");
-    }
-</script>
-
-<script>
-    let input = document.querySelectorAll('.count');
-    let count = [];
-    console.log(input);
-    Array.from(input).forEach((button, index, arr) => {
-        button.oninput = function () {
-            //count[index] = button.value;
-            console.log(button.value, arr[index].value);
-        }
-        button.onchange = function () {
-            count[index] = button.value;
-            console.log('конец');
-            console.log(button.value);
-        }
-    });
-    console.log('count:',count);
-    const json=JSON.stringify(count);
-    document.getElementById('update')
-
-    // let url = "{{route('admin.updateHall', ['hall'=> $hall, 'count' => 'json'])}}";
-    // url = url.replace('json', json);
-    // url = url.replaceAll('&amp;', '&');
-   // console.log('replaceed amp url  ', url);
-
-    //window.location.href= url;
-
-</script>
-
-
-<script>
-    function clickUpdate(id){
-        console.log('clickradio', id);
-        const json=JSON.stringify(count);
-
-        let url = "{{route('admin.updateHall', ['hall'=> $hall, 'count' => 'json'])}}";
-        url = url.replace('json', json);
-        url = url.replaceAll('&amp;', '&');
-        console.log('replaceed amp url  ', url);
-        //window.location.href= url;
-
-    }
-</script>
-{{--}}
-<script>
-    let input1 = document.getElementById('countNormal');
-
-   /*class Menu {
-        handleEvent(event) {
-            switch(event.type) {
-                case 'change':
-                    input1.removeEventListener('input', menu);
-                    break;
-                case 'input':
-                    document.getElementById('countNormal').value = input1.value;
-                    break;
-            }
-        }
-    }
-
-    let menu = new Menu();
-    input1.addEventListener('input', menu);
-    input1.addEventListener('change', menu);
-*/
-
-
-    //let input2 = document.getElementById('countVip');
-    console.log(input1);
-    //console.log(input2);
-    input1.oninput = function() {
-        document.getElementById('countNormal').value = input1.value;
-        console.log(document.getElementById('countNormal').value, input1.value);
-    };
-    /*input1.onchange = function() {
-       alert("true");
-    };
-    /*input1.oninput = function() {
-        document.getElementById('countVip').value = input2.value;
-        console.log(document.getElementById('countVip').value, input2.value);
-    };*/
-</script>
-
---}}
-{{--}}
-<script>
-    let input2 = document.getElementById('countVip');
-
-    console.log(input2);
-    input1.oninput = function() {
-        document.getElementById('countVip').value = input2.value;
-        console.log(document.getElementById('countVip').value, input2.value);
-    };
-</script>
---}}
-{{--}}
-<script>
-    let input1 = document.getElementById('countNormal');
-    let input2 = document.getElementById('countVip');
-
-    function handleClick(event) {
-        //const input = inputs.item(inputPosition);
-        //const submittedValue = event.target.innerHTML;
-            input2.value = event.target.value;
-    }
-    input1.addEventListener("input", (event)=> input1.value = event.target.value);
-    input2.addEventListener("input", handleClick);
-    </script>
---}}
-
-
 </body>
 </html>
-
-
 
 <!--
 @auth
@@ -482,9 +296,4 @@
         Это видит только админ
 @endif
 @endauth
-
-
-
-
-https://qna.habr.com/q/256784
 -->
