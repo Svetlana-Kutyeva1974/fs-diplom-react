@@ -34,11 +34,11 @@ class HallController extends Controller
         return redirect('/');
         } else {
             //var_dump($request->validated());
-            var_dump($request->all());
-            var_dump($request["name"]);
+            //var_dump($request->all());
+            //var_dump($request["name"]);
             $all = $request->all();
             //$newHall = Hall::create($all);
-            dump('zal:');
+            //dump('zal:');
             //var_dump($newHall);
             $seats =[];
             for ($i = 1; $i <= 10; $i++) {
@@ -51,7 +51,7 @@ class HallController extends Controller
             //dump($seats);
             $seats = json_encode($seats);
             //$newHall['typeOfSeats'] = $seats;
-            dump('zal:');
+            //dump('zal:');
             //var_dump($newHall['typeOfSeats']);
 
             DB::table('halls')->insert([
@@ -128,20 +128,26 @@ class HallController extends Controller
      * @param  \App\Models\Hall  $hall
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Hall $hall)
-    //public function destroy($id)
+    //public function destroy(Request $request, $id)
+    public function destroy($id)
     {
-        dump($request->all());
-        dump($request->id);
-        dump($hall);
+        //dump($request->all());
+        //dump($request->id);
+        //dump($hall);
+        //dump($request->id);
+        //dump($id);
+        //dd(Hall::find($id));
         //$hall = $hall->delete();
-        dump(Hall::find($request->id));
-        $hall = Hall::find($request->id)->delete();
+        //dump(Hall::find($request->id));
+
+        //$hall = Hall::find($request->id)->delete();
 
         //if ($hall->delete()) {
                   //return response(null, Response::HTTP_NO_CONTENT);
               // }
               // return null;
+        //Hall::find($request->id)->delete();
+        Hall::find($id)->delete();
         return redirect()->back();
     }
 }

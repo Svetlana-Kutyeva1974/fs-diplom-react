@@ -53,10 +53,11 @@
 //require_once __DIR__ . 'phpqrcode/qrlib.php';//echo QRcode::png('https://snipp.ru/');//QRcode::png('https://snipp.ru/', __DIR__ . '/qr.png', QR_ECLEVEL_H, 6);
 require_once 'C:\0-Web-учеба\0-блок12-lavarel\fs-diplom-react\phpqrcode\qrlib.php';
 //echo QRcode::png($string);
-echo $string;
+echo "Закодированная строка: ".$string."\n";
+//echo  PHP_EOL."путь: ".__DIR__ . '/qr.png';
 //QRcode::png('https://snipp.ru/', 'C:\0-Web-учеба\0-блок12-lavarel\fs-diplom-react\public\i\qr.png', 'H', 48, 2);
 QRcode::png($string, 'C:\0-Web-учеба\0-блок12-lavarel\fs-diplom-react\public\i\qr.png', 'H', 48, 2);
-echo  __DIR__ . '/qr.png';
+
 //$new_url = 'https://example.com/final.php';//header('Location: '.$new_url);
 @endphp
 

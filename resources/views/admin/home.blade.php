@@ -48,18 +48,14 @@
             <p class="conf-step__paragraph">Доступные залы:</p>
             <ul class="conf-step__list">
                 @foreach ($halls as $hall)
-                <li>{{$hall->nameHall}}
-                    {{--"{{ route('admin.hall.destroy', ['hall' => $hall->id]) }}"--}}
-                    {{--"{{ route('admin.destroyHall', ['hall' => $hall->id]) }}"--}}
-
-                    <form action="{{ route('admin.destroyHall', ['id' => $hall->id]) }}"
-                          method="post" onsubmit="return confirm('Удалить этот зал?')">
+                    <form action="{{ route('admin.destroyHall', ['id' => $hall->id]) }}" method="post" onsubmit="return confirm('Удалить этот зал?')">
                         @csrf
                         @method('DELETE')
+                        <li>{{$hall->nameHall}}
                         <button id="{{$hall->id}}"  class="conf-step__button conf-step__button-trash">
                         </button>
+                        </li>
                     </form>
-                </li>
                 @endforeach
             </ul>
             <button id= "create" onclick = "cl(id)"  class="conf-step__button conf-step__button-accent">Создать зал</button>
@@ -72,7 +68,7 @@
                     <div class="popup__header">
                         <h2 class="popup__title">
                             Добавление зала
-                            <a class="popup__dismiss" href="#"><img src="i/close.png" alt="Закрыть"></a>
+                            <a id="dismiss" class="popup__dismiss" href="#" onclick = "cl3(id)"><img src="i/close.png" alt="Закрыть"></a>
                         </h2>
 
                     </div>
@@ -85,7 +81,7 @@
                             </label>
                             <div class="conf-step__buttons text-center">
                                 <input type="submit" value="Добавить зал" class="conf-step__button conf-step__button-accent">
-                                <button class="conf-step__button conf-step__button-regular">Отменить</button>
+                                <button onclick = "cl2(id)" class="conf-step__button conf-step__button-regular" href="#">Отменить</button>
                             </div>
                         </form>
                     </div>
@@ -120,9 +116,9 @@
             </ul>
             <p class="conf-step__paragraph">Укажите количество рядов и максимальное количество кресел в ряду:</p>
             <div class="conf-step__legend">
-                <label class="conf-step__label">Рядов, шт<input type="text" class="conf-step__input" placeholder="10" ></label>
+                <label class="conf-step__label">Рядов, шт<input id="countRow" type="text" class="conf-step__input" placeholder="10" ></label>
                 <span class="multiplier">x</span>
-                <label class="conf-step__label">Мест, шт<input type="text" class="conf-step__input" placeholder="12" ></label>
+                <label class="conf-step__label">Мест, шт<input id="countCol" type="text" class="conf-step__input" placeholder="12" ></label>
             </div>
             <p class="conf-step__paragraph">Теперь вы можете указать типы кресел на схеме зала:</p>
             <div class="conf-step__legend">
@@ -139,87 +135,6 @@
             <x-admin.buttons :seats="$seats" :seance="$seances" :film="$films" :hall="$halls[0]" :selected="$selected">
             </x-admin.buttons>
 
-            {{-- Блок кресел
-            <div class="conf-step__hall">
-                <div class="conf-step__hall-wrapper">
-
-                    <div class="conf-step__row">
-                        <span class="conf-step__chair conf-step__chair_disabled"></span><span class="conf-step__chair conf-step__chair_disabled"></span>
-                        <span class="conf-step__chair conf-step__chair_disabled"></span><span class="conf-step__chair conf-step__chair_standart"></span>
-                        <span class="conf-step__chair conf-step__chair_standart"></span><span class="conf-step__chair conf-step__chair_disabled"></span>
-                        <span class="conf-step__chair conf-step__chair_disabled"></span><span class="conf-step__chair conf-step__chair_disabled"></span>
-                    </div>
-
-                    <div class="conf-step__row">
-                        <span class="conf-step__chair conf-step__chair_disabled"></span><span class="conf-step__chair conf-step__chair_disabled"></span>
-                        <span class="conf-step__chair conf-step__chair_standart"></span><span class="conf-step__chair conf-step__chair_standart"></span>
-                        <span class="conf-step__chair conf-step__chair_standart"></span><span class="conf-step__chair conf-step__chair_standart"></span>
-                        <span class="conf-step__chair conf-step__chair_disabled"></span><span class="conf-step__chair conf-step__chair_disabled"></span>
-                    </div>
-
-                    <div class="conf-step__row">
-                        <span class="conf-step__chair conf-step__chair_disabled"></span><span class="conf-step__chair conf-step__chair_standart"></span>
-                        <span class="conf-step__chair conf-step__chair_standart"></span><span class="conf-step__chair conf-step__chair_standart"></span>
-                        <span class="conf-step__chair conf-step__chair_standart"></span><span class="conf-step__chair conf-step__chair_standart"></span>
-                        <span class="conf-step__chair conf-step__chair_standart"></span><span class="conf-step__chair conf-step__chair_disabled"></span>
-                    </div>
-
-                    <div class="conf-step__row">
-                        <span class="conf-step__chair conf-step__chair_standart"></span><span class="conf-step__chair conf-step__chair_standart"></span>
-                        <span class="conf-step__chair conf-step__chair_standart"></span><span class="conf-step__chair conf-step__chair_vip"></span>
-                        <span class="conf-step__chair conf-step__chair_vip"></span><span class="conf-step__chair conf-step__chair_standart"></span>
-                        <span class="conf-step__chair conf-step__chair_standart"></span><span class="conf-step__chair conf-step__chair_disabled"></span>
-                    </div>
-
-                    <div class="conf-step__row">
-                        <span class="conf-step__chair conf-step__chair_standart"></span><span class="conf-step__chair conf-step__chair_standart"></span>
-                        <span class="conf-step__chair conf-step__chair_vip"></span><span class="conf-step__chair conf-step__chair_vip"></span>
-                        <span class="conf-step__chair conf-step__chair_vip"></span><span class="conf-step__chair conf-step__chair_vip"></span>
-                        <span class="conf-step__chair conf-step__chair_standart"></span><span class="conf-step__chair conf-step__chair_disabled"></span>
-                    </div>
-
-                    <div class="conf-step__row">
-                        <span class="conf-step__chair conf-step__chair_standart"></span><span class="conf-step__chair conf-step__chair_standart"></span>
-                        <span class="conf-step__chair conf-step__chair_vip"></span><span class="conf-step__chair conf-step__chair_vip"></span>
-                        <span class="conf-step__chair conf-step__chair_vip"></span><span class="conf-step__chair conf-step__chair_vip"></span>
-                        <span class="conf-step__chair conf-step__chair_standart"></span><span class="conf-step__chair conf-step__chair_disabled"></span>
-                    </div>
-
-                    <div class="conf-step__row">
-                        <span class="conf-step__chair conf-step__chair_standart"></span><span class="conf-step__chair conf-step__chair_standart"></span>
-                        <span class="conf-step__chair conf-step__chair_vip"></span><span class="conf-step__chair conf-step__chair_vip"></span>
-                        <span class="conf-step__chair conf-step__chair_vip"></span><span class="conf-step__chair conf-step__chair_vip"></span>
-                        <span class="conf-step__chair conf-step__chair_standart"></span><span class="conf-step__chair conf-step__chair_disabled"></span>
-                    </div>
-
-                    <div class="conf-step__row">
-                        <span class="conf-step__chair conf-step__chair_standart"></span><span class="conf-step__chair conf-step__chair_standart"></span>
-                        <span class="conf-step__chair conf-step__chair_standart"></span><span class="conf-step__chair conf-step__chair_standart"></span>
-                        <span class="conf-step__chair conf-step__chair_standart"></span><span class="conf-step__chair conf-step__chair_standart"></span>
-                        <span class="conf-step__chair conf-step__chair_standart"></span><span class="conf-step__chair conf-step__chair_disabled"></span>
-                    </div>
-
-                    <div class="conf-step__row">
-                        <span class="conf-step__chair conf-step__chair_standart"></span><span class="conf-step__chair conf-step__chair_standart"></span>
-                        <span class="conf-step__chair conf-step__chair_standart"></span><span class="conf-step__chair conf-step__chair_standart"></span>
-                        <span class="conf-step__chair conf-step__chair_standart"></span><span class="conf-step__chair conf-step__chair_standart"></span>
-                        <span class="conf-step__chair conf-step__chair_standart"></span><span class="conf-step__chair conf-step__chair_standart"></span>
-                    </div>
-
-                    <div class="conf-step__row">
-                        <span class="conf-step__chair conf-step__chair_standart"></span><span class="conf-step__chair conf-step__chair_standart"></span>
-                        <span class="conf-step__chair conf-step__chair_standart"></span><span class="conf-step__chair conf-step__chair_standart"></span>
-                        <span class="conf-step__chair conf-step__chair_standart"></span><span class="conf-step__chair conf-step__chair_standart"></span>
-                        <span class="conf-step__chair conf-step__chair_standart"></span><span class="conf-step__chair conf-step__chair_standart"></span>
-                    </div>
-                </div>
-            </div>
-
-            <fieldset class="conf-step__buttons text-center">
-                <button class="conf-step__button conf-step__button-regular">Отмена</button>
-                <input type="submit" value="Сохранить" class="conf-step__button conf-step__button-accent">
-            </fieldset>
-            --}}
         </div>
     </section>
 
@@ -363,16 +278,59 @@
     const input = document.querySelectorAll('.count');
     let count = [];
 
+    function select(id){
+        console.log(id);
+        let type= id.split(' ');//conf-step__chair conf-step__chair_
+        let arr=['VIP','NORM','FAIL'];
+        let arr2={'VIP':'vip', 'NORM':'standart','FAIL':'disabled'};
+        let arr21={'VIP':'vip', 'NORM':'standart','FAIL':'disabled'};
+        let arr3= ['VIP','NORM','FAIL'];
+        let i= arr.indexOf(type[1]);
+        arr3.splice(i, 1);
+
+        console.log('нашли тип в массиве',i);
+        console.log('после деления',type[1]);
+        console.log('dele тип в массиве', arr3);
+        console.log(document.getElementById(id).closest('.conf-step'));
+
+        console.log(arr2[type[1]]);
+
+
+        let classDelete = `conf-step__chair conf-step__chair_${arr2[type[1]]}`;
+        let classSelect = `conf-step__chair conf-step__chair_${arr2[arr3[0]]}`;
+        console.log(document.getElementById(id).classList);
+        console.log(classSelect);
+        document.getElementById(id).classList.value = classDelete;
+        console.log('после удал',document.getElementById(id).classList);
+        document.getElementById(id).classList.value = classSelect;
+        console.log('после добавл',document.getElementById(id).classList);
+    }
+
     //Открыть форму добавления зала
     function cl(id){
         console.log(id);
-        document.getElementById(id).closest('.conf-step');
         console.log(document.getElementById(id).closest('.conf-step'));
         console.log(document.getElementById(id).closest('.conf-step').children[2]);
         document.getElementById(id).closest('.conf-step').children[2].classList.add("active");
     }
+
+    //Закрыть форму добавления зала
+    function cl2(id){
+        console.log(id);
+        console.log(document.getElementById(id).closest('.conf-step'));
+        console.log(document.getElementById(id).closest('.conf-step').children[2]);
+        document.getElementById(id).closest('.conf-step').children[2].classList.remove("active");
+    }
+
+    //Закрыть форму добавления зала
+    function cl3(id){
+        console.log(id);
+        console.log(document.getElementById(id).closest('.popup'));
+        document.getElementById(id).closest('.popup').classList.remove("active");
+    }
+
    //Выбор кресла id /в выбранном зале idLast
-    function cheme(id){
+    function scheme(id){
         console.log(id);
         console.log(idLast);
     }
@@ -398,6 +356,7 @@
         //window.location.href= url;
     }
 
+    {{--работало, но теперь не нужно
     function clickDestroy(id){
         console.log('hall id:', id);
         let url = "{{ route('admin.destroyHall', ['id' => 'json'] ) }}";
@@ -410,6 +369,7 @@
         console.log('replaceed amp url  ', url);
         window.location.href= url;
     }
+    --}}
 
     //console.log(input);
     //Обработчик ввода стоимости места в зале

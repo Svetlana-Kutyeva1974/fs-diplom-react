@@ -16,12 +16,8 @@ class CreateTicketsTable extends Migration
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            //$table->integer('id_ticket')->unique();
-            //$table->integer('colNumber');
-            //$table->integer('rowNumber');
             $table->string('qrCod');//
             $table->integer('count');
-            //$table->integer('count');
             $table->integer('film_id');
             $table->integer('seance_id');
             //$table->integer('seat_id');//связь

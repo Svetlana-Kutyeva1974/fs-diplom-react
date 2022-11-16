@@ -12,14 +12,14 @@
         @for ($j = 1; $j <= $hall->{'col'}; $j++)
             @switch(json_decode($hall->{'typeOfSeats'})->{"$i,$j"})
                 @case('VIP')
-                    {{--id="{{ json_decode($hall->{'typeOfSeats'})->{"$i,$j"} }}" --}}
-                    <button onclick = "cheme(id)" id="{{ "$i,$j" }}" type="button" class="conf-step__chair conf-step__chair_vip">
+                    {{-- json_decode($hall->{'typeOfSeats'})->{"$i,$j"} --}}
+                    <button onclick = "select(id)" id="{{ "$i,$j"}} {{ json_decode($hall->{'typeOfSeats'})->{"$i,$j"} }}" type="button" class="conf-step__chair conf-step__chair_vip">
                         @break
                         @case('FAIL')
-                            <button onclick = "cheme(id)" id="{{ "$i,$j" }}" type="button" class="conf-step__chair conf-step__chair_disabled">
+                            <button onclick = "select(id)" id="{{ "$i,$j"}} {{ json_decode($hall->{'typeOfSeats'})->{"$i,$j"} }}" type="button" class="conf-step__chair conf-step__chair_disabled">
                                 @break
                                 @default
-                                    <button onclick = "cheme(id)" id="{{ "$i,$j" }}" type="button" class="conf-step__chair conf-step__chair_standart">
+                                    <button onclick = "select(id)" id="{{  "$i,$j" }} {{ json_decode($hall->{'typeOfSeats'})->{"$i,$j"} }}" type="button" class="conf-step__chair conf-step__chair_standart">
 
             @endswitch
         @endfor
@@ -35,5 +35,3 @@
 <button class="conf-step__button conf-step__button-regular">Отмена</button>
 <input type="submit" value="Сохранить" class="conf-step__button conf-step__button-accent">
 </fieldset>
-
-

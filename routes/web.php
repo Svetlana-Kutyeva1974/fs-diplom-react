@@ -80,7 +80,7 @@ Route::group([ 'middleware' => 'auth'  ],  function () {
     ], function () {
         Route::get('/', [App\Http\Controllers\AdminController::class, 'index'])->name('admin.home');
         Route::any('/createHall', [App\Http\Controllers\HallController::class, 'create'])->name('admin.createHall');
-        Route::any('/destroyHall', [App\Http\Controllers\HallController::class, 'destroy'])->name('admin.destroyHall');
+        Route::any('/destroyHall/{id}', [App\Http\Controllers\HallController::class, 'destroy'])->name('admin.destroyHall');
         Route::any('/updateHall', [App\Http\Controllers\HallController::class, 'update'])->name('admin.updateHall');
         //Route::resource('/hall{id}', [App\Http\Controllers\HallController::class]);
     });

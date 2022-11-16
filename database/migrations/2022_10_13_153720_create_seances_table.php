@@ -16,7 +16,6 @@ class CreateSeancesTable extends Migration
         Schema::create('seances', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            //$table->integer('id_seance')->unique();
             $table->dateTime('startSeance');
             $table->integer('hall_id');
             $table->integer('film_id');

@@ -2,8 +2,8 @@
 @php
     $daysList = ["Вс","Пн","Вт","Ср","Чт","Пт","Сб"];
 @endphp
-<div>{{$dateCurrent}}{{$daysList[Carbon\Carbon::createFromDate($dateCurrent)->dayOfWeek]}}</div>
-<div> {{$dateChosen}}{{$daysList[Carbon\Carbon::createFromDate($dateChosen)->dayOfWeek]}}</div>
+<div>{{--$dateCurrent--}}{{--$daysList[Carbon\Carbon::createFromDate($dateCurrent)->dayOfWeek]--}}</div>
+<div> {{--$dateChosen--}}{{--$daysList[Carbon\Carbon::createFromDate($dateChosen)->dayOfWeek]--}}</div>
 {{--'эсегодня у нас'}} {{Carbon\Carbon::now()}} {{Carbon\Carbon::now()->dayOfWeek}}
 <div>{{--(Carbon\Carbon::createFromDate($dateCurrent)->day - Carbon\Carbon::now()->day)}}</div>
 {{--{{ date('d.m.Y') }}--}}

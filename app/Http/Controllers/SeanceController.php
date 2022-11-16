@@ -87,7 +87,7 @@ class SeanceController extends Controller
 
     public function film()//: JsonResponse
     {
-        try {
+        //try {
             /*$seances = Seance::find(1);
             dump($seances->film);
 */
@@ -100,7 +100,7 @@ class SeanceController extends Controller
                 dump($post->title);
             }*/
 
-            $films= Film::all();
+            /*$films= Film::all();
             return response()->json([
                 'success' => true,
                 'data' => $films,
@@ -110,8 +110,8 @@ class SeanceController extends Controller
 
             return response()->json([
                 'success' => false,
-            ], 500);
-        }
+            ], 500);*/
+        //}
     }
 
     public function seances($film_id, $hall_id): \Illuminate\Http\JsonResponse

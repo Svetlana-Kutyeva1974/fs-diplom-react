@@ -18,7 +18,7 @@ class SeatController extends Controller
      */
     public function index(Request $request)
     {
-        dump($request->all());
+        //dump($request->all());
         $film = $request->film ?? Film::all()->first();//
         $hall = $request->hall ?? Hall::all()->first();
 

@@ -21,7 +21,7 @@ class TicketController extends Controller
      */
     public function index(Request $request)
     {
-        dump($request->all());
+        //dump($request->all());
         $film = $request['film'] ?? Film::all()->first();//$request['amp;dateChosen']
         $hall = $request['hall'] ?? Hall::all()->first();
         //dump($request['amp;film']);
@@ -82,20 +82,7 @@ class TicketController extends Controller
      */
     //public function show(Ticket $tiket)
     public function show($seance, $hall, $date)
-    {/*
-        try {
-            $tickets = Ticket::where('date', '=', $date)
-                ->where('seance_id', '=', $seance)->get();
-            return response()->json([
-                'status' => 'ok',
-                'data' => $tickets,
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-            ], 500);
-        }
-    */
+    {
     }
 
     /**

@@ -1,13 +1,12 @@
 {{--$hall['row']--}}{{--$seats->where('rowNumber', 1)--}}
 <div class="buying-scheme">
     <div class="buying-scheme__wrapper">
-        {{var_dump($hall['typeOfSeats'])}}{{var_dump(json_decode($hall['typeOfSeats']))}}{{var_dump(json_decode($hall['typeOfSeats'])->{"1,4"})}}
+        {{--var_dump($hall['typeOfSeats'])--}}{{--var_dump(json_decode($hall['typeOfSeats']))--}}{{--var_dump(json_decode($hall['typeOfSeats'])->{"1,4"})--}}
         {{--}}@foreach($hall as $key => $value) {
         echo "Item=" . $key . ", Value=" . $value;
         }
         @endforeach--}}
         @for ($i = 1; $i <= $hall['row']; $i++)
-
             <div class="buying-scheme__row">
                 @foreach ($seats->where('rowNumber', $i) as $item)
                     {{--'передали'--}}{{--$item--}}
@@ -60,8 +59,7 @@
         const selected = [];
         Array.of(document.querySelectorAll('button.buying-scheme__chair_selected')).forEach((element, index, array) => {
             console.log('кнопка', index); // 0, 1, 2
-            console.log('element', element[0].id, element[1].id, element.length ); // 0, 1, 2
-            console.log('array', array); // same myArray object 3 times
+            console.log('array', array);
 
             for(let i=0; i<element.length; i++) {
                 selected.push(element[i].id);
@@ -70,6 +68,7 @@
 
             const json=JSON.stringify(selected);
             console.log('json  selectedddd', json);
+
             let url = "{{route('ticket', ['hall'=> $hall, 'seance'=> $seance, 'film'=> $film, 'dateChosen'=> $dateChosen, 'seats'=> $seats->where('hall_id', $hall['id'])->where('seance_id', $seance['id']), 'selected' => 'json'])}}";
             console.log('url   ',url);
             console.log('selected url  ', selected);
