@@ -1,64 +1,174 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+## Дипломное задание по профессии "Веб-разработчик"
+### Проект реализован в Laravel 8 с применением component Laravel, с использованием возможностей включения js, php кода, пакета phpqrcod
+### Создание «информационной системы для администрирования залов, сеансов и предварительного бронирования билетов».
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+### Сущности
 
-## About Laravel
+#### Кинозал ( таблица halls) 
+Помещение, в котором демонстрируются фильмы. Режим работы определяется расписанием на день. 
+Зал - прямоугольный, состоит из N * M различных зрительских мест.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+`Schema::create('halls', function (Blueprint $table) {
+$table->id();
+$table->timestamps();
+$table->string('nameHall');
+$table->integer('col')->default(12);;
+$table->integer('row')->default(10);;
+$table->integer('countVip')->default(1000);;
+$table->integer('countNormal')->default(500);;
+$table->json('typeOfSeats')->default(json_encode(["1,1"=>"NORM","1,2"=>"FAIL","1,3"=> "NORM", "1,4"=>"NORM","1,5"=>"FAIL","1,6"=> "NORM", "1,7"=>"NORM","1,8"=>"FAIL","1,9"=> "NORM","1,10"=>"NORM","1,11"=>"FAIL","1,12"=> "NORM", "2,1"=>"NORM","2,2"=>"FAIL","2,3"=> "NORM", "2,4"=>"NORM","2,5"=>"FAIL","2,6"=> "NORM", "2,7"=>"NORM","2,8"=>"FAIL","2,9"=> "NORM","2,10"=>"NORM","2,11"=>"FAIL","2,12"=> "NORM", "3,1"=>"NORM","3,2"=>"FAIL","3,3"=> "NORM", "3,4"=>"NORM","3,5"=>"FAIL","3,6"=> "NORM", "3,7"=>"NORM","3,8"=>"FAIL","3,9"=> "NORM","3,10"=>"NORM","3,11"=>"FAIL","3,12"=> "NORM","4,1"=>"NORM","4,2"=>"FAIL","4,3"=> "NORM", "4,4"=>"NORM","4,5"=>"FAIL","4,6"=> "NORM", "4,7"=>"NORM","4,8"=>"FAIL","4,9"=> "NORM","4,10"=>"NORM","4,11"=>"FAIL","4,12"=> "NORM","5,1"=>"NORM","5,2"=>"FAIL","5,3"=> "NORM", "5,4"=>"NORM","5,5"=>"FAIL","5,6"=> "NORM", "5,7"=>"NORM","5,8"=>"FAIL","5,9"=> "NORM","5,10"=>"NORM","5,11"=>"FAIL","5,12"=> "NORM","6,1"=>"NORM","6,2"=>"FAIL","6,3"=> "NORM", "6,4"=>"NORM","6,5"=>"FAIL","6,6"=> "NORM", "6,7"=>"NORM","6,8"=>"FAIL","6,9"=> "NORM","6,10"=>"NORM","6,11"=>"FAIL","6,12"=> "NORM", "7,1"=>"NORM","7,2"=>"FAIL","7,3"=> "NORM", "7,4"=>"NORM","7,5"=>"FAIL","7,6"=> "NORM", "7,7"=>"NORM","7,8"=>"FAIL","7,9"=> "NORM","7,10"=>"NORM","7,11"=>"FAIL","7,12"=> "NORM", "8,1"=>"NORM","8,2"=>"FAIL","8,3"=> "NORM", "8,4"=>"NORM","8,5"=>"FAIL","8,6"=> "NORM", "8,7"=>"NORM","8,8"=>"FAIL","8,9"=> "NORM","8,10"=>"NORM","8,11"=>"FAIL","8,12"=> "NORM", "9,1"=>"NORM","9,2"=>"FAIL","9,3"=> "NORM", "9,4"=>"NORM","9,5"=>"FAIL","9,6"=> "NORM", "9,7"=>"NORM","9,8"=>"FAIL","9,9"=> "NORM","9,10"=>"NORM","9,11"=>"FAIL","9,12"=> "NORM", "10,1"=>"NORM","10,2"=>"FAIL","10,3"=> "NORM", "10,4"=>"NORM","10,5"=>"FAIL","10,6"=> "NORM", "10,7"=>"NORM","10,8"=>"FAIL","10,9"=> "NORM","10,10"=>"NORM","10,11"=>"FAIL","10,12"=> "NORM"]));
+$table->boolean('open')->default(0);
+});`
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+#### Зрительское место ( таблица seats)
+Место в кинозале. Зрительские места могут быть VIP - vip, STANDART - обычные, DISABLED - неиспользуемые.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+`Schema::create('seats', function (Blueprint $table) {
+$table->id();
+$table->timestamps();
+$table->string('type');//VIP/NORM/FAIL - это поле будет перенесено в halls'
+$table->boolean('free')->default(true);
+$table->integer('colNumber');
+$table->integer('rowNumber');
+$table->integer('hall_id');
+$table->integer('ticket_id')->default(0);
+$table->integer('seance_id');
+});`
 
-## Learning Laravel
+#### Фильм ( таблица films)
+Информация о фильме заполняется администратором. Фильм связан с сеансом в кинозале.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+`Schema::create('films', function (Blueprint $table) {
+$table->id();
+$table->timestamps();//->unique();
+$table->string('title');
+$table->string('description');
+$table->string('duration');
+$table->string('origin');
+$table->string('imagePath');
+$table->string('imageText');
+});`
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+#### Сеанс ( таблица seances)
+Сеанс - это временной промежуток, в котором в кинозале будет показываться фильм. На сеанс могут быть забронированы билеты.
 
-## Laravel Sponsors
+`Schema::create('seances', function (Blueprint $table) {
+$table->id();
+$table->timestamps();
+$table->dateTime('startSeance');
+$table->integer('hall_id');
+$table->integer('film_id');
+});`
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+#### Билет ( таблица tickets)
+Право посещения сеанса в кинозале. В билете обязательно указаны место, ряд, сеанс, qr-код c уникальным кодом бронирования. Билет действителен строго на свой сеанс.
 
-### Premium Partners
+`Schema::create('tickets', function (Blueprint $table) {
+$table->id();
+$table->timestamps();
+$table->string('qrCod');//
+$table->integer('count');
+$table->integer('film_id');
+$table->integer('seance_id');
+});`
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+#### Пользователь ( таблица users)
+Авторизованный или неавторизованный пользователь с name, email, password
 
-## Contributing
+`Schema::create('users', function (Blueprint $table) {
+$table->id();
+$table->string('name');
+$table->string('email')->unique();
+$table->timestamp('email_verified_at')->nullable();
+$table->string('password');
+$table->rememberToken();
+$table->boolean('is_admin')->default(0);
+$table->timestamps();
+});`
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Роли пользователей системы
+* Администратор +
+* Гость +
 
-## Code of Conduct
+### Возможности администратора
+* Создание/редактирование залов +\-
+* Создание/редактирование фильмов -
+* Настройка цен +\-
+* Создание/редактирование расписания -
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Возможности пользователя
+* Просмотр расписания **+**
+* Просмотр фильмов +
+* Выбор места в кинозале +
+* Бронирование билета +
 
-## Security Vulnerabilities
+### РЕАЛИЗОВАНО
+### ---------------------
+#### Клиентская часть: 
+* Календарь обеспечивает показ сетки сеансов на 2 недели </>
+* При выборе сеанса - переход на страницу выбора мест (1 и более )(щелчок левой клавиши -выбор). Кнопка забронировать - переход на стр показа билета
+* Показ билета с qr кодом
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+#### Административная часть:
+* Показ формы добавления зала
+* Удаление зала с подтверждением
+* Настройка цен (без сохранения пока)
+* Настройка конфигурации (без сохранения пока)
 
-## License
+### Выполнена верстка недостающих элементов системы с ипользованием html+css:
+#### Форма авторизации на отдельной странице
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+* Поле ввода "email"
+* Поле ввода "Пароль"
+* Кнопка "Авторизоваться"
+
+#### Форма "добавления зала" в попапе
+
+* Поле ввода "Название зала"
+* Кнопка "Добавить зал"
+* Кнопка "Отменить"
+
+#### Подтверждение "удаления зала" в confirm/попапе
+
+* Кнопка "Удалить"
+* Кнопка "Отменить"
+
+### ------------------
+
+### Будет добавлена верстка недостающих элементов системы с ипользованием html+css:
+#### Форма добавления фильма в попапе
+
+* Поле ввода "Название фильма"
+* Поле ввода "Описание фильма"
+* Поле ввода "Ссылка на изображение"
+* Кнопка "Добавить фильм"
+* Кнопка "Отменить"
+
+#### Форма назначения сеанса для фильма:
+
+При перетаскивании фильма в зал должна открываться форма в попапе
+Селектор "Зал"(по умолчанию значение из результов drag&drop)
+Поле ввода "Время начала" (по возможности использовать маску ввода в формате 00:00)
+
+* Кнопка "Добавить"
+* Кнопка "Отменить" При перетаскивании фильма из зала открывать форму подтверждение "Снятие с показа"
+* Кнопка "Удалить"
+* Кнопка "Отменить"
+
+
+### Запуск проекта
+
+* Выполнить composer install
+* Проверить путь к БД в env.
+* Сделать миграции: очистить и наполнить базу: 
+
+* #### php artisan migrate:fresh 
+* #### migration:refresh --seed
+
+* Запустить php artisan serve
+
+### Данные тестового пользователя-администратора:
+
+имя пользователя: admin
+почта: admin@mail.ru
+пароль: admin
