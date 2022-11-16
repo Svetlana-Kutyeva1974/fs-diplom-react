@@ -6,6 +6,7 @@ use App\Models\Film;
 use App\Models\Hall;
 use App\Models\ToDo;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -127,8 +128,20 @@ class HallController extends Controller
      * @param  \App\Models\Hall  $hall
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Hall $hall)
+    public function destroy(Request $request, Hall $hall)
+    //public function destroy($id)
     {
-        //
+        dump($request->all());
+        dump($request->id);
+        dump($hall);
+        //$hall = $hall->delete();
+        dump(Hall::find($request->id));
+        $hall = Hall::find($request->id)->delete();
+
+        //if ($hall->delete()) {
+                  //return response(null, Response::HTTP_NO_CONTENT);
+              // }
+              // return null;
+        return redirect()->back();
     }
 }

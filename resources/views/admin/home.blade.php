@@ -49,7 +49,16 @@
             <ul class="conf-step__list">
                 @foreach ($halls as $hall)
                 <li>{{$hall->nameHall}}
-                    <button id="{{$hall->id}}"  class="conf-step__button conf-step__button-trash"></button>
+                    {{--"{{ route('admin.hall.destroy', ['hall' => $hall->id]) }}"--}}
+                    {{--"{{ route('admin.destroyHall', ['hall' => $hall->id]) }}"--}}
+
+                    <form action="{{ route('admin.destroyHall', ['id' => $hall->id]) }}"
+                          method="post" onsubmit="return confirm('Удалить этот зал?')">
+                        @csrf
+                        @method('DELETE')
+                        <button id="{{$hall->id}}"  class="conf-step__button conf-step__button-trash">
+                        </button>
+                    </form>
                 </li>
                 @endforeach
             </ul>
@@ -83,9 +92,11 @@
                 </div>
             </div>
         </div>
-        {{-- Конец Меню создания зала--}}
-    </section>
 
+    </section>
+    {{-- Конец Меню создания зала--}}
+
+    {{-- Конфигурация зала--}}
     <section class="conf-step">
         <header class="conf-step__header conf-step__header_opened">
             <h2 class="conf-step__title">Конфигурация залов</h2>
@@ -93,14 +104,25 @@
         <div class="conf-step__wrapper">
             <p class="conf-step__paragraph">Выберите зал для конфигурации:</p>
             <ul class="conf-step__selectors-box">
-                <li><input type="radio" class="conf-step__radio" name="chairs-hall" value="Зал 1" checked><span class="conf-step__selector">Зал 1</span></li>
+
+                @foreach ($halls as $hall)
+                    <li>
+                        @if($hall->id === "2" )
+                            <input id="{{$hall->id}}" onclick = "clickRadio(id)" type="radio" class="conf-step__radio" name="chairs-hall" value="{{$hall->nameHall}}" checked><span class="conf-step__selector">{{$hall->nameHall}}</span></li>
+                    @else
+                        <input id="{{$hall->id}}" onclick = "clickRadio(id)" type="radio" class="conf-step__radio" name="chairs-hall" value="{{$hall->nameHall}}"><span class="conf-step__selector">{{$hall->nameHall}}</span></li>
+                        @endif
+                        </li>
+                        @endforeach
+               {{-- <li><input type="radio" class="conf-step__radio" name="chairs-hall" value="Зал 1" checked><span class="conf-step__selector">Зал 1</span></li>
                 <li><input type="radio" class="conf-step__radio" name="chairs-hall" value="Зал 2"><span class="conf-step__selector">Зал 2</span></li>
+                --}}
             </ul>
             <p class="conf-step__paragraph">Укажите количество рядов и максимальное количество кресел в ряду:</p>
             <div class="conf-step__legend">
                 <label class="conf-step__label">Рядов, шт<input type="text" class="conf-step__input" placeholder="10" ></label>
                 <span class="multiplier">x</span>
-                <label class="conf-step__label">Мест, шт<input type="text" class="conf-step__input" placeholder="8" ></label>
+                <label class="conf-step__label">Мест, шт<input type="text" class="conf-step__input" placeholder="12" ></label>
             </div>
             <p class="conf-step__paragraph">Теперь вы можете указать типы кресел на схеме зала:</p>
             <div class="conf-step__legend">
@@ -109,9 +131,18 @@
                 <span class="conf-step__chair conf-step__chair_disabled"></span> — заблокированные (нет кресла)
                 <p class="conf-step__hint">Чтобы изменить вид кресла, нажмите по нему левой кнопкой мыши</p>
             </div>
+            {{-- Схема зала--}}
+            @php
+                $selected = [];
+            @endphp
 
+            <x-admin.buttons :seats="$seats" :seance="$seances" :film="$films" :hall="$halls[0]" :selected="$selected">
+            </x-admin.buttons>
+
+            {{-- Блок кресел
             <div class="conf-step__hall">
                 <div class="conf-step__hall-wrapper">
+
                     <div class="conf-step__row">
                         <span class="conf-step__chair conf-step__chair_disabled"></span><span class="conf-step__chair conf-step__chair_disabled"></span>
                         <span class="conf-step__chair conf-step__chair_disabled"></span><span class="conf-step__chair conf-step__chair_standart"></span>
@@ -188,9 +219,11 @@
                 <button class="conf-step__button conf-step__button-regular">Отмена</button>
                 <input type="submit" value="Сохранить" class="conf-step__button conf-step__button-accent">
             </fieldset>
+            --}}
         </div>
     </section>
 
+    {{--Установка цен--}}
     <section class="conf-step">
         <header class="conf-step__header conf-step__header_opened">
             <h2 class="conf-step__title">Конфигурация цен</h2>
@@ -207,7 +240,7 @@
                          @endif
                     </li>
                 @endforeach
-                {{--}}
+                {{--
                 <li><input type="radio" class="conf-step__radio" name="prices-hall" value="Зал 1"><span class="conf-step__selector">Зал 1</span></li>
                 <li><input type="radio" class="conf-step__radio" name="prices-hall" value="Зал 2" checked><span class="conf-step__selector">Зал 2</span></li>
                 --}}
@@ -215,7 +248,7 @@
 
             <p class="conf-step__paragraph">Установите цены для типов кресел:</p>
             <div class="conf-step__legend">
-                <label class="conf-step__label">Цена, рублей<input id="countNormal" type="text" class="conf-step__input count" placeholder="0" ></label>
+                <label class="conf-step__label">Цена, рублей<input id="countNormal" type="text" class="conf-step__input count" placeholder="0" value="500" ></label>
                 за <span class="conf-step__chair conf-step__chair_standart"></span> обычные кресла
             </div>
             <div class="conf-step__legend">
@@ -230,6 +263,7 @@
         </div>
     </section>
 
+    {{--Формирование сетки сеансов--}}
     <section class="conf-step">
         <header class="conf-step__header conf-step__header_opened">
             <h2 class="conf-step__title">Сетка сеансов</h2>
@@ -310,6 +344,7 @@
         </div>
     </section>
 
+    {{--Открытие продажи--}}
     <section class="conf-step">
         <header class="conf-step__header conf-step__header_opened">
             <h2 class="conf-step__title">Открыть продажи</h2>
@@ -321,51 +356,63 @@
     </section>
 </main>
 
-
-
 <script src="{{ asset('js/accordeon.js')}}"></script>
 
 <script>
+    let idLast = 1;
+    const input = document.querySelectorAll('.count');
+    let count = [];
+
+    //Открыть форму добавления зала
     function cl(id){
         console.log(id);
         document.getElementById(id).closest('.conf-step');
         console.log(document.getElementById(id).closest('.conf-step'));
         console.log(document.getElementById(id).closest('.conf-step').children[2]);
-        /*document.getElementById(id).closest('.conf-step').children[2].style.display = "block";
-        document.getElementById(id).closest('.conf-step').children[2].style.position = "absolute";
-        document.getElementById(id).closest('.conf-step').children[2].style.width = "50%";
-        document.getElementById(id).closest('.conf-step').children[2].style.height = "70%";
-         */
         document.getElementById(id).closest('.conf-step').children[2].classList.add("active");
     }
-</script>
+   //Выбор кресла id /в выбранном зале idLast
+    function cheme(id){
+        console.log(id);
+        console.log(idLast);
+    }
 
-<script>
+    //Переключатель зала
     function clickRadio(id){
-        console.log('clickradio', id);
-        ///console.log(document.querySelectorAll('div.conf-step__legend'));
-        //console.log(document.querySelectorAll('p.conf-step__paragraph'));
-       // console.log(document.querySelectorAll('.conf-step__input'));
-
-        //document.getElementsByClassName('.conf-step__chair_standart');
-        //console.log(document.getElementsByClassName('conf-step__chair_standart'));
         console.log(document.getElementById('countNormal'));
         document.getElementById('countNormal').value = '{{$hall->countNormal}}';
         document.getElementById('countVip').value = '{{$hall->countVip}}';
-        //console.log(document.getElementById('conf-step__chair_standart').closest('.conf-step__label').children);
-       // document.getElementById('conf-step__chair_standart').closest('.conf-step__label').children[0].value = $hall->countNormal;
-
-       // console.log(document.getElementById('conf-step__chair_vip').closest('.conf-step__label').children);
-       // document.getElementById('conf-step__chair_vip').closest('.conf-step__label').children[0].value = '$hall->countVip';
-
-        //document.getElementById(id).closest('.conf-step').children[2].classList.add("active");
+        console.log('clickradio', id);
+        idLast = id;
     }
-</script>
 
-<script>
-    let input = document.querySelectorAll('.count');
-    let count = [];
-    console.log(input);
+    //Обновление инфо о ценах кресел в зале..не работает
+    function clickUpdate(id){
+        console.log('clickradio', id);
+        const json=JSON.stringify(count);
+
+        let url = "{{route('admin.updateHall', ['hall'=> $hall, 'count' => 'json'])}}";
+        url = url.replace('json', json);
+        url = url.replaceAll('&amp;', '&');
+        console.log('replaceed amp url  ', url);
+        //window.location.href= url;
+    }
+
+    function clickDestroy(id){
+        console.log('hall id:', id);
+        let url = "{{ route('admin.destroyHall', ['id' => 'json'] ) }}";
+        console.log('url  ', url);
+        //let json=JSON.stringify(id);
+        let json = Number(id);
+        url = url.replace('json', json);
+        //console.log('replaceed id url  ', url);
+        url = url.replaceAll('&amp;', '&');
+        console.log('replaceed amp url  ', url);
+        window.location.href= url;
+    }
+
+    //console.log(input);
+    //Обработчик ввода стоимости места в зале
     Array.from(input).forEach((button, index, arr) => {
         button.oninput = function () {
             //count[index] = button.value;
@@ -380,97 +427,7 @@
     console.log('count:',count);
     const json=JSON.stringify(count);
     document.getElementById('update')
-
-    // let url = "{{route('admin.updateHall', ['hall'=> $hall, 'count' => 'json'])}}";
-    // url = url.replace('json', json);
-    // url = url.replaceAll('&amp;', '&');
-   // console.log('replaceed amp url  ', url);
-
-    //window.location.href= url;
-
 </script>
-
-
-<script>
-    function clickUpdate(id){
-        console.log('clickradio', id);
-        const json=JSON.stringify(count);
-
-        let url = "{{route('admin.updateHall', ['hall'=> $hall, 'count' => 'json'])}}";
-        url = url.replace('json', json);
-        url = url.replaceAll('&amp;', '&');
-        console.log('replaceed amp url  ', url);
-        //window.location.href= url;
-
-    }
-</script>
-{{--}}
-<script>
-    let input1 = document.getElementById('countNormal');
-
-   /*class Menu {
-        handleEvent(event) {
-            switch(event.type) {
-                case 'change':
-                    input1.removeEventListener('input', menu);
-                    break;
-                case 'input':
-                    document.getElementById('countNormal').value = input1.value;
-                    break;
-            }
-        }
-    }
-
-    let menu = new Menu();
-    input1.addEventListener('input', menu);
-    input1.addEventListener('change', menu);
-*/
-
-
-    //let input2 = document.getElementById('countVip');
-    console.log(input1);
-    //console.log(input2);
-    input1.oninput = function() {
-        document.getElementById('countNormal').value = input1.value;
-        console.log(document.getElementById('countNormal').value, input1.value);
-    };
-    /*input1.onchange = function() {
-       alert("true");
-    };
-    /*input1.oninput = function() {
-        document.getElementById('countVip').value = input2.value;
-        console.log(document.getElementById('countVip').value, input2.value);
-    };*/
-</script>
-
---}}
-{{--}}
-<script>
-    let input2 = document.getElementById('countVip');
-
-    console.log(input2);
-    input1.oninput = function() {
-        document.getElementById('countVip').value = input2.value;
-        console.log(document.getElementById('countVip').value, input2.value);
-    };
-</script>
---}}
-{{--}}
-<script>
-    let input1 = document.getElementById('countNormal');
-    let input2 = document.getElementById('countVip');
-
-    function handleClick(event) {
-        //const input = inputs.item(inputPosition);
-        //const submittedValue = event.target.innerHTML;
-            input2.value = event.target.value;
-    }
-    input1.addEventListener("input", (event)=> input1.value = event.target.value);
-    input2.addEventListener("input", handleClick);
-    </script>
---}}
-
-
 </body>
 </html>
 
