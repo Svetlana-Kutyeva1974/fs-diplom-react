@@ -16,7 +16,7 @@ class CreateSeatsTable extends Migration
         Schema::create('seats', function (Blueprint $table) {
             $table->id();//$table->integer('id_seat')->unique();
             $table->timestamps();
-            $table->string('type');//VIP/NORM/FAIL
+            //$table->string('type');//VIP/NORM/FAIL
             $table->boolean('free')->default(true);
             $table->integer('colNumber');
             $table->integer('rowNumber');
