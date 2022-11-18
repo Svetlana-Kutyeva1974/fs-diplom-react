@@ -15,16 +15,51 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-/*
-Route::any('/', function () {
-    return view('index');
-});
-*/
+
 
 
 
 Route::get('/', IndexController::class)->name('index');// invoke если такой был
-//Route::get('/', [\App\Http\Controllers\IndexController::class, 'index'])->name('index');
+//Route::get('/', [\App\Http\Controllers\IndexController::class, 'index'])->name('index');// если обычный
+
+Auth::routes();
+
+Route::any('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::group([ 'middleware' => 'auth'  ],  function () {
+    Route::group([
+        'middleware' => 'admin',
+        'prefix' => 'admin',
+    ], function () {
+        Route::get('/', [App\Http\Controllers\AdminController::class, 'index'])->name('admin.home');
+        Route::any('/createHall', [App\Http\Controllers\HallController::class, 'create'])->name('admin.createHall');
+        Route::any('/destroyHall/{id}', [App\Http\Controllers\HallController::class, 'destroy'])->name('admin.destroyHall');
+        Route::any('/updateHall', [App\Http\Controllers\HallController::class, 'update'])->name('admin.updateHall');
+        //Route::resource('/hall{id}', [App\Http\Controllers\HallController::class]);
+        Route::any('/createFilm', [App\Http\Controllers\FilmController::class, 'create'])->name('admin.createFilm');
+        Route::any('/destroyFilm/{id}', [App\Http\Controllers\FilmController::class, 'destroy'])->name('admin.destroyFilm');
+    });
+});
+
+
+Route::get('/hall', [App\Http\Controllers\SeatController::class, 'index'])->name('client.hall');
+Route::get('/ticket', [App\Http\Controllers\TicketController::class, 'index'])->name('client.ticket');
+Route::any('/seat', [App\Http\Controllers\SeatController::class, 'edit'])->name('client.seat');
+Route::get('/ticket/create', [App\Http\Controllers\TicketController::class, 'index'])->name('create');
+
+
+
+//value="{{ old('name') ?? $product->name ?? '' }}"
+
+
+
+
+
+
+
+
+
+
 
 
 /*=================
@@ -49,56 +84,18 @@ Route::group([ 'middleware' => 'admin'  ],  function () {
 {
     Route::get('/admin', [\App\Http\Controllers\AdminController::class, 'index'])->name('admin.home');
 });
+
+
+
+Route::any('/', function () {
+    return view('index');
+});
+
 ================*/
 
 
-Route::any('/admin/loginAdmin', [\App\Http\Controllers\LoginAdminController::class, 'index'])->name('loginAdmin');
-
-
-Auth::routes();
-
-Route::any('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-/*Было до разработки админки
-Route::group([ 'middleware' => 'auth'  ],  function () {
-    Route::group([
-        'middleware' => 'admin',
-        'prefix' => 'admin',
-    ], function () {
-        Route::get('/', function () {
-            return view('admin.home', ['user' => Auth::user()]);
-            //Route::get('/', [App\Http\Controllers\AdminController::class, 'index']);
-        })->name('admin.home');
-   });
-});
-*/
-
-Route::group([ 'middleware' => 'auth'  ],  function () {
-    Route::group([
-        'middleware' => 'admin',
-        'prefix' => 'admin',
-    ], function () {
-        Route::get('/', [App\Http\Controllers\AdminController::class, 'index'])->name('admin.home');
-        Route::any('/createHall', [App\Http\Controllers\HallController::class, 'create'])->name('admin.createHall');
-        Route::any('/destroyHall/{id}', [App\Http\Controllers\HallController::class, 'destroy'])->name('admin.destroyHall');
-        Route::any('/updateHall', [App\Http\Controllers\HallController::class, 'update'])->name('admin.updateHall');
-        //Route::resource('/hall{id}', [App\Http\Controllers\HallController::class]);
-    });
-});
+//Route::any('/admin/loginAdmin', [\App\Http\Controllers\LoginAdminController::class, 'index'])->name('loginAdmin');
 
 
 
-/*Route::get('/hall', function () {
-    return view('components.client.hall', );
-})->name('hall');
-*/
-Route::get('/hall', [App\Http\Controllers\SeatController::class, 'index'])->name('hall');
-Route::get('/ticket', [App\Http\Controllers\TicketController::class, 'index'])->name('ticket');
-Route::get('/ticket/create', [App\Http\Controllers\TicketController::class, 'index'])->name('create');
 
-
-/*
-Route::get('/hall/{nameHall}/{seance}', function ($nameHall, $seance ) {
-    return view('components.client.hall', ['nameHall' => $nameHall, 'seance'=> $seance->id]);
-})->name('hall');
-*/

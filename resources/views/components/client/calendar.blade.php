@@ -1,18 +1,14 @@
 <!--Календарь -->
+
 @php
     $daysList = ["Вс","Пн","Вт","Ср","Чт","Пт","Сб"];
 @endphp
-<div>{{--$dateCurrent--}}{{--$daysList[Carbon\Carbon::createFromDate($dateCurrent)->dayOfWeek]--}}</div>
-<div> {{--$dateChosen--}}{{--$daysList[Carbon\Carbon::createFromDate($dateChosen)->dayOfWeek]--}}</div>
-{{--'эсегодня у нас'}} {{Carbon\Carbon::now()}} {{Carbon\Carbon::now()->dayOfWeek}}
-<div>{{--(Carbon\Carbon::createFromDate($dateCurrent)->day - Carbon\Carbon::now()->day)}}</div>
-{{--{{ date('d.m.Y') }}--}}
+
 @php
     $isAll = true;
 @endphp
 <nav class="page-nav">
 @for ($i = 0; $i < 6; $i++)
-       {{-- dump(Carbon\Carbon::create($dateChosen)) Carbon\Carbon::createFromFormat('Y-m-d H:i:s', '2022-12-05 22:00:22') Carbon\Carbon::createFromFormat('Y-m-d H:i:s', date('Y-m-d H:i:s'))  --}}
     @switch($i)
         @case(0)
                 @if(Carbon\Carbon::createFromDate($dateCurrent)->day !== Carbon\Carbon::now()->day)

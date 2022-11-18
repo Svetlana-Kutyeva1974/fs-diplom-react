@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
     {
         User::create([
             'name' => 'test',
-            'email' => 'test@text.ru',
+            'email' => 'test@test.ru',
             'password' => Hash::make('12345678'),
             'is_admin' => 0,
         ]);

@@ -18,16 +18,37 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-
-
 });
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // ** Public routes ** //
-Route::get('/film', [FilmController::class, 'index']);
+//Route::get('/film', [FilmController::class, 'index']);
+
+
 //Route::any('/film', function () {
   //  return redirect('/')->with('status', 'Profile updated!');
 //});
 
+
+
+/*
 Route::get('/halls', [HallController::class, 'index']);
 Route::get('/seances', [\App\Http\Controllers\SeanceController::class, 'index']);
 Route::get('/tickets/{seance}/{date}', [\App\Http\Controllers\TicketController::class, 'show']);
@@ -39,5 +60,6 @@ Route::get('seance', [\App\Http\Controllers\SeanceController::class, 'seances'])
 Route::post('halls', [HallController::class, 'store']);
 Route::put('halls/{id}', [HallController::class, 'update']);
 Route::delete('halls/{id}', [HallController::class, 'destroy']);
+*/
 
 //https://maxyc.ru/programming/laravel/restful-api-laravel/ crud

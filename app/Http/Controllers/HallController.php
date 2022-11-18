@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Film;
 use App\Models\Hall;
-use App\Models\ToDo;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -33,26 +32,16 @@ class HallController extends Controller
         if (! $user->is_admin) {
         return redirect('/');
         } else {
-            //var_dump($request->validated());
-            //var_dump($request->all());
-            //var_dump($request["name"]);
+            //var_dump($request->validated());//var_dump($request->all());
             $all = $request->all();
-            //$newHall = Hall::create($all);
-            //dump('zal:');
-            //var_dump($newHall);
             $seats =[];
             for ($i = 1; $i <= 10; $i++) {
-                //$seats =[$i][];
                 for ($j = 1; $j <= 12; $j++) {
-                    //$ii="$i$j";
                     $seats["$i,$j"] = ['NORM','VIP', 'FAIL'][array_rand(['NORM','VIP', 'FIRE'])];
                 }
             }
-            //dump($seats);
+
             $seats = json_encode($seats);
-            //$newHall['typeOfSeats'] = $seats;
-            //dump('zal:');
-            //var_dump($newHall['typeOfSeats']);
 
             DB::table('halls')->insert([
                 'nameHall' => $request["name"],
@@ -63,11 +52,10 @@ class HallController extends Controller
                 'open'=> false,
                 'typeOfSeats' => $seats,
             ]);
-           // dd($seats);
-            //return redirect()->route('admin.home');
-            return redirect()->back();
+
+            return redirect()->route('admin.home');
+            //return redirect()->back();
         }
-        //return view('admin.ticket',['selected'=> $selected, 'film' => $film, 'hall' => $hall, 'seance'=> $seance, 'dateChosen'=> $dateChosen, 'seats'=> $seats]);
     }
 
     /**
@@ -78,13 +66,7 @@ class HallController extends Controller
      */
     public function store(Request $request)
     {
-        // {
-        //            $all = $request->all();
-        //            $newHall = Film::create($all);
-        //            return response()->json([
-        //                    'success' => true,
-        //                    'data' => $newFilm,
-        //            ]);
+        //
     }
 
     /**
@@ -107,7 +89,7 @@ class HallController extends Controller
     public function edit(Request $request, Hall $hall)
     {
         dump($hall);
-        dd($request);
+        dump($request->all());
     }
 
     /**
@@ -131,23 +113,8 @@ class HallController extends Controller
     //public function destroy(Request $request, $id)
     public function destroy($id)
     {
-        //dump($request->all());
-        //dump($request->id);
-        //dump($hall);
-        //dump($request->id);
-        //dump($id);
-        //dd(Hall::find($id));
-        //$hall = $hall->delete();
-        //dump(Hall::find($request->id));
-
-        //$hall = Hall::find($request->id)->delete();
-
-        //if ($hall->delete()) {
-                  //return response(null, Response::HTTP_NO_CONTENT);
-              // }
-              // return null;
-        //Hall::find($request->id)->delete();
-        Hall::find($id)->delete();
-        return redirect()->back();
+        Hall::find($id)->delete();//Hall::find($request->id)->delete();
+        //return redirect()->back();
+        return redirect()->route('admin.home');
     }
 }

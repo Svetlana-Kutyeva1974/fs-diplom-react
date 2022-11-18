@@ -1,6 +1,7 @@
+{{-- Административная панель. Главная страница--}}
+
 <!DOCTYPE html>
 <html lang="en">
-<!-- Административная панель-->
 <!--
 <div style="width: 1000px; margin: 10px auto 0; border: 2px solid;">
     <div>Привет, {{$user['name']}}</div><br>
@@ -58,7 +59,7 @@
                     </form>
                 @endforeach
             </ul>
-            <button id= "create" onclick = "cl(id)"  class="conf-step__button conf-step__button-accent">Создать зал</button>
+            <button id= "create" onclick = "clickAdd(id)"  class="conf-step__button conf-step__button-accent">Создать зал</button>
 
         </div>
         {{-- Конец Меню создания зала--}}
@@ -75,6 +76,7 @@
                     <div class="popup__wrapper">
                         <form action="{{route('admin.createHall')}}" method="POST" accept-charset="utf-8">
                             @csrf
+                            {{--@method('PUT')--}}
                             <label class="conf-step__label conf-step__label-fullsize" for="name">
                                 Название зала
                                 <input class="conf-step__input" type="text" placeholder="Например, «Зал 1»" name="name" required="">
@@ -110,9 +112,6 @@
                         @endif
                         </li>
                         @endforeach
-               {{-- <li><input type="radio" class="conf-step__radio" name="chairs-hall" value="Зал 1" checked><span class="conf-step__selector">Зал 1</span></li>
-                <li><input type="radio" class="conf-step__radio" name="chairs-hall" value="Зал 2"><span class="conf-step__selector">Зал 2</span></li>
-                --}}
             </ul>
             <p class="conf-step__paragraph">Укажите количество рядов и максимальное количество кресел в ряду:</p>
             <div class="conf-step__legend">
@@ -155,10 +154,6 @@
                          @endif
                     </li>
                 @endforeach
-                {{--
-                <li><input type="radio" class="conf-step__radio" name="prices-hall" value="Зал 1"><span class="conf-step__selector">Зал 1</span></li>
-                <li><input type="radio" class="conf-step__radio" name="prices-hall" value="Зал 2" checked><span class="conf-step__selector">Зал 2</span></li>
-                --}}
             </ul>
 
             <p class="conf-step__paragraph">Установите цены для типов кресел:</p>
@@ -185,40 +180,27 @@
         </header>
         <div class="conf-step__wrapper">
             <p class="conf-step__paragraph">
-                <button class="conf-step__button conf-step__button-accent">Добавить фильм</button>
+                <button id="addFilm" onclick = "clickAdd(id)" class="conf-step__button conf-step__button-accent">Добавить фильм</button>
             </p>
+            {{--Блок оглавления фильмов --}}
             <div class="conf-step__movies">
-                <div class="conf-step__movie">
-                    <img class="conf-step__movie-poster" alt="poster" src="{{ asset('i/poster.png')}}">
-                    <h3 class="conf-step__movie-title">Звёздные войны XXIII: Атака клонированных клонов</h3>
-                    <p class="conf-step__movie-duration">130 минут</p>
-                </div>
+                @foreach ($films as $film)
 
-                <div class="conf-step__movie">
-                    <img class="conf-step__movie-poster" alt="poster" src="{{ asset('i/poster.png')}}">
-                    <h3 class="conf-step__movie-title">Миссия выполнима</h3>
-                    <p class="conf-step__movie-duration">120 минут</p>
-                </div>
-
-                <div class="conf-step__movie">
-                    <img class="conf-step__movie-poster" alt="poster" src="{{ asset('i/poster.png')}}">
-                    <h3 class="conf-step__movie-title">Серая пантера</h3>
-                    <p class="conf-step__movie-duration">90 минут</p>
-                </div>
-
-                <div class="conf-step__movie">
-                    <img class="conf-step__movie-poster" alt="poster" src="{{ asset('i/poster.png')}}">
-                    <h3 class="conf-step__movie-title">Движение вбок</h3>
-                    <p class="conf-step__movie-duration">95 минут</p>
-                </div>
-
-                <div class="conf-step__movie">
-                    <img class="conf-step__movie-poster" alt="poster" src="{{ asset('i/poster.png')}}">
-                    <h3 class="conf-step__movie-title">Кот Да Винчи</h3>
-                    <p class="conf-step__movie-duration">100 минут</p>
-                </div>
+                    <div class="conf-step__movie">
+                        <form action="{{ route('admin.destroyFilm', ['id' => $film->id]) }}" method="post" onsubmit="return confirm('Удалить этот фильм?')">
+                            @csrf
+                            @method('DELETE')
+                            {{--Возможность удаления фильма по нажатию на изображение--}}
+                            <button><img class="conf-step__movie-poster" alt={{$film->imageText}} src={{ asset($film->imagePath)}}></button>
+                            <h3 class="conf-step__movie-title">{{$film->title}}</h3>
+                        <p class="conf-step__movie-duration">{{$film->duration}} минут</p>
+                        </form>
+                    </div>
+                @endforeach
             </div>
+            {{--конец блок оглавления фильмов --}}
 
+            {{--Блок сетки фильмов --}}
             <div class="conf-step__seances">
                 <div class="conf-step__seances-hall">
                     <h3 class="conf-step__seances-title">Зал 1</h3>
@@ -257,6 +239,59 @@
                 <input type="submit" value="Сохранить" class="conf-step__button conf-step__button-accent">
             </fieldset>
         </div>
+        {{--Конец блока сетки фильмов --}}
+
+        {{-- Меню popup добавления фильма--}}
+        <div class="popup">
+            <div class="popup__container">
+                <div class="popup__content">
+                    <div class="popup__header">
+                        <h2 class="popup__title">
+                            Добавление фильма
+                            <a class="popup__dismiss" href="#"><img src="i/close.png" alt="Закрыть"></a>
+                        </h2>
+
+                    </div>
+                    <div class="popup__wrapper">
+                        <form action="{{route('admin.createFilm')}}" method="POST" accept-charset="utf-8">
+                            @csrf
+                        {{--}}<form action="add_movie" method="post" accept-charset="utf-8">--}}
+                            <label class="conf-step__label conf-step__label-fullsize" for="title">
+                                Название фильма
+                                <input class="conf-step__input" type="text" placeholder="Например, &laquo;Фильм&raquo;" name="title" required>
+                            </label>
+
+                            <label class="conf-step__label conf-step__label-fullsize" for="description">
+                                Описание фильма
+                                <input class="conf-step__input" type="text" placeholder="Например, &laquo;О Фильме&raquo;" name="description" required>
+                            </label>
+
+                            <label class="conf-step__label conf-step__label-fullsize" for="duration">
+                                Длительность фильма
+                                <input class="conf-step__input" type="text" placeholder="Например, &laquo;130&raquo;" name="duration" required>
+                            </label>
+
+                            <label class="conf-step__label conf-step__label-fullsize" for="origin">
+                                Страна фильма
+                                <input class="conf-step__input" type="text" placeholder="Например, &laquo;Россия&raquo;" name="origin" required>
+                            </label>
+                            <label class="conf-step__label conf-step__label-fullsize" for="imagaPath">
+                                Изображение фильма
+                                <input type="file" class="form-control-file" name="imagePath" accept="image/png, image/jpeg">
+                            </label>
+                            {{--
+                            input type="file" class="form-control-file" name="image" accept="image/png, image/jpeg">
+                            --}}
+
+                            <div class="conf-step__buttons text-center">
+                                <input type="submit" value="Добавить фильм" class="conf-step__button conf-step__button-accent">
+                                <button id="cancel" onclick = "cl2(id)" class="conf-step__button conf-step__button-regular">Отменить</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
     {{--Открытие продажи--}}
@@ -279,53 +314,72 @@
     let count = [];
 
     function select(id){
+        let rand;
         console.log(id);
         let type= id.split(' ');//conf-step__chair conf-step__chair_
         let arr=['VIP','NORM','FAIL'];
         let arr2={'VIP':'vip', 'NORM':'standart','FAIL':'disabled'};
-        let arr21={'VIP':'vip', 'NORM':'standart','FAIL':'disabled'};
-        let arr3= ['VIP','NORM','FAIL'];
-        let i= arr.indexOf(type[1]);
-        arr3.splice(i, 1);
+        rand = arr.indexOf(type[1]);
+        console.log('rand',rand);
 
-        console.log('нашли тип в массиве',i);
         console.log('после деления',type[1]);
-        console.log('dele тип в массиве', arr3);
+        console.log('dele тип в массиве', arr);
         console.log(document.getElementById(id).closest('.conf-step'));
 
-        console.log(arr2[type[1]]);
-
+        if (rand === 0){
+          rand = 1;}
+        else if (rand === 1) {
+          rand= 2;}
+        else if (rand === 2) {
+            rand= 0;}
+        console.log('rand',rand);
+        console.log('arr2[type[1]]:', arr2[type[1]]);
 
         let classDelete = `conf-step__chair conf-step__chair_${arr2[type[1]]}`;
-        let classSelect = `conf-step__chair conf-step__chair_${arr2[arr3[0]]}`;
+        let classSelect = `conf-step__chair conf-step__chair_${arr2[arr[rand]]}`;
+
         console.log(document.getElementById(id).classList);
         console.log(classSelect);
         document.getElementById(id).classList.value = classDelete;
         console.log('после удал',document.getElementById(id).classList);
         document.getElementById(id).classList.value = classSelect;
         console.log('после добавл',document.getElementById(id).classList);
+        //console.log('заменяем id у',document.getElementById(id));
+        document.getElementById(id).id = `${type[0]} ${arr[rand]}`;
+        console.log('id после замены',document.getElementById(`${type[0]} ${arr[rand]}`));
     }
 
-    //Открыть форму добавления зала
-    function cl(id){
+    //Открыть форму добавления зала/фильма
+    function clickAdd(id){
         console.log(id);
+        console.log(document.getElementById(id));
         console.log(document.getElementById(id).closest('.conf-step'));
         console.log(document.getElementById(id).closest('.conf-step').children[2]);
         document.getElementById(id).closest('.conf-step').children[2].classList.add("active");
     }
 
-    //Закрыть форму добавления зала
-    function cl2(id){
+    /*Открыть форму добавления фильма
+    function clickAddActive(id){
         console.log(id);
+        console.log(document.getElementById(id));
+
         console.log(document.getElementById(id).closest('.conf-step'));
         console.log(document.getElementById(id).closest('.conf-step').children[2]);
+        document.getElementById(id).closest('.conf-step').children[2].classList.add("active");
+    }*/
+
+    //Закрыть форму добавления зала/фильма
+    function cl2(id){
+        /*console.log(id);
+        console.log(document.getElementById(id).closest('.conf-step'));
+        console.log(document.getElementById(id).closest('.conf-step').children[2]);*/
         document.getElementById(id).closest('.conf-step').children[2].classList.remove("active");
     }
 
-    //Закрыть форму добавления зала
+    //Закрыть popup форму добавления зала/ фильма
     function cl3(id){
-        console.log(id);
-        console.log(document.getElementById(id).closest('.popup'));
+       /* console.log(id);
+        console.log(document.getElementById(id).closest('.popup'));*/
         document.getElementById(id).closest('.popup').classList.remove("active");
     }
 

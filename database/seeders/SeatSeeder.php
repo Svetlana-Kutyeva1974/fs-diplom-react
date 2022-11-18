@@ -26,7 +26,7 @@ class SeatSeeder extends Seeder
                          'hall_id' => $s['hall_id'],
                          'colNumber' => $j,
                          'rowNumber' => $i,
-                         'type' => ['NORM','VIP', 'FAIL'][array_rand(['NORM','VIP', 'FAIL'])],
+                         //'type' => ['NORM','VIP', 'FAIL'][array_rand(['NORM','VIP', 'FAIL'])],
                          'ticket_id' => 0,
                          'seance_id' => $s['id'],
                           'free' => [true, false][array_rand([true, false])],

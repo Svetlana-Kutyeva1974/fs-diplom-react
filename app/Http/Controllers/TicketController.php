@@ -21,22 +21,35 @@ class TicketController extends Controller
      */
     public function index(Request $request)
     {
-        //dump($request->all());
-        $film = $request['film'] ?? Film::all()->first();//$request['amp;dateChosen']
+        $film = $request['film'] ?? Film::all()->first();
         $hall = $request['hall'] ?? Hall::all()->first();
-        //dump($request['amp;film']);
         $dateChosen = $request['dateChosen'] ?? substr(Carbon::now(), 0, 10);//'2022-11-05 16:00:22'
-        //dump($dateChosen);
         $seance = $request['seance'] ?? Seance::all()->where('startSeance', Carbon::now())->first();
-       // dump($seance);
-
-        //dd($selected);
         $seatnull= ($seance == null) ? null : Seat::all()->where('seance_id', $seance['id'])->where('hall_id', $hall['id']);
-         //dump($seatnull);
         $seats = $request['seats'] ?? $seatnull;
-        //dump($request['amp;seats']);
         $selected = $request['selected'] ?? [];
+        /*
+         Пыталась изменить у выбранных мест параметры в базе
+        dump($selected);
+        dump(json_decode($selected));
+        dump(json_decode($selected)[0]);
+        dump(count(json_decode($selected)));
 
+        dump(explode(',',  json_decode($selected)[0]));
+        dump((int)explode(',',  json_decode($selected)[0])[0]);
+
+        $seatts =[];
+        for ($i = 0, $iMax = count(json_decode($selected)); $i < $iMax; $i ++) {
+         $seatts[]= Seat::all()->where('seance_id', $seance['id'])->where('hall_id', $hall['id'])->where('rowNumber', (int) explode(',',  json_decode($selected)[$i])[0])->where('colNumber', (int) explode(',', json_decode($selected)[$i])[1]);
+         dump($seatts);
+         dump(count($seatts));//
+        }
+
+        for ($i = 0, $iMax = count($seatts); $i < $iMax; $i ++) {
+            dump($seatts[$i]);
+            SeatController::class->update($seatts[$i]);
+        }
+        */
         //dump(json_decode($selected));
         return view('client.ticket',['selected'=> $selected, 'film' => $film, 'hall' => $hall, 'seance'=> $seance, 'dateChosen'=> $dateChosen, 'seats'=> $seats]);
         //

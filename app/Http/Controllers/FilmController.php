@@ -3,31 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Models\Film;
+use App\Models\Hall;
+use http\Client\Response;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 
 class FilmController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return JsonResponse
+     * @return \Illuminate\Http\Response//
      *///@return \Illuminate\Http\Response
-    public function index()//: JsonResponse
+    public function index(Request $request)
     {
-        try {
-        $films = Film::all();
-        return response()->json([
-                'success' => true,
-                'data' => $films,
-        ]);
-        } catch (\Exception $e) {
-            //error_log($e->getMessage());
 
-            return response()->json([
-                'success' => false,
-            ], 500);
-        }
     }
 
 
@@ -37,9 +28,22 @@ class FilmController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        var_dump($request->all());
+        //dd($request["imagePath"]);
+        //dd($input->all());
+        DB::table('films')->insert([
+            'title' => $request["title"],
+            'description' => $request["description"],
+            'duration' => $request["duration"] ?? 130,
+            'imagePath' => 'i/poster2.jpg',
+            'imageText' => '' ?? $request["title"],
+            'origin'=> $request["origin"] ?? '',
+        ]);
+        // dd($seats);
+        //return redirect()->route('admin.home');
+        return redirect()->back();
     }
 
     /**
@@ -105,20 +109,12 @@ class FilmController extends Controller
      * @param  \App\Models\Film  $film
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id): JsonResponse
+    public function destroy($id)
         //public function destroy(Film $film): JsonResponse
     {
-        try {
-            Film::destroy([$id]);
-            return response()->json([
-                'status' => 'ok',
-            ]);
-        }catch (\Exception $e) {
-            //error_log($e->getMessage());
-            return response()->json([
-                'status' => 'error',
-            ], 500);
-        }
+
+        Film::find($id)->delete();
+        return redirect()->back();
     }
 
     public function seance()//: JsonResponse

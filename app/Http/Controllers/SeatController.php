@@ -6,6 +6,7 @@ use App\Models\Film;
 use App\Models\Hall;
 use App\Models\Seance;
 use App\Models\Seat;
+use App\Models\Ticket;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -18,20 +19,13 @@ class SeatController extends Controller
      */
     public function index(Request $request)
     {
-        //dump($request->all());
         $film = $request->film ?? Film::all()->first();//
         $hall = $request->hall ?? Hall::all()->first();
-
         $dateChosen = $request->dateChosen ?? substr(Carbon::now(), 0, 10);//'2022-11-05 16:00:22'
         $seance = $request->seance ?? Seance::all()->where('startSeance', Carbon::now())->first();
-
         $seats = $request->seats ?? Seat::all()->where('seance_id', $seance['id'])->where('hall_id', $hall['id']);
 
-        //dump($seats.'  seatttttt');
-        //dump($seat->where('seance_id', $seance['id']));
-        //dump('местаааааааааааа');
-        //dump($seance);
-
+        //dump($seats.'  seatttttt');dump($seat->where('seance_id', $seance['id']));
         //dump($seance['id'].'    по id');
         return view('client.hall', ['seats'=> $seats, 'film' => $film, 'hall' => $hall, 'seance'=> $seance,  'dateChosen'=> $dateChosen]);
     }
@@ -74,9 +68,52 @@ class SeatController extends Controller
      * @param  \App\Models\Seat  $seat
      * @return \Illuminate\Http\Response
      */
-    public function edit(Seat $seat)
-    {
-        //
+    //public function edit(Request $request, Seat $seat)
+    public function edit (Request $request)
+    {/*
+        Пыталась изменить у выбранных мест параметры в базе
+        //dump($request->all());
+        $film = $request['film'] ?? Film::all()->first();//$request['amp;dateChosen']
+        $hall = $request['hall'] ?? Hall::all()->first();
+        //dump($request['amp;film']);
+        $dateChosen = $request['dateChosen'] ?? substr(Carbon::now(), 0, 10);//'2022-11-05 16:00:22'
+        //dump($dateChosen);
+        $seance = $request['seance'] ?? Seance::all()->where('startSeance', Carbon::now())->first();
+        // dump($seance);
+
+        //dd($selected);
+        $seatnull= ($seance == null) ? null : Seat::all()->where('seance_id', $seance['id'])->where('hall_id', $hall['id']);
+        //dump($seatnull);
+        $seats = $request['seats'] ?? $seatnull;
+        //dump($request['amp;seats']);
+        $selected = $request['selected'] ?? [];
+        dump($selected);
+        dump(json_decode($selected));
+        dump(json_decode($selected)[0]);
+        dump(count(json_decode($selected)));
+
+        dump(explode(',',  json_decode($selected)[0]));
+        dump((int)explode(',',  json_decode($selected)[0])[0]);
+
+        $seatts =[];
+        for ($i = 0, $iMax = count(json_decode($selected)); $i < $iMax; $i ++) {
+            $seatts[]= Seat::all()->where('seance_id', $seance['id'])->where('hall_id', $hall['id'])->where('rowNumber', (int) explode(',',  json_decode($selected)[$i])[0])->where('colNumber', (int) explode(',', json_decode($selected)[$i])[1]);
+            dump($seatts);
+            dump(count($seatts));//
+        }
+        $ticket= count(Ticket::all());
+        dump('count ticket:'.$ticket);
+        for ($i = 0, $iMax = count($seatts); $i < $iMax; $i ++) {
+            dump($seatts[$i]);
+            $seatts[$i][0]["free"]= 0;
+            $seatts[$i]["ticket_id"]= $ticket+1;
+            dump($seatts[$i]);
+            dd(9);
+            //$seatts[$i]->save();
+            //$this->update($seatts[$i]);
+        }
+        return redirect()->route('client.ticket',['selected'=> $selected, 'film' => $film, 'hall' => $hall, 'seance'=> $seance, 'dateChosen'=> $dateChosen, 'seats'=> $seats]);
+        */
     }
 
     /**
@@ -88,7 +125,8 @@ class SeatController extends Controller
      */
     public function update(Request $request, Seat $seat)
     {
-        //
+        $seat->fill($request->validated());
+        return $seat->save();
     }
 
     /**

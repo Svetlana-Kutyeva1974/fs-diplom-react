@@ -1,3 +1,4 @@
+{{--Профиль пользователя home page--}}
 @extends('layouts.app')
 
 @section('content')

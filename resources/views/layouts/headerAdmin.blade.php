@@ -1,6 +1,8 @@
+{{-- Шаблон администраторской страницы   !!!  НЕ ИСПОЛЬЗУЕТСЯ ПОКА  !!!--}}
+
 <!DOCTYPE html>
 <html lang="en">
-<!-- Административная панель-->
+<!-- Административная панель -->
 <!--
 <div style="width: 1000px; margin: 10px auto 0; border: 2px solid;">
     <div>Привет, {{$user['name']}}</div><br>
@@ -289,11 +291,3 @@
 <script src="{{ asset('js/accordeon.js')}}"></script>
 </body>
 </html>
-
-<!--
-@auth
-    @if(Auth::user()->isAdmin())
-        Это видит только админ
-@endif
-@endauth
--->

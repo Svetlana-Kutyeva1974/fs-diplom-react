@@ -1,4 +1,4 @@
-{{--Клиентский редактор зала, выбор мест--}}
+{{--Клиентский редактор зала, выбор мест и бронирование--}}
 
 @extends('layouts.header')
 
@@ -18,6 +18,7 @@
                 <p>Тапните дважды,<br>чтобы увеличить</p>
             </div>
         </div>
+            {{--Компонент конфигурация мест зала клиента--}}
             <x-client.buttons :seats="$seats" :seance="$seance" :film="$film" :hall="$hall"  dateChosen="{{$dateChosen}}" :selected="$selected">
             </x-client.buttons>
     </section>

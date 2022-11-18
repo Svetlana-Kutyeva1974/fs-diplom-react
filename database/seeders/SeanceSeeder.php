@@ -15,210 +15,18 @@ class SeanceSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('seances')->insert([
-            'startSeance' => '2022-11-05 10:20:22',
-            'film_id' => 1,
-            'hall_id' => 1,
-        ]);
+        //$now1 = substr(Carbon\$day,0, 10).' '.'10:30:22';
+        //$now2 = substr(Carbon\$day,0, 10).' '.'11:15:22';
+        //$now3 = substr(Carbon\$day,0, 10).' '.'09:00:22';
+        //for ($i = 0; $i <= 6; $i += 2) {
+            /*if ($i=0) {
+                $day= Carbon::now();
+            }
+            else {
+                $day= Carbon::now()->addDay();
+            }*/
 
-        DB::table('seances')->insert([
-            'startSeance' => '2022-11-05 14:10:22',
-            'film_id' => 1,
-            'hall_id' => 1,
-        ]);
-
-        DB::table('seances')->insert([
-            'startSeance' => '2022-11-05 18:40:22',
-            'film_id' => 1,
-            'hall_id' => 1,
-        ]);
-
-        DB::table('seances')->insert([
-            'startSeance' => '2022-11-05 22:00:22',
-            'film_id' => 1,
-            'hall_id' => 1,
-        ]);
-
-        DB::table('seances')->insert([
-            'startSeance' => '2022-11-12 10:30:22',
-            'film_id' => 1,
-            'hall_id' => 2,
-        ]);
-
-        DB::table('seances')->insert([
-            'startSeance' => '2022-11-12 11:15:22',
-            'film_id' => 1,
-            'hall_id' => 2,
-        ]);
-
-        DB::table('seances')->insert([
-            'startSeance' => '2022-11-12 14:40:22',
-            'film_id' => 1,
-            'hall_id' => 2,
-        ]);
-
-
-        DB::table('seances')->insert([
-            'startSeance' => '2022-11-12 16:00:22',
-            'film_id' => 1,
-            'hall_id' => 2,
-        ]);
-
-        DB::table('seances')->insert([
-            'startSeance' => '2022-11-12 18:30:22',
-            'film_id' => 1,
-            'hall_id' => 2,
-        ]);
-
-
-        DB::table('seances')->insert([
-            'startSeance' => '2022-11-12 21:00:22',
-            'film_id' => 1,
-            'hall_id' => 2,
-        ]);
-
-
-        DB::table('seances')->insert([
-            'startSeance' => '2022-11-12 23:30:22',
-            'film_id' => 1,
-            'hall_id' => 2,
-        ]);
-        /*2*/
-
-        DB::table('seances')->insert([
-            'startSeance' => '2022-11-12 10:20:22',
-            'film_id' => 2,
-            'hall_id' => 1,
-        ]);
-
-        DB::table('seances')->insert([
-            'startSeance' => '2022-11-12 14:10:22',
-            'film_id' => 2,
-            'hall_id' => 1,
-        ]);
-
-        DB::table('seances')->insert([
-            'startSeance' => '2022-11-12 18:40:22',
-            'film_id' => 2,
-            'hall_id' => 1,
-        ]);
-
-        DB::table('seances')->insert([
-            'startSeance' => '2022-11-12 22:00:22',
-            'film_id' => 2,
-            'hall_id' => 1,
-        ]);
-
-        DB::table('seances')->insert([
-            'startSeance' => '2022-11-12 10:30:22',
-            'film_id' => 2,
-            'hall_id' => 2,
-        ]);
-
-        DB::table('seances')->insert([
-            'startSeance' => '2022-11-12 11:15:22',
-            'film_id' => 2,
-            'hall_id' => 2,
-        ]);
-
-        DB::table('seances')->insert([
-            'startSeance' => '2022-11-12 14:40:22',
-            'film_id' => 2,
-            'hall_id' => 2,
-        ]);
-
-
-        DB::table('seances')->insert([
-            'startSeance' => '2022-11-12 16:00:22',
-            'film_id' => 2,
-            'hall_id' => 2,
-        ]);
-
-        DB::table('seances')->insert([
-            'startSeance' => '2022-11-12 18:30:22',
-            'film_id' => 2,
-            'hall_id' => 2,
-        ]);
-
-
-        DB::table('seances')->insert([
-            'startSeance' => '2022-11-12 21:00:22',
-            'film_id' => 2,
-            'hall_id' => 2,
-        ]);
-
-
-        DB::table('seances')->insert([
-            'startSeance' => '2022-11-12 23:30:22',
-            'film_id' => 2,
-            'hall_id' => 2,
-        ]);
-
-        //3
-        DB::table('seances')->insert([
-            'startSeance' => '2022-11-12 09:00:22',
-            'film_id' => 3,
-            'hall_id' => 1,
-        ]);
-
-        DB::table('seances')->insert([
-            'startSeance' => '2022-11-05 10:10:22',
-            'film_id' => 3,
-            'hall_id' => 1,
-        ]);
-
-        DB::table('seances')->insert([
-            'startSeance' => '2022-11-05 12:55:22',
-            'film_id' => 3,
-            'hall_id' => 1,
-        ]);
-
-        DB::table('seances')->insert([
-            'startSeance' => '2022-11-05 14:15:22',
-            'film_id' => 3,
-            'hall_id' => 1,
-        ]);
-
-        DB::table('seances')->insert([
-            'startSeance' => '2022-11-05 14:50:22',
-            'film_id' => 3,
-            'hall_id' => 1,
-        ]);
-
-        DB::table('seances')->insert([
-            'startSeance' => '2022-11-05 16:30:22',
-            'film_id' => 3,
-            'hall_id' => 1,
-        ]);
-
-        DB::table('seances')->insert([
-            'startSeance' => '2022-11-05 18:00:22',
-            'film_id' => 3,
-            'hall_id' => 1,
-        ]);
-
-
-        DB::table('seances')->insert([
-            'startSeance' => '2022-11-05 18:50:22',
-            'film_id' => 3,
-            'hall_id' => 1,
-        ]);
-        DB::table('seances')->insert([
-            'startSeance' => '2022-11-05 19:50:22',
-            'film_id' => 3,
-            'hall_id' => 1,
-        ]);
-        DB::table('seances')->insert([
-            'startSeance' => '2022-11-05 20:50:22',
-            'film_id' => 3,
-            'hall_id' => 1,
-        ]);
-        DB::table('seances')->insert([
-            'startSeance' => '2022-11-05 22:00:22',
-            'film_id' => 3,
-            'hall_id' => 1,
-        ]);
-
+        //$day= Carbon::now();
 
         //2
         DB::table('seances')->insert([
@@ -246,7 +54,7 @@ class SeanceSeeder extends Seeder
         ]);
 
         DB::table('seances')->insert([
-            'startSeance' => Carbon::now(),
+            'startSeance' => Carbon::now()->addMinutes(130),
             'film_id' => 1,
             'hall_id' => 2,
         ]);
@@ -289,6 +97,8 @@ class SeanceSeeder extends Seeder
             'film_id' => 1,
             'hall_id' => 2,
         ]);
+
+
         /*2*/
 
         DB::table('seances')->insert([
@@ -362,7 +172,7 @@ class SeanceSeeder extends Seeder
 
         //3
         DB::table('seances')->insert([
-            'startSeance' => Carbon::now(),
+            'startSeance' => Carbon::now()->addMinutes(200),
             'film_id' => 3,
             'hall_id' => 1,
         ]);
@@ -424,5 +234,6 @@ class SeanceSeeder extends Seeder
             'film_id' => 3,
             'hall_id' => 1,
         ]);
+
     }
 }
