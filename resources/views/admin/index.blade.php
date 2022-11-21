@@ -69,7 +69,7 @@
                     <div class="popup__header">
                         <h2 class="popup__title">
                             Добавление зала
-                            <a id="dismiss" class="popup__dismiss" href="#" onclick = "cl3(id)"><img src="i/close.png" alt="Закрыть"></a>
+                            <a id="dismiss1" class="popup__dismiss" href="#" onclick = "cl3(id)"><img src="i/close.png" alt="Закрыть"></a>
                         </h2>
 
                     </div>
@@ -248,7 +248,7 @@
                     <div class="popup__header">
                         <h2 class="popup__title">
                             Добавление фильма
-                            <a class="popup__dismiss" href="#"><img src="i/close.png" alt="Закрыть"></a>
+                            <a id="dismiss2" class="popup__dismiss" href="#" onclick = "cl3(id)"><img src="i/close.png" alt="Закрыть"></a>
                         </h2>
 
                     </div>
@@ -378,9 +378,10 @@
 
     //Закрыть popup форму добавления зала/ фильма
     function cl3(id){
-       /* console.log(id);
-        console.log(document.getElementById(id).closest('.popup'));*/
+        console.log(id);
+        console.log("родитель с active", document.getElementById(id).closest('.popup'));
         document.getElementById(id).closest('.popup').classList.remove("active");
+        console.log("родитель ,tp active", document.getElementById(id).closest('.popup'));
     }
 
    //Выбор кресла id /в выбранном зале idLast
