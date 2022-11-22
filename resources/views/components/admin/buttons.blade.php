@@ -1,8 +1,8 @@
-{{ $hall->{'row'}  }} {{--$seats->where('rowNumber', 1)--}}
+{{--dump($hall->{'id'})--}} {{--$seats->where('rowNumber', 1)--}}
 {{-- $hall->{'id'}-- }}
 {{--Компонент Конфигурация мест зала администратора--}}
-{{ json_decode($hall->{'typeOfSeats'})->{"1,2"} }}
-{{--}}<form action="{{route('admin.editHall', ['hall' => $hall])}}" method="POST" accept-charset="utf-8">
+{{-- json_decode($hall->{'typeOfSeats'})->{"1,2"}-- }}
+{{--<form action="{{route('admin.editHall', ['hall' => $hall])}}" method="POST" accept-charset="utf-8">
     @csrf--}}
 
 <div class="conf-step__hall">
@@ -34,7 +34,7 @@
 
 <fieldset class="conf-step__buttons text-center">
 <button onclick = "window.location.href='{{route('admin.home')}}'" href="#" class="conf-step__button conf-step__button-regular">Отмена</button>
-<input id="{{ $hall->{'id'} }}" onclick="editSeats(id)" type="submit" value="Сохранить" class="conf-step__button conf-step__button-accent">
+<input id="{{$selected_hall}}" onclick="editSeats(id)" type="submit" value="Сохранить" class="conf-step__button conf-step__button-accent">
 </fieldset>
 
 

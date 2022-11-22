@@ -108,7 +108,7 @@
                 @foreach ($halls as $hall)
                     {{--dump($halls)--}}
                     {{--dump($selected_hall)--}}
-                {{--dump($halls->where('id',$selected_hall))--}}
+                {{--dd($halls->where('id',$selected_hall))--}}
                     <li>
                         {{--$selected_hall--}}
                         @if($hall->id === $selected_hall )
@@ -121,9 +121,9 @@
             </ul>
             <p class="conf-step__paragraph">Укажите количество рядов и максимальное количество кресел в ряду:</p>
             <div class="conf-step__legend">
-                <label class="conf-step__label">Рядов, шт<input id="countRow" type="text" class="conf-step__input" placeholder="{{$halls[$selected_hall-1]->row}}" value="{{$halls[$selected_hall-1]->row}}"></label>
+                <label class="conf-step__label">Рядов, шт<input id="countRow" type="text" class="conf-step__input" placeholder="{{$halls->where('id', $selected_hall)[0]->row}}" value="{{$halls->where('id', $selected_hall)[0]->row}}"></label>
                 <span class="multiplier">x</span>
-                <label class="conf-step__label">Мест, шт<input id="countCol" type="text" class="conf-step__input" placeholder="{{$halls[$selected_hall-1]->col}}" value="{{$halls[$selected_hall-1]->col}}" ></label>
+                <label class="conf-step__label">Мест, шт<input id="countCol" type="text" class="conf-step__input" placeholder="{{$halls->where('id', $selected_hall)[0]->col}}" value="{{$halls->where('id', $selected_hall)[0]->col}}" ></label>
             </div>
             <p class="conf-step__paragraph">Теперь вы можете указать типы кресел на схеме зала:</p>
             <div class="conf-step__legend">
@@ -137,7 +137,7 @@
                 $selected = [];
             @endphp
 
-            <x-admin.buttons :seats="$seats" :seance="$seances" :film="$films" :hall="$halls->where('id', $selected_hall)[0]" :selected="$selected">
+            <x-admin.buttons :seats="$seats" :seance="$seances" :film="$films" :hall="$halls->where('id', $selected_hall)[0]" :selected="$selected_hall">
             </x-admin.buttons>
 
         </div>
@@ -359,7 +359,8 @@
 
     function editSeats(id){
         // Меняем массив typeOfSeats - типы мест в зале(нажатие сохранить)
-        console.log('id hall', id);
+        console.log('editSeats');
+        alert('id hall', id);
         //let newTypeOfSeats= {};
         let newTypeOfSeats= [];
         Array.of(document.querySelectorAll('button.conf-step__chair')).forEach((element, index, array) => {
@@ -385,12 +386,12 @@
         let url = "{{route('admin.editHall', ['hall'=> 'hl', 'newTypeOfSeats' => 'json'])}}";
 
         //console.log('url   ',url);console.log('selected url  ', selected);
-        //let hl= JSON.stringify('$halls->where('id', $selected_hall)[0]');
-        url = url.replace('hl', id);
+        let hl= '$halls->where("id", $selected_hall)';//$halls->where('id', $selected_hall)[0]
+        url = url.replace('hl', '2');
         url = url.replace('json', json);//console.log('replace url  ', url);
         url = url.replaceAll('&amp;', '&');//console.log('replace amp url  ', url);
         console.log('получили url для обновления   ',url);
-        window.location.href = url;
+        //window.location.href = url;
     }
 
     //Открыть форму добавления зала/фильма
@@ -402,15 +403,6 @@
         document.getElementById(id).closest('.conf-step').children[2].classList.add("active");
     }
 
-    /*Открыть форму добавления фильма
-    function clickAddActive(id){
-        console.log(id);
-        console.log(document.getElementById(id));
-
-        console.log(document.getElementById(id).closest('.conf-step'));
-        console.log(document.getElementById(id).closest('.conf-step').children[2]);
-        document.getElementById(id).closest('.conf-step').children[2].classList.add("active");
-    }*/
 
     //Закрыть форму добавления зала/фильма
     function cl2(id){
@@ -444,11 +436,11 @@
         alert( idLast);
 
         url = "{{route('admin.home',['selected_hall' => 'id', 'user'=> $user, 'films' => $films, 'halls' => $halls, 'seances'=> $seances, 'dateCurrent' => $dateCurrent, 'dateChosen'=> $dateChosen, 'seats'=> $seats])}}";
-        url = url.replace('id', id);
+        url = url.replace('id', `${id}`);
         url = url.replaceAll('&amp;', '&');
         console.log('replaceed amp url  ', url);
-        //alert(url);
-        //window.location.href= url
+        alert(url);
+        window.location.href= url
     }
 
     //Обновление инфо о ценах кресел в зале..не работает

@@ -91,7 +91,7 @@ class HallController extends Controller
      */
     public function edit(Request $request, Hall $hall)
     {
-        //dump($request->all());
+        //dd($request->all());
         $hall1 = $request['hall'];
         //dump($request['hall']);
 
