@@ -19,7 +19,7 @@ class AdminController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return
      */
     public function index(Request $request)
     {
@@ -41,8 +41,11 @@ class AdminController extends Controller
             $dateChosen = $request->dateChosen ?? substr(Carbon::now(), 0, 10);//'2022-11-05 16:00:22'
             //$selected_hall = '';
             $selected_hall =  $request->selected_hall ?? '1';
+            //dump($halls);
+            //dump($user);
+            //dd($dateChosen);
             //dd($selected_hall);
-            return view('admin.home',['selected_hall' => $selected_hall, 'user'=> $user, 'films' => $films, 'halls' => $halls, 'seances'=> $seances, 'dateCurrent' => $dateCurrent, 'dateChosen'=> $dateChosen, 'seats'=> $seats]);
+            return view('admin.home', ['selected_hall' => $selected_hall, 'user'=> $user, 'films' => $films, 'halls' => $halls, 'seances'=> $seances, 'dateCurrent' => $dateCurrent, 'dateChosen'=> $dateChosen, 'seats'=> $seats]);
 
 
     }

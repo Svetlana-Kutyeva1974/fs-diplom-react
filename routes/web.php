@@ -31,14 +31,14 @@ Route::group([ 'middleware' => 'auth'  ],  function () {
         'middleware' => 'admin',
         'prefix' => 'admin',
     ], function () {
-        Route::any('/', [App\Http\Controllers\AdminController::class, 'index'])->name('admin.home');
+        Route::get('/', [App\Http\Controllers\AdminController::class, 'index'])->name('admin.home');
         Route::any('/createHall', [App\Http\Controllers\HallController::class, 'create'])->name('admin.createHall');
         Route::any('/destroyHall/{id}', [App\Http\Controllers\HallController::class, 'destroy'])->name('admin.destroyHall');
-        Route::any('/updateHall', [App\Http\Controllers\HallController::class, 'update'])->name('admin.updateHall');
-        Route::any('/editHall', [App\Http\Controllers\HallController::class, 'edit'])->name('admin.editHall');
-        //Route::resource('/hall{id}', [App\Http\Controllers\HallController::class]);
-        Route::any('/createFilm', [App\Http\Controllers\FilmController::class, 'create'])->name('admin.createFilm');
-        Route::any('/destroyFilm/{id}', [App\Http\Controllers\FilmController::class, 'destroy'])->name('admin.destroyFilm');
+       Route::any('/updateHall', [App\Http\Controllers\HallController::class, 'update'])->name('admin.updateHall');
+       Route::any('/editHall', [App\Http\Controllers\HallController::class, 'edit'])->name('admin.editHall');
+          //Route::resource('/hall{id}', [App\Http\Controllers\HallController::class]);
+       Route::any('/createFilm', [App\Http\Controllers\FilmController::class, 'create'])->name('admin.createFilm');
+       Route::any('/destroyFilm/{id}', [App\Http\Controllers\FilmController::class, 'destroy'])->name('admin.destroyFilm');
     });
 });
 

@@ -1,5 +1,5 @@
 {{--dump($hall->{'id'})--}} {{--$seats->where('rowNumber', 1)--}}
-{{-- $hall->{'id'}-- }}
+{{-- $hall->{'id'}-- }} {{dump($selected_hall)}}
 {{--Компонент Конфигурация мест зала администратора--}}
 {{-- json_decode($hall->{'typeOfSeats'})->{"1,2"}-- }}
 {{--<form action="{{route('admin.editHall', ['hall' => $hall])}}" method="POST" accept-charset="utf-8">
@@ -8,9 +8,6 @@
 <div class="conf-step__hall">
     <div class="conf-step__hall-wrapper">
         {{--var_dump(json_decode($hall->{'typeOfSeats'})->{"1,4"})--}}{{--dd($hall[typeOfSeats]->{"1,1"})--}}
-
-
-
         @for ($i = 1; $i <= $hall->{'row'}; $i++)
             <div class="conf-step__row">
                 @for ($j = 1; $j <= $hall->{'col'}; $j++)

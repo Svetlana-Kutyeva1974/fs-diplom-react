@@ -106,11 +106,11 @@
             <ul class="conf-step__selectors-box">
 
                 @foreach ($halls as $hall)
-                    {{--dump($halls)--}}
+
                     {{--dump($selected_hall)--}}
                 {{--dd($halls->where('id',$selected_hall))--}}
                     <li>
-                        {{--$selected_hall--}}
+                        {{--$selected_hall--}}{{--dd(count($halls))--}}
                         @if($hall->id === $selected_hall )
                             <input id="{{$hall->id}}" onclick = "clickRadio(id)" type="radio" class="conf-step__radio" name="chairs-hall" value="{{$hall->nameHall}}" checked><span class="conf-step__selector">{{$hall->nameHall}}</span></li>
                     @else
@@ -133,12 +133,14 @@
                 <p class="conf-step__hint">Чтобы изменить вид кресла, нажмите по нему левой кнопкой мыши</p>
             </div>
             {{-- Схема зала--}}
-            @php
+            {{--}}@php
                 $selected = [];
             @endphp
-
-            <x-admin.buttons :seats="$seats" :seance="$seances" :film="$films" :hall="$halls->where('id', $selected_hall)[0]" :selected="$selected_hall">
+--}}
+            <x-admin.buttons :seats="$seats" :seance="$seances" :film="$films" :hall="$halls->where('id', $selected_hall)[0]" :selected_hall="$selected_hall">
             </x-admin.buttons>
+            {{--<x-admin.buttons :seats="$seats" :seance="$seances" :film="$films" :hall="$halls[$selected_hall-1]" :selected_hall="$selected_hall">
+            </x-admin.buttons>--}}
 
         </div>
     </section>
@@ -382,16 +384,19 @@
         });
 
         const json=JSON.stringify(newTypeOfSeats);//console.log('json  selectedddd', json);
+        //let url = "{{route('admin.editHall', ['hall'=> $halls[$selected_hall-1], 'newTypeOfSeats' => 'json'])}}";
+
+
         //let url = "{{route('admin.editHall', ['hall'=> $hall, 'newTypeOfSeats' => 'json', 'user'=> $user, 'films' => $films, 'halls' => $halls, 'seances'=> $seances, 'dateCurrent' => $dateCurrent, 'dateChosen'=> $dateChosen, 'seats'=> $seats])}}";
-        let url = "{{route('admin.editHall', ['hall'=> 'hl', 'newTypeOfSeats' => 'json'])}}";
+        let url = "{{route('admin.editHall', ['hall'=> $halls->where("id", $selected_hall)[0], 'newTypeOfSeats' => 'json'])}}";
 
         //console.log('url   ',url);console.log('selected url  ', selected);
-        let hl= '$halls->where("id", $selected_hall)';//$halls->where('id', $selected_hall)[0]
-        url = url.replace('hl', '2');
+        //let hl= '$halls->where("id", $selected_hall)[0]';//$halls->where('id', $selected_hall)[0]
+        //url = url.replace('hl', hl);
         url = url.replace('json', json);//console.log('replace url  ', url);
         url = url.replaceAll('&amp;', '&');//console.log('replace amp url  ', url);
         console.log('получили url для обновления   ',url);
-        //window.location.href = url;
+        window.location.href = url;
     }
 
     //Открыть форму добавления зала/фильма
@@ -433,15 +438,19 @@
         document.getElementById('countVip').value = '{{$hall->countVip}}';
         console.log('clickradio', id);
         idLast = id;
-        alert( idLast);
-
-        url = "{{route('admin.home',['selected_hall' => 'id', 'user'=> $user, 'films' => $films, 'halls' => $halls, 'seances'=> $seances, 'dateCurrent' => $dateCurrent, 'dateChosen'=> $dateChosen, 'seats'=> $seats])}}";
-        url = url.replace('id', `${id}`);
+        //alert( idLast);
+        //url = "{{route('admin.home',['selected_hall' => 'id', 'films' => $films, 'halls' => $halls, 'seances'=> $seances, 'dateCurrent' => $dateCurrent, 'dateChosen'=> $dateChosen, 'seats'=> $seats])}}";
+        url = "{{ route('admin.home',['selected_hall' => 'id']) }}";
+        //url = "{{route('admin.home',['selected_hall' => 'id', 'user' => $user,'films' => $films, 'halls' => $halls, 'seances'=> $seances, 'dateCurrent' => $dateCurrent, 'dateChosen'=> $dateChosen, 'seats'=> $seats])}}";
+        url = url.replace('id', id);
         url = url.replaceAll('&amp;', '&');
         console.log('replaceed amp url  ', url);
         alert(url);
         window.location.href= url
     }
+
+
+
 
     //Обновление инфо о ценах кресел в зале..не работает
     /*

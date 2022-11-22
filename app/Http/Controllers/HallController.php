@@ -91,7 +91,7 @@ class HallController extends Controller
      */
     public function edit(Request $request, Hall $hall)
     {
-        //dd($request->all());
+        //dump($request->all());
         $hall1 = $request['hall'];
         //dump($request['hall']);
 
@@ -106,7 +106,7 @@ class HallController extends Controller
         $i=0;
         foreach ($hall_decode as $key => $value) {
             $hall_decode->{$key} = $hall_new_decode[$i]->{"value"};
-            dump($key."value ".$hall_decode->{$key}."new  ". $hall_new_decode[$i]->{"value"});
+            //dump($key."value ".$hall_decode->{$key}."new  ". $hall_new_decode[$i]->{"value"});
             $i++;
         }
         //dump($hall_decode);

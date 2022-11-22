@@ -38,6 +38,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 
+
 // ** Public routes ** //
 //Route::get('/film', [FilmController::class, 'index']);
 
