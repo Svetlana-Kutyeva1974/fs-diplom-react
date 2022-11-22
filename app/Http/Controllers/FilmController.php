@@ -42,7 +42,7 @@ class FilmController extends Controller
             'origin'=> $request["origin"] ?? '',
         ]);
         // dd($seats);
-        //return redirect()->route('admin.home');
+        //return redirect()->route('admin.index');
         return redirect()->back();
     }
 

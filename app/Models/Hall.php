@@ -9,6 +9,9 @@ class Hall extends Model
 {
     use HasFactory;
     public $table = 'halls';
+    /**
+     * @var mixed
+     */
     protected  $fillable = [
         'nameHall',
         'col',

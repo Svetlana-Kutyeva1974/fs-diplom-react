@@ -41,6 +41,7 @@
 </header>
 
 <main class="conf-steps">
+    {{-- Создание зала +++++++++++++++++++++++++++++--}}
     <section class="conf-step">
         <header class="conf-step__header conf-step__header_opened">
             <h2 class="conf-step__title">Управление залами</h2>
@@ -49,6 +50,7 @@
             <p class="conf-step__paragraph">Доступные залы:</p>
             <ul class="conf-step__list">
                 @foreach ($halls as $hall)
+                    {{-- Форма создания зала--}}
                     <form action="{{ route('admin.destroyHall', ['id' => $hall->id]) }}" method="post" onsubmit="return confirm('Удалить этот зал?')">
                         @csrf
                         @method('DELETE')
@@ -62,7 +64,7 @@
             <button id= "create" onclick = "clickAdd(id)"  class="conf-step__button conf-step__button-accent">Создать зал</button>
 
         </div>
-        {{-- Конец Меню создания зала--}}
+        {{-- Popup Меню создания зала--}}
         <div class="popup">
             <div class="popup__container">
                 <div class="popup__content">
@@ -92,9 +94,9 @@
         </div>
 
     </section>
-    {{-- Конец Меню создания зала--}}
+    {{-- Конец секции создания зала--}}
 
-    {{-- Конфигурация зала--}}
+    {{-- Конфигурация зала!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!--}}
     <section class="conf-step">
         <header class="conf-step__header conf-step__header_opened">
             <h2 class="conf-step__title">Конфигурация залов</h2>
@@ -105,7 +107,8 @@
 
                 @foreach ($halls as $hall)
                     <li>
-                        @if($hall->id === "2" )
+                        {{$selected_hall}}
+                        @if($hall->id === $selected_hall )
                             <input id="{{$hall->id}}" onclick = "clickRadio(id)" type="radio" class="conf-step__radio" name="chairs-hall" value="{{$hall->nameHall}}" checked><span class="conf-step__selector">{{$hall->nameHall}}</span></li>
                     @else
                         <input id="{{$hall->id}}" onclick = "clickRadio(id)" type="radio" class="conf-step__radio" name="chairs-hall" value="{{$hall->nameHall}}"><span class="conf-step__selector">{{$hall->nameHall}}</span></li>
@@ -115,9 +118,9 @@
             </ul>
             <p class="conf-step__paragraph">Укажите количество рядов и максимальное количество кресел в ряду:</p>
             <div class="conf-step__legend">
-                <label class="conf-step__label">Рядов, шт<input id="countRow" type="text" class="conf-step__input" placeholder="10" ></label>
+                <label class="conf-step__label">Рядов, шт<input id="countRow" type="text" class="conf-step__input" placeholder="{{$halls[$selected_hall-1]->row}}" value="{{$halls[$selected_hall-1]->row}}"></label>
                 <span class="multiplier">x</span>
-                <label class="conf-step__label">Мест, шт<input id="countCol" type="text" class="conf-step__input" placeholder="12" ></label>
+                <label class="conf-step__label">Мест, шт<input id="countCol" type="text" class="conf-step__input" placeholder="{{$halls[$selected_hall-1]->col}}" value="{{$halls[$selected_hall-1]->col}}" ></label>
             </div>
             <p class="conf-step__paragraph">Теперь вы можете указать типы кресел на схеме зала:</p>
             <div class="conf-step__legend">
@@ -131,7 +134,7 @@
                 $selected = [];
             @endphp
 
-            <x-admin.buttons :seats="$seats" :seance="$seances" :film="$films" :hall="$halls[0]" :selected="$selected">
+            <x-admin.buttons :seats="$seats" :seance="$seances" :film="$films" :hall="$halls[$selected_hall-1]" :selected="$selected">
             </x-admin.buttons>
 
         </div>
@@ -185,8 +188,8 @@
             {{--Блок оглавления фильмов --}}
             <div class="conf-step__movies">
                 @foreach ($films as $film)
-
                     <div class="conf-step__movie">
+                        {{-- Форма добавления фильма--}}
                         <form action="{{ route('admin.destroyFilm', ['id' => $film->id]) }}" method="post" onsubmit="return confirm('Удалить этот фильм?')">
                             @csrf
                             @method('DELETE')
@@ -313,7 +316,8 @@
     const input = document.querySelectorAll('.count');
     let count = [];
 
-    function select(id){
+    // Обработка выбора типа места по клику
+    function select(id, hall){
         let rand;
         console.log(id);
         let type= id.split(' ');//conf-step__chair conf-step__chair_
@@ -347,6 +351,42 @@
         //console.log('заменяем id у',document.getElementById(id));
         document.getElementById(id).id = `${type[0]} ${arr[rand]}`;
         console.log('id после замены',document.getElementById(`${type[0]} ${arr[rand]}`));
+
+    }
+
+    function editSeats(){
+        // Меняем массив typeOfSeats - типы мест в зале(нажатие сохранить)
+
+        //let newTypeOfSeats= {};
+        let newTypeOfSeats= [];
+        Array.of(document.querySelectorAll('button.conf-step__chair')).forEach((element, index, array) => {
+            console.log('кнопка',index, array[index]);
+            for(let i=0; i<element.length; i++) {
+                const elementSplite = element[i].id.split(' ');
+                console.log('massiv splite',elementSplite, elementSplite[0], elementSplite[1]);
+                //newTypeOfSeats.push(element[i].id);
+                let key = elementSplite[0];
+                let value = elementSplite[1];
+                newTypeOfSeats.push({key: key, value: value});
+                //newTypeOfSeats.key= key;
+                //newTypeOfSeats.value = value;
+               // const newTypeOfSeats = {...key};
+                console.log('massiv',newTypeOfSeats[i]);
+                //console.log('massiv',newTypeOfSeats[i]);
+
+            }
+        });
+
+        const json=JSON.stringify(newTypeOfSeats);//console.log('json  selectedddd', json);
+        //let url = "{{route('admin.editHall', ['hall'=> $hall, 'newTypeOfSeats' => 'json', 'user'=> $user, 'films' => $films, 'halls' => $halls, 'seances'=> $seances, 'dateCurrent' => $dateCurrent, 'dateChosen'=> $dateChosen, 'seats'=> $seats])}}";
+        let url = "{{route('admin.editHall', ['hall'=> $halls[$selected_hall-1], 'newTypeOfSeats' => 'json'])}}";
+
+        //console.log('url   ',url);console.log('selected url  ', selected);
+
+        url = url.replace('json', json);//console.log('replace url  ', url);
+        url = url.replaceAll('&amp;', '&');//console.log('replace amp url  ', url);
+        console.log('получили url для обновления   ',url);
+        window.location.href = url;
     }
 
     //Открыть форму добавления зала/фильма
@@ -397,19 +437,28 @@
         document.getElementById('countVip').value = '{{$hall->countVip}}';
         console.log('clickradio', id);
         idLast = id;
+
+        url = "{{route('admin.index',['selected_hall' => 'id', 'user'=> $user, 'films' => $films, 'halls' => $halls, 'seances'=> $seances, 'dateCurrent' => $dateCurrent, 'dateChosen'=> $dateChosen, 'seats'=> $seats])}}";
+        url = url.replace('id', id);
+        url = url.replaceAll('&amp;', '&');
+        console.log('replaceed amp url  ', url);
+        window.location.href= url
     }
 
     //Обновление инфо о ценах кресел в зале..не работает
+    /*
     function clickUpdate(id){
+
         console.log('clickradio', id);
         const json=JSON.stringify(count);
 
-        let url = "{{route('admin.updateHall', ['hall'=> $hall, 'count' => 'json'])}}";
+        //let url = "{{route('admin.updateHall', ['hall'=> $hall, 'count' => 'json'])}}";
         url = url.replace('json', json);
         url = url.replaceAll('&amp;', '&');
         console.log('replaceed amp url  ', url);
         //window.location.href= url;
     }
+    */
 
     {{--работало, но теперь не нужно
     function clickDestroy(id){
