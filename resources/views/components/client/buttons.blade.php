@@ -16,7 +16,7 @@
                                         <button onclick = "cl(id)" id="{{$item['rowNumber']}},{{$item['colNumber']}}" type="button" class="buying-scheme__chair buying-scheme__chair_vip">
                                             @break
                                             @case('FAIL')
-                                                <button type="button" class="buying-scheme__chair buying-scheme__chair_disabled">
+                                                <button id="{{$item['rowNumber']}},{{$item['colNumber']}}" type="button" class="buying-scheme__chair buying-scheme__chair_disabled">
                                                     @break
                                                     @default
                                                         <button onclick = "cl(id)" id="{{$item['rowNumber']}},{{$item['colNumber']}}" type="button" class="buying-scheme__chair buying-scheme__chair_standart">

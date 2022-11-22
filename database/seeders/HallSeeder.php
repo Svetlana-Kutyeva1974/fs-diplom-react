@@ -20,11 +20,20 @@ class HallSeeder extends Seeder
             //$seats =[$i][];
             for ($j = 1; $j <= 12; $j++) {
                 //$ii="$i$j";
-                $seats["$i,$j"] = ['NORM','VIP', 'FAIL'][array_rand(['NORM','VIP', 'FIRE'])];
+                if(($i===1 && $j===1) || ($i===1 && $j===2) || ($i===1 && $j===5) || ($i===1 && $j===3) ) {
+                    $seats["$i,$j"] = 'NORM';
+                } elseif(($i===1 && $j===4) || ($i===1 && $j===6)) {
+                    $seats["$i,$j"] = 'VIP';
+                } else {
+                    $seats["$i,$j"] = ['NORM','VIP', 'FAIL'][array_rand(['NORM','VIP', 'FAIL'])];
+                }
+                $seats2["$i,$j"] =['NORM','VIP', 'FAIL'][array_rand(['NORM','VIP', 'FAIL'])];
             }
         }
         //dump($seats);
         $seats = json_encode($seats);
+        $seats2 = json_encode($seats2);
+
         DB::table('halls')->insert([
             'nameHall' => 'Зал 1',
             'col' => 12,
@@ -42,7 +51,7 @@ class HallSeeder extends Seeder
             'countVip' => 1000,
             'countNormal' => 500,
             'open'=> true,
-            'typeOfSeats' => $seats,
+            'typeOfSeats' => $seats2,
         ]);
     }
 }

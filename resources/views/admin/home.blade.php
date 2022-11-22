@@ -106,8 +106,11 @@
             <ul class="conf-step__selectors-box">
 
                 @foreach ($halls as $hall)
+                    {{--dump($halls)--}}
+                    {{--dump($selected_hall)--}}
+                {{--dump($halls->where('id',$selected_hall))--}}
                     <li>
-                        {{$selected_hall}}
+                        {{--$selected_hall--}}
                         @if($hall->id === $selected_hall )
                             <input id="{{$hall->id}}" onclick = "clickRadio(id)" type="radio" class="conf-step__radio" name="chairs-hall" value="{{$hall->nameHall}}" checked><span class="conf-step__selector">{{$hall->nameHall}}</span></li>
                     @else
@@ -134,7 +137,7 @@
                 $selected = [];
             @endphp
 
-            <x-admin.buttons :seats="$seats" :seance="$seances" :film="$films" :hall="$halls[$selected_hall-1]" :selected="$selected">
+            <x-admin.buttons :seats="$seats" :seance="$seances" :film="$films" :hall="$halls->where('id', $selected_hall)[0]" :selected="$selected">
             </x-admin.buttons>
 
         </div>
@@ -354,9 +357,9 @@
 
     }
 
-    function editSeats(){
+    function editSeats(id){
         // Меняем массив typeOfSeats - типы мест в зале(нажатие сохранить)
-
+        console.log('id hall', id);
         //let newTypeOfSeats= {};
         let newTypeOfSeats= [];
         Array.of(document.querySelectorAll('button.conf-step__chair')).forEach((element, index, array) => {
@@ -379,10 +382,11 @@
 
         const json=JSON.stringify(newTypeOfSeats);//console.log('json  selectedddd', json);
         //let url = "{{route('admin.editHall', ['hall'=> $hall, 'newTypeOfSeats' => 'json', 'user'=> $user, 'films' => $films, 'halls' => $halls, 'seances'=> $seances, 'dateCurrent' => $dateCurrent, 'dateChosen'=> $dateChosen, 'seats'=> $seats])}}";
-        let url = "{{route('admin.editHall', ['hall'=> $halls[$selected_hall-1], 'newTypeOfSeats' => 'json'])}}";
+        let url = "{{route('admin.editHall', ['hall'=> 'hl', 'newTypeOfSeats' => 'json'])}}";
 
         //console.log('url   ',url);console.log('selected url  ', selected);
-
+        //let hl= JSON.stringify('$halls->where('id', $selected_hall)[0]');
+        url = url.replace('hl', id);
         url = url.replace('json', json);//console.log('replace url  ', url);
         url = url.replaceAll('&amp;', '&');//console.log('replace amp url  ', url);
         console.log('получили url для обновления   ',url);
@@ -437,12 +441,14 @@
         document.getElementById('countVip').value = '{{$hall->countVip}}';
         console.log('clickradio', id);
         idLast = id;
+        alert( idLast);
 
-        url = "{{route('admin.index',['selected_hall' => 'id', 'user'=> $user, 'films' => $films, 'halls' => $halls, 'seances'=> $seances, 'dateCurrent' => $dateCurrent, 'dateChosen'=> $dateChosen, 'seats'=> $seats])}}";
+        url = "{{route('admin.home',['selected_hall' => 'id', 'user'=> $user, 'films' => $films, 'halls' => $halls, 'seances'=> $seances, 'dateCurrent' => $dateCurrent, 'dateChosen'=> $dateChosen, 'seats'=> $seats])}}";
         url = url.replace('id', id);
         url = url.replaceAll('&amp;', '&');
         console.log('replaceed amp url  ', url);
-        window.location.href= url
+        //alert(url);
+        //window.location.href= url
     }
 
     //Обновление инфо о ценах кресел в зале..не работает

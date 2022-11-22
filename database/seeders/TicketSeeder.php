@@ -18,36 +18,36 @@ class TicketSeeder extends Seeder
 
         DB::table('tickets')->insert([
             //'date' => date_format(date_create('now'), 'Y-m-d'),
-            'qrCod' => Hash::make('qrCod1'),
+            'qrCod' => Hash::make('Фильм : Атака, сеанс 1, ряд 1, место 6, стоимость 1000'),
             'seance_id' => 1,
             'film_id' => 1,
             'count' => 1000,
         ]);
 
         DB::table('tickets')->insert([
-            'qrCod' => Hash::make('qrCod2'),
+            'qrCod' => Hash::make('Фильм : 2, сеанс 1, ряд 1, место 5, стоимость 500'),
             'seance_id' => 1,
-            'film_id' => 2,
-            'count' => 500,
-        ]);
-
-        DB::table('tickets')->insert([
-            'qrCod' => Hash::make('qrCod3'),
-            'seance_id' => 1,
-            'film_id' => 2,
-            'count' => 1000,
-        ]);
-
-        DB::table('tickets')->insert([
-            'qrCod' => Hash::make('qrCod4'),
-            'seance_id' => 3,
             'film_id' => 1,
             'count' => 500,
         ]);
 
         DB::table('tickets')->insert([
-            'qrCod' => Hash::make('qrCod5'),
-            'seance_id' => 2,
+            'qrCod' => Hash::make('Фильм : 2, сеанс 1, ряд 1, место 3, ряд 1, место 4,стоимость 1500'),
+            'seance_id' => 1,
+            'film_id' => 1,
+            'count' => 1500,
+        ]);
+
+        DB::table('tickets')->insert([
+            'qrCod' => Hash::make('Фильм : Атака, сеанс 3, ряд 1, место 2, стоимость 500'),
+            'seance_id' => 1,
+            'film_id' => 1,
+            'count' => 500,
+        ]);
+
+        DB::table('tickets')->insert([
+            'qrCod' => Hash::make('Фильм : Атака, сеанс 2, ряд 1, место 1, стоимость 500'),
+            'seance_id' => 1,
             'film_id' => 1,
             'count' => 500,
         ]);

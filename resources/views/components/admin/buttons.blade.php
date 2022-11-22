@@ -33,8 +33,8 @@
 </div>
 
 <fieldset class="conf-step__buttons text-center">
-<button onclick = "window.location.href='{{route('admin.index')}}'" href="#" class="conf-step__button conf-step__button-regular">Отмена</button>
-<input onclick="editSeats()" type="submit" value="Сохранить" class="conf-step__button conf-step__button-accent">
+<button onclick = "window.location.href='{{route('admin.home')}}'" href="#" class="conf-step__button conf-step__button-regular">Отмена</button>
+<input id="{{ $hall->{'id'} }}" onclick="editSeats(id)" type="submit" value="Сохранить" class="conf-step__button conf-step__button-accent">
 </fieldset>
 
 
