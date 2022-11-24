@@ -130,7 +130,8 @@ class SeatController extends Controller
             $seatts[$i]->save();//$this->update($seatts[$i]);
         }
         //dump('изменили');//dd($seatts);dd($count_ticket);
-        return redirect()->route('client.ticket',['count'=> $count_ticket,'selected'=> $selected, 'film' => $film, 'hall' => $hall, 'seance'=> $seance, 'dateChosen'=> $dateChosen, 'seats'=> $seats]);
+        //return redirect()->route('client.ticket',['count'=> $count_ticket,'selected'=> $selected, 'film' => $film, 'hall' => $hall, 'seance'=> $seance, 'dateChosen'=> $dateChosen, 'seats'=> $seats]);
+        return redirect()->route('client.ticket.create',['count'=> $count_ticket,'selected'=> $selected, 'film' => $film, 'hall' => $hall, 'seance'=> $seance, 'dateChosen'=> $dateChosen, 'seats'=> $seats]);
 
     }
 
