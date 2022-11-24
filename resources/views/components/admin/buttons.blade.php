@@ -14,13 +14,25 @@
                     @switch(json_decode($hall->{'typeOfSeats'})->{"$i,$j"})
                         @case('VIP')
                             {{-- json_decode($hall->{'typeOfSeats'})->{"$i,$j"} --}}
-                            <button onclick = "select(id)" id="{{ "$i,$j"}} {{ json_decode($hall->{'typeOfSeats'})->{"$i,$j"} }}" type="button"  {{ json_decode($hall->{'typeOfSeats'})->{"$i,$j"} }}" class="conf-step__chair conf-step__chair_vip">
-                                @break
+                            @if ($disabled === true)
+                                <button onclick = "select(id)" id="{{ "$i,$j"}} {{ json_decode($hall->{'typeOfSeats'})->{"$i,$j"} }}" type="button"  {{ json_decode($hall->{'typeOfSeats'})->{"$i,$j"} }}" class="conf-step__chair conf-step__chair_vip" disabled>
+                            @else
+                            <button onclick = "select(id)" id="{{ "$i,$j"}} {{ json_decode($hall->{'typeOfSeats'})->{"$i,$j"} }}" type="button"  {{ json_decode($hall->{'typeOfSeats'})->{"$i,$j"} }}" class="conf-step__chair conf-step__chair_vip" >
+                            @endif
+                            @break
                                 @case('FAIL')
+                                    @if ($disabled === true)
+                                        <button onclick = "select(id)" id="{{ "$i,$j"}} {{ json_decode($hall->{'typeOfSeats'})->{"$i,$j"} }}"  type="button" {{ json_decode($hall->{'typeOfSeats'})->{"$i,$j"} }}" class="conf-step__chair conf-step__chair_disabled" disabled>
+                                     @else
                                     <button onclick = "select(id)" id="{{ "$i,$j"}} {{ json_decode($hall->{'typeOfSeats'})->{"$i,$j"} }}"  type="button" {{ json_decode($hall->{'typeOfSeats'})->{"$i,$j"} }}" class="conf-step__chair conf-step__chair_disabled">
+                                     @endif
                                         @break
                                         @default
-                                            <button onclick = "select(id)" id="{{  "$i,$j" }} {{ json_decode($hall->{'typeOfSeats'})->{"$i,$j"} }}" type="button" {{ json_decode($hall->{'typeOfSeats'})->{"$i,$j"} }}" class="conf-step__chair conf-step__chair_standart">
+                                             @if ($disabled === true)
+                                                <button onclick = "select(id)" id="{{  "$i,$j" }} {{ json_decode($hall->{'typeOfSeats'})->{"$i,$j"} }}" type="button" {{ json_decode($hall->{'typeOfSeats'})->{"$i,$j"} }}" class="conf-step__chair conf-step__chair_standart" disabled >
+                                            @else
+                                                 <button onclick = "select(id)" id="{{  "$i,$j" }} {{ json_decode($hall->{'typeOfSeats'})->{"$i,$j"} }}" type="button" {{ json_decode($hall->{'typeOfSeats'})->{"$i,$j"} }}" class="conf-step__chair conf-step__chair_standart" >
+                                            @endif
                     @endswitch
                 @endfor
             </div>

@@ -55,7 +55,7 @@
                         @csrf
                         @method('DELETE')
                         <li>{{$hall->nameHall}}
-                        <button id="{{$hall->id}}"  class="conf-step__button conf-step__button-trash">
+                        <button id="{{$hall->id}}"  class="conf-step__button conf-step__button-trash"  >
                         </button>
                         </li>
                     </form>
@@ -104,24 +104,32 @@
         <div class="conf-step__wrapper">
             <p class="conf-step__paragraph">Выберите зал для конфигурации:</p>
             <ul class="conf-step__selectors-box">
-
+                @php
+                    $i= '0';
+                    $count = count($halls);
+                    //dump($count);
+                    dump($selected_hall);
+                    //dump($halls);
+                @endphp
                 @foreach ($halls as $hall)
 
-                    {{--dump($selected_hall)--}}
-                {{--dd($halls->where('id',$selected_hall))--}}
-                    <li>
-                        {{--$selected_hall--}}{{--dd(count($halls))--}}
-                        @if($hall->id === $selected_hall )
+                    {{--dump($selected_hall)--}} {{--dd($halls->where('id',$selected_hall))--}}
+                    <li>{{--$selected_hall--}}{{--dd(count($halls))--}}
+                        @if($hall->id === $selected_hall) {{-- @if($i === $selected_hall ))   id="{{$hall->id}}"--}}
                             <input id="{{$hall->id}}" onclick = "clickRadio(id)" type="radio" class="conf-step__radio" name="chairs-hall" value="{{$hall->nameHall}}" checked><span class="conf-step__selector">{{$hall->nameHall}}</span></li>
                     @else
                         <input id="{{$hall->id}}" onclick = "clickRadio(id)" type="radio" class="conf-step__radio" name="chairs-hall" value="{{$hall->nameHall}}"><span class="conf-step__selector">{{$hall->nameHall}}</span></li>
                         @endif
                         </li>
+                        @php
+                        $i = (string) ($i + 1);
+                        @endphp
                         @endforeach
+
             </ul>
             <p class="conf-step__paragraph">Укажите количество рядов и максимальное количество кресел в ряду:</p>
             <div class="conf-step__legend">
-                <label class="conf-step__label">Рядов, шт<input id="countRow" type="text" class="conf-step__input" placeholder="{{$halls->where('id', $selected_hall)[0]->row}}" value="{{$halls->where('id', $selected_hall)[0]->row}}"></label>
+                <label class="conf-step__label">Рядов, шт<input id="countRow" type="text" class="conf-step__input" placeholder="{{$halls->where('id', $selected_hall)[0]->row}}" value="{{$halls->where('id', $selected_hall)[0]->row}}" ></label>
                 <span class="multiplier">x</span>
                 <label class="conf-step__label">Мест, шт<input id="countCol" type="text" class="conf-step__input" placeholder="{{$halls->where('id', $selected_hall)[0]->col}}" value="{{$halls->where('id', $selected_hall)[0]->col}}" ></label>
             </div>
@@ -136,8 +144,10 @@
             {{--}}@php
                 $selected = [];
             @endphp
---}}
-            <x-admin.buttons :seats="$seats" :seance="$seances" :film="$films" :hall="$halls->where('id', $selected_hall)[0]" :selected_hall="$selected_hall">
+--}}        @php
+                $isTrue = false;
+            @endphp
+            <x-admin.buttons :disabled="$isTrue" :seats="$seats" :seance="$seances" :film="$films" :hall="$halls->where('id', $selected_hall)[0]" :selected_hall="$selected_hall">
             </x-admin.buttons>
             {{--<x-admin.buttons :seats="$seats" :seance="$seances" :film="$films" :hall="$halls[$selected_hall-1]" :selected_hall="$selected_hall">
             </x-admin.buttons>--}}
@@ -155,7 +165,7 @@
             <ul class="conf-step__selectors-box">
                 @foreach ($halls as $hall)
                     <li>
-                        @if($hall->id === "2" )
+                        @if($hall->id === $selected_hall)
                             <input id="{{$hall->id}}" onclick = "clickRadio(id)" type="radio" class="conf-step__radio" name="prices-hall" value="{{$hall->nameHall}}" checked><span class="conf-step__selector">{{$hall->nameHall}}</span></li>
                         @else
                     <input id="{{$hall->id}}" onclick = "clickRadio(id)" type="radio" class="conf-step__radio" name="prices-hall" value="{{$hall->nameHall}}"><span class="conf-step__selector">{{$hall->nameHall}}</span></li>
@@ -309,7 +319,8 @@
         </header>
         <div class="conf-step__wrapper text-center">
             <p class="conf-step__paragraph">Всё готово, теперь можно:</p>
-            <button class="conf-step__button conf-step__button-accent">Открыть продажу билетов</button>
+            <button id="open" class="conf-step__button conf-step__button-accent active">Открыть продажу билетов</button>
+            {{--}}<button id="open" class="conf-step__button conf-step__button-accent">Приостановить продажу билетов</button>--}}
         </div>
     </section>
 </main>
@@ -442,7 +453,8 @@
         //url = "{{route('admin.home',['selected_hall' => 'id', 'films' => $films, 'halls' => $halls, 'seances'=> $seances, 'dateCurrent' => $dateCurrent, 'dateChosen'=> $dateChosen, 'seats'=> $seats])}}";
         url = "{{ route('admin.home',['selected_hall' => 'id']) }}";
         //url = "{{route('admin.home',['selected_hall' => 'id', 'user' => $user,'films' => $films, 'halls' => $halls, 'seances'=> $seances, 'dateCurrent' => $dateCurrent, 'dateChosen'=> $dateChosen, 'seats'=> $seats])}}";
-        url = url.replace('id', id);
+        idi = String(id);
+        url = url.replace('id', idi);
         url = url.replaceAll('&amp;', '&');
         console.log('replaceed amp url  ', url);
         alert(url);
