@@ -43,12 +43,23 @@ Route::group([ 'middleware' => 'auth'  ],  function () {
 });
 
 
-//Route::get('/hall', [App\Http\Controllers\SeatController::class, 'index'])->name('client.hall');
 Route::get('/hall', [App\Http\Controllers\HallController::class, 'show'])->name('client.hall');
-
 Route::get('/ticket', [App\Http\Controllers\TicketController::class, 'index'])->name('client.ticket');
 Route::any('/seat', [App\Http\Controllers\SeatController::class, 'edit'])->name('client.seat');
 Route::get('/ticket/create', [App\Http\Controllers\TicketController::class, 'create'])->name('client.ticket.create');
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

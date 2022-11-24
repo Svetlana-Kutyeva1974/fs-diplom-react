@@ -28,6 +28,7 @@ class TicketController extends Controller
      */
     public function index(Request $request)
     {
+        //Переход на роут отображения билета клиенту
         $film = $request['film'] ?? Film::all()->first();
         $hall = $request['hall'] ?? Hall::all()->first();
         $dateChosen = $request['dateChosen'] ?? substr(Carbon::now(), 0, 10);//'2022-11-05 16:00:22'
@@ -38,7 +39,6 @@ class TicketController extends Controller
         $count_ticket = $request['count'] ?? [];
         $qrCod = $request['qrCod'] ?? [];
         return view('client.ticket',[ 'qrCod'=> $qrCod, 'count'=> $count_ticket, 'selected'=> $selected, 'film' => $film, 'hall' => $hall, 'seance'=> $seance, 'dateChosen'=> $dateChosen, 'seats'=> $seats]);
-        //
     }
 
     /**
@@ -48,10 +48,8 @@ class TicketController extends Controller
      */
     public function create(Request $request, Ticket $ticket)
     {
-        //$ticket = new Ticket();//return Ticket::create($request->validated());
-        //Ticket::create([
+        //$ticket = new Ticket();//return Ticket::create($request->validated());//Ticket::create([
         //dump($request->all());
-
         $film = $request['film'] ?? Film::all()->first();
         $hall = $request['hall'] ?? Hall::all()->first();
         $selected = $request['selected'] ?? [];
@@ -61,16 +59,14 @@ class TicketController extends Controller
         $seats = $request['seats'] ?? $seatnull;
         $dateChosen = $request['dateChosen'] ?? substr(Carbon::now(), 0, 10);//'2022-11-05 16:00:22'
 
-        //Подготовка qr
-
+        //Подготовка qr string
         $string = 'зал: '.$hall['nameHall'].', фильм: '.$film['title'].', начало сеанса: '.substr($seance['startSeance'], -8, 5).', стоимость билета: '.$count_ticket;
-                foreach(json_decode($selected) as $item) {
-
-                    //Подготовка строки кодировки
-                    $int = (int)$hall['col'];
-                    $string .= ", ряд " . explode(',', $item)[0] . " место" . (explode(',', $item)[1] + (explode(',', $item)[0] - 1) * $int);
-                }
-
+            foreach(json_decode($selected) as $item) {
+                //Подготовка строки кодировки
+                $int = (int)$hall['col'];
+                $string .= ", ряд " . explode(',', $item)[0] . " место" . (explode(',', $item)[1] + (explode(',', $item)[0] - 1) * $int);
+            }
+        //Создание билета
         DB::table('tickets')->insert([
             'qrCod' => $string,
             'film_id' => $film['id'],
@@ -79,6 +75,7 @@ class TicketController extends Controller
             'created_at' => Carbon::now(), //date("Y-m-d H:i:s"),//Carbon::now()
             'updated_at' => Carbon::now(),//date("Y-m-d H:i:s"),//Carbon::now()
         ]);
+        //Переход на роут отображения билета клиенту
         return redirect()->route('client.ticket',['qrCod'=> $string, 'count'=> $count_ticket, 'selected'=> $selected, 'film' => $film, 'hall' => $hall, 'seance'=> $seance, 'dateChosen'=> $dateChosen, 'seats'=> $seats]);
     }
 
