@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Film;
 use App\Models\Hall;
+use App\Models\Seance;
+use App\Models\Seat;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -78,9 +81,18 @@ class HallController extends Controller
      * @param  \App\Models\Hall  $hall
      * @return \Illuminate\Http\Response
      */
-    public function show(Hall $hall)
+    //public function show(Hall $hall)
+    public function show(Request $request)
     {
-        //
+        $film = $request->film ?? Film::all()->first();//
+        $hall = $request->hall ?? Hall::all()->first();
+        $dateChosen = $request->dateChosen ?? substr(Carbon::now(), 0, 10);//'2022-11-05 16:00:22'
+        $seance = $request->seance ?? Seance::all()->where('startSeance', Carbon::now())->first();
+        $seats = $request->seats ?? Seat::all()->where('seance_id', $seance['id'])->where('hall_id', $hall['id']);
+
+            //dump($seats.'  seatttttt');dump($seat->where('seance_id', $seance['id']));
+            //dump($seance['id'].'    по id');
+        return view('client.hall', ['seats'=> $seats, 'film' => $film, 'hall' => $hall, 'seance'=> $seance,  'dateChosen'=> $dateChosen]);
     }
 
     /**

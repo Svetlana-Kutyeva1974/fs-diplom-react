@@ -60,13 +60,13 @@
             //console.log('выбрано:', selected);
             const json=JSON.stringify(selected);//console.log('json  selectedddd', json);
 
-            let url = "{{route('client.ticket', ['hall'=> $hall, 'seance'=> $seance, 'film'=> $film, 'dateChosen'=> $dateChosen, 'seats'=> $seats->where('hall_id', $hall['id'])->where('seance_id', $seance['id']), 'selected' => 'json'])}}";
+            //let url = "{{route('client.ticket', ['hall'=> $hall, 'seance'=> $seance, 'film'=> $film, 'dateChosen'=> $dateChosen, 'seats'=> $seats->where('hall_id', $hall['id'])->where('seance_id', $seance['id']), 'selected' => 'json'])}}";
 
             // Надо перенаправить сначала на роут
-            // сохранения новых характеристик выбранных мест и создания нового тикета. Пока не реализовано
-            /*
+            // сохранения новых характеристик выбранных мест и создания нового тикета:
+
             let url = "{{route('client.seat', ['hall'=> $hall, 'seance'=> $seance, 'film'=> $film, 'dateChosen'=> $dateChosen, 'seats'=> $seats->where('hall_id', $hall['id'])->where('seance_id', $seance['id']), 'selected' => 'json'])}}";
-            */
+
             //console.log('url   ',url);console.log('selected url  ', selected);
 
             url = url.replace('json', json);//console.log('replace url  ', url);
