@@ -36,6 +36,7 @@
             </p>
             <p class="ticket__info">В зале: <span class="ticket__details ticket__hall">{{$hall['id']}}</span></p>
             <p class="ticket__info">Начало сеанса: <span class="ticket__details ticket__start">{{substr($seance['startSeance'], -8, 5)}}</span></p>
+            <p class="ticket__info">Стоимость билета: <span class="ticket__details ticket__hall">{{$count}}{{' руб.'}}</span></p>
             {{--<img class="ticket__info-qr" src="i/qr-code.png">--}}
             @php
                 echo '<img class="ticket__info-qr" src="i/qr.png">';

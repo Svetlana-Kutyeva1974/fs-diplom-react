@@ -72,10 +72,12 @@ class SeatController extends Controller
     //public function edit(Request $request, Seat $seat)
     public function edit (Request $request)
     {
-        //изменить у выбранных мест параметры в базе
+        //изменить у выбранных мест параметры в базе+ определить стоимость
         //dump($request->all());
         $film = $request['film'] ?? Film::all()->first();//$request['amp;dateChosen']
         $hall = $request['hall'] ?? Hall::all()->first();
+        $hall_decode = json_decode($hall['typeOfSeats'], true);// хочу массив , тогда true
+        var_dump($hall_decode);
         //dump($request['amp;film']);
         $dateChosen = $request['dateChosen'] ?? substr(Carbon::now(), 0, 10);//'2022-11-05 16:00:22'
         //dump($dateChosen);
@@ -103,13 +105,12 @@ class SeatController extends Controller
         }
        // dump('сколько выбрано мест'.count($seatts));//
         $ticket= count(Ticket::all());
+        $count_ticket = 0;
         /*foreach($seatts as $s) {
              $s["free"]= '0';
              $s["ticket_id"]= ($ticket+1);
          $ticket++;
         }*/
-
-
 
         for ($i = 0, $iMax = count($seatts); $i < $iMax; $i ++) {
             //var_dump($seatts[$i]);dump($seatts[$i]);
@@ -117,10 +118,19 @@ class SeatController extends Controller
             $seatts[$i]["free"]= "0";
             $seatts[$i]["ticket_id"]= (string) ($ticket+1);
             $ticket++;
+            $ij = $seatts[$i]['rowNumber'].','.$seatts[$i]['colNumber'];
+            //dd($ij);
+            if($hall_decode[$ij]==='NORM') {
+                $count_ticket += $hall['countNormal'];
+            }
+            if($hall_decode[$ij]==='VIP') {
+                $count_ticket += $hall['countVip'];
+            }
+
             $seatts[$i]->save();//$this->update($seatts[$i]);
         }
-        //dump('изменили');//dd($seatts);
-        return redirect()->route('client.ticket',['selected'=> $selected, 'film' => $film, 'hall' => $hall, 'seance'=> $seance, 'dateChosen'=> $dateChosen, 'seats'=> $seats]);
+        //dump('изменили');//dd($seatts);dd($count_ticket);
+        return redirect()->route('client.ticket',['count'=> $count_ticket,'selected'=> $selected, 'film' => $film, 'hall' => $hall, 'seance'=> $seance, 'dateChosen'=> $dateChosen, 'seats'=> $seats]);
 
     }
 
