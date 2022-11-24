@@ -15,9 +15,7 @@ class TicketSeeder extends Seeder
      */
     public function run()
     {
-
         DB::table('tickets')->insert([
-            //'date' => date_format(date_create('now'), 'Y-m-d'),
             'qrCod' => Hash::make('Фильм : Атака, сеанс 1, ряд 1, место 6, стоимость 1000'),
             'seance_id' => 1,
             'film_id' => 1,

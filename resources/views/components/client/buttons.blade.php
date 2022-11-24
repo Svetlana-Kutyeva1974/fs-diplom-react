@@ -52,25 +52,18 @@
     function arr2(event){
         const selected = [];
         Array.of(document.querySelectorAll('button.buying-scheme__chair_selected')).forEach((element, index, array) => {
-            //console.log('кнопка', index); //console.log('array', array);
-
             for(let i=0; i<element.length; i++) {
                 selected.push(element[i].id);
-            }
-            //console.log('выбрано:', selected);
+            }//console.log('выбрано:', selected);
             const json=JSON.stringify(selected);//console.log('json  selectedddd', json);
 
-            //let url = "{{route('client.ticket', ['hall'=> $hall, 'seance'=> $seance, 'film'=> $film, 'dateChosen'=> $dateChosen, 'seats'=> $seats->where('hall_id', $hall['id'])->where('seance_id', $seance['id']), 'selected' => 'json'])}}";
-
+            // заглушка была: let url = "{{route('client.ticket', ['hall'=> $hall, 'seance'=> $seance, 'film'=> $film, 'dateChosen'=> $dateChosen, 'seats'=> $seats->where('hall_id', $hall['id'])->where('seance_id', $seance['id']), 'selected' => 'json'])}}";
             // Надо перенаправить сначала на роут
-            // сохранения новых характеристик выбранных мест и создания нового тикета:
+            // сохранения новых характеристик выбранных мест и потом создания нового тикета:
 
             let url = "{{route('client.seat', ['hall'=> $hall, 'seance'=> $seance, 'film'=> $film, 'dateChosen'=> $dateChosen, 'seats'=> $seats->where('hall_id', $hall['id'])->where('seance_id', $seance['id']), 'selected' => 'json'])}}";
-
-            //console.log('url   ',url);console.log('selected url  ', selected);
-
-            url = url.replace('json', json);//console.log('replace url  ', url);
-            url = url.replaceAll('&amp;', '&');//console.log('replace amp url  ', url);
+            url = url.replace('json', json);
+            url = url.replaceAll('&amp;', '&');
             window.location.href = url;
         });
     }

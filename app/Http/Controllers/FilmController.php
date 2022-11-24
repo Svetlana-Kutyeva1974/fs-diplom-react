@@ -30,9 +30,7 @@ class FilmController extends Controller
      */
     public function create(Request $request)
     {
-        var_dump($request->all());
-        //dd($request["imagePath"]);
-        //dd($input->all());
+        //var_dump($request->all());//dd($request["imagePath"]);
         DB::table('films')->insert([
             'title' => $request["title"],
             'description' => $request["description"],
@@ -52,8 +50,9 @@ class FilmController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request): JsonResponse
+    public function store(Request $request)//: JsonResponse
     {
+        /*
         try {
             $all = $request->all();
             $newFilm = Film::create($all);
@@ -66,7 +65,7 @@ class FilmController extends Controller
             return response()->json([
                 'status' => 'error',
             ], 500);
-        }
+        }*/
     }
 
     /**
@@ -125,7 +124,6 @@ class FilmController extends Controller
                 $film->seance()->where('hall_id', '=', 1)->get();
             }
             /*$category = Category::find(1);
-
             foreach ($category->posts as $post) {
                 dump($post->title);
             }*/

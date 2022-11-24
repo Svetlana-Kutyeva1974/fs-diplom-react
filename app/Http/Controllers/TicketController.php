@@ -48,8 +48,7 @@ class TicketController extends Controller
      */
     public function create(Request $request, Ticket $ticket)
     {
-        //$ticket = new Ticket();//return Ticket::create($request->validated());//Ticket::create([
-        //dump($request->all());
+        //$ticket = new Ticket();//return Ticket::create($request->validated());//Ticket::create([//dump($request->all());
         $film = $request['film'] ?? Film::all()->first();
         $hall = $request['hall'] ?? Hall::all()->first();
         $selected = $request['selected'] ?? [];

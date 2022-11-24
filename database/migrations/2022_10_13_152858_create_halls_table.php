@@ -25,6 +25,7 @@ class CreateHallsTable extends Migration
         }
         $seats = json_encode($seats);
         */
+        // По умолчанию все места standart
         Schema::create('halls', function (Blueprint $table) {
             $table->id();
             $table->timestamps();

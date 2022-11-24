@@ -89,9 +89,7 @@ class HallController extends Controller
         $dateChosen = $request->dateChosen ?? substr(Carbon::now(), 0, 10);//'2022-11-05 16:00:22'
         $seance = $request->seance ?? Seance::all()->where('startSeance', Carbon::now())->first();
         $seats = $request->seats ?? Seat::all()->where('seance_id', $seance['id'])->where('hall_id', $hall['id']);
-
-            //dump($seats.'  seatttttt');dump($seat->where('seance_id', $seance['id']));
-            //dump($seance['id'].'    по id');
+        //Показ конфигурации зала для выбора мест
         return view('client.hall', ['seats'=> $seats, 'film' => $film, 'hall' => $hall, 'seance'=> $seance,  'dateChosen'=> $dateChosen]);
     }
 
@@ -105,39 +103,25 @@ class HallController extends Controller
     {
         //dump($request->all());
         $hall1 = $request['hall'];
-        //dump($request['hall']);
-
-        //dump($hall1['id']);
-        //dump(json_decode($request['newTypeOfSeats']));
+        //dump($request['hall']);//dump($hall1['id']);//dump(json_decode($request['newTypeOfSeats']));
 
         $hall_new_decode = json_decode($request['newTypeOfSeats']);
         $hall_decode = json_decode($hall1['typeOfSeats']);
-        //dump('Неизмененный масс');
-       // dump($hall_decode);
-
         $i=0;
         foreach ($hall_decode as $key => $value) {
             $hall_decode->{$key} = $hall_new_decode[$i]->{"value"};
             //dump($key."value ".$hall_decode->{$key}."new  ". $hall_new_decode[$i]->{"value"});
             $i++;
         }
-        //dump($hall_decode);
         $hall1['typeOfSeats'] = json_encode($hall_decode, JSON_THROW_ON_ERROR);
-        //var_dump($hall1);
 
         $hall=Hall::find($hall1['id']);
-        //dump('Нашли ');
-        //dump($hall);
         $hall['typeOfSeats'] = $hall1['typeOfSeats'];
-        $hall->save();
-        //dump('изменилис');
-        //dump($hall1['id']);
-        //dump($hall);
+        $hall->save();       //dump('изменилис');//dump($hall1['id']);//dump($hall);
 
         //return redirect()->route('admin.index', ['selected_hall' => $hall1['id']]);
         return redirect()->route('admin.home');
         //return view('admin.index',['selected_hall' => $hall1['id'], 'user'=> $request->user, 'films' => $request->films, 'halls' => $request->halls, 'seances'=> $request->seances, 'dateCurrent' => $request->dateCurrent, 'dateChosen'=> $request->dateChosen, 'seats'=> $request->seats]);
-
     }
 
     /**

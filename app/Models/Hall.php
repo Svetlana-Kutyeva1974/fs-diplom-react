@@ -19,8 +19,7 @@ class Hall extends Model
         'countVip',
         'countNormal',
         'open',
-        'typesOfSeats'
-        //'id_seance',
+        'typesOfSeats',
     ];
     /**
      * Return seances in this room

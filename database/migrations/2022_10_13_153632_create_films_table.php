@@ -22,7 +22,6 @@ class CreateFilmsTable extends Migration
             $table->string('origin');
             $table->string('imagePath');
             $table->string('imageText');
-            //$table->integer('seance_id');
         });
     }
 

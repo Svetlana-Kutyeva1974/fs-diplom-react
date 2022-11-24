@@ -116,6 +116,7 @@ class SeanceController extends Controller
 
     public function seances($film_id, $hall_id): \Illuminate\Http\JsonResponse
     {
+
             $seance= DB::table('seances')->where([['film_id','=', 1],['hall_id', '=', 1]])->get();
             return response()->json([
                 'success' => true,

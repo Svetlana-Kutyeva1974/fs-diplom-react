@@ -30,7 +30,6 @@ class HallSeeder extends Seeder
                 $seats2["$i,$j"] =['NORM','VIP', 'FAIL'][array_rand(['NORM','VIP', 'FAIL'])];
             }
         }
-        //dump($seats);
         $seats = json_encode($seats);
         $seats2 = json_encode($seats2);
 

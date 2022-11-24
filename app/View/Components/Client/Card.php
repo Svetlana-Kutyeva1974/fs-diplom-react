@@ -2,13 +2,7 @@
 
 namespace App\View\Components\Client;
 
-use App\Models\Film;
-use App\Models\Hall;
-use App\Models\Seance;
 use Illuminate\View\Component;
-use stdClass;
-use function MongoDB\BSON\fromJSON;
-use function MongoDB\BSON\toJSON;
 
 class Card extends Component
 {
