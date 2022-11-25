@@ -67,7 +67,7 @@ class TicketController extends Controller
             }
         //Создание билета
         DB::table('tickets')->insert([
-            'qrCod' => $string,
+            'qrCod' => Hash::make($string),
             'film_id' => $film['id'],
             'count' => $request['count'],
             'seance_id' => $seance['id'],//Hash::make('секрет'),

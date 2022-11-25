@@ -105,27 +105,30 @@
             <p class="conf-step__paragraph">Выберите зал для конфигурации:</p>
             <ul class="conf-step__selectors-box">
                 @php
-                    $i= '0';
-                    $count = count($halls);
-                    //dump($count);
-                    dump($selected_hall);
+                    //$i= '0';
+                    //$count = count($halls);
                     //dump($halls);
+                    //dump($selected_hall);
+                    //dump($hall->id);
                 @endphp
                 @foreach ($halls as $hall)
-
+                    {{--var_dump($hall)--}}
                     {{--dump($selected_hall)--}} {{--dd($halls->where('id',$selected_hall))--}}
                     <li>{{--$selected_hall--}}{{--dd(count($halls))--}}
-                        @if($hall->id === $selected_hall) {{-- @if($i === $selected_hall ))   id="{{$hall->id}}"--}}
+                        @if($hall->{'id'} === $selected_hall) {{-- @if($i === $selected_hall ))   id="{{$hall->id}}"--}}
+                           {{-- var_dump($hall)--}}
+                        @php
+
+                            $hall_sel= $hall;
+                            //dump($selected_hall);
+                            //dump($hall_sel);
+                        @endphp
                             <input id="{{$hall->id}}" onclick = "clickRadio(id)" type="radio" class="conf-step__radio" name="chairs-hall" value="{{$hall->nameHall}}" checked><span class="conf-step__selector">{{$hall->nameHall}}</span></li>
                     @else
                         <input id="{{$hall->id}}" onclick = "clickRadio(id)" type="radio" class="conf-step__radio" name="chairs-hall" value="{{$hall->nameHall}}"><span class="conf-step__selector">{{$hall->nameHall}}</span></li>
                         @endif
                         </li>
-                        @php
-                        $i = (string) ($i + 1);
-                        @endphp
                         @endforeach
-
             </ul>
             <p class="conf-step__paragraph">Укажите количество рядов и максимальное количество кресел в ряду:</p>
             <div class="conf-step__legend">
@@ -147,7 +150,9 @@
 --}}        @php
                 $isTrue = false;
             @endphp
-            <x-admin.buttons :disabled="$isTrue" :seats="$seats" :seance="$seances" :film="$films" :hall="$halls->where('id', $selected_hall)[0]" :selected_hall="$selected_hall">
+            {{--dd($halls->where('id', $selected_hall))--}}
+
+            <x-admin.buttons :disabled="$isTrue" :seats="$seats" :seance="$seances" :film="$films" :hall="$halls[$selected_hall-1]" :selected_hall="$selected_hall">
             </x-admin.buttons>
             {{--<x-admin.buttons :seats="$seats" :seance="$seances" :film="$films" :hall="$halls[$selected_hall-1]" :selected_hall="$selected_hall">
             </x-admin.buttons>--}}
@@ -164,8 +169,10 @@
             <p class="conf-step__paragraph">Выберите зал для конфигурации:</p>
             <ul class="conf-step__selectors-box">
                 @foreach ($halls as $hall)
+
                     <li>
                         @if($hall->id === $selected_hall)
+
                             <input id="{{$hall->id}}" onclick = "clickRadio(id)" type="radio" class="conf-step__radio" name="prices-hall" value="{{$hall->nameHall}}" checked><span class="conf-step__selector">{{$hall->nameHall}}</span></li>
                         @else
                     <input id="{{$hall->id}}" onclick = "clickRadio(id)" type="radio" class="conf-step__radio" name="prices-hall" value="{{$hall->nameHall}}"><span class="conf-step__selector">{{$hall->nameHall}}</span></li>

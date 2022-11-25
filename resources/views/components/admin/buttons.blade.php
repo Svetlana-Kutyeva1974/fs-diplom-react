@@ -1,4 +1,6 @@
-{{--dump($hall->{'id'})--}} {{--$seats->where('rowNumber', 1)--}}
+
+{{--dump($hall['id'])--}}{{--dump($selected_hall)--}} {{--$seats->where('rowNumber', 1)--}}
+{{--dump($hall->{'nameHall'})--}}
 {{-- $hall->{'id'}-- }} {{dump($selected_hall)}}
 {{--Компонент Конфигурация мест зала администратора--}}
 {{-- json_decode($hall->{'typeOfSeats'})->{"1,2"}-- }}
