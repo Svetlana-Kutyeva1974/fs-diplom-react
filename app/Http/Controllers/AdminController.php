@@ -25,6 +25,7 @@ class AdminController extends Controller
     {
         $user = Auth::user();
 
+
         /*if (! $user->is_admin) {
         return redirect('/');
         }*/

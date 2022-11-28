@@ -27,7 +27,7 @@
             <p class="ticket__info">Начало сеанса: <span class="ticket__details ticket__start">{{substr($seance['startSeance'], -8, 5)}}</span></p>
             <p class="ticket__info">Стоимость билета: <span class="ticket__details ticket__hall">{{$count}}{{' руб.'}}</span></p>
             @php
-                echo '<img class="ticket__info-qr" src="i/qr.png">';
+                echo '<img class="ticket__info-qr" src="i/qr.png" alt="$qrCod">';
             @endphp
             <p class="ticket__hint">Покажите QR-код нашему контроллеру для подтверждения бронирования.</p>
             <p class="ticket__hint">Приятного просмотра!</p>

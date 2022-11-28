@@ -17,8 +17,12 @@
     <title>ИдёмВКино</title>
     <!--<link rel="stylesheet" href="CSS/normalize.css">
     <link rel="stylesheet" href="CSS/styles.css">-->
+
     <link rel="stylesheet" href="{{ asset('css/normalizeAdmin.css') }}">
     <link rel="stylesheet" href="{{ asset('css/stylesAdmin.css') }}">
+
+    <!-- <link rel="stylesheet" href="{{ asset('css/all.css') }}">-->
+
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900&amp;subset=cyrillic,cyrillic-ext,latin-ext" rel="stylesheet">
 </head>
 
@@ -215,8 +219,12 @@
                         <form action="{{ route('admin.destroyFilm', ['id' => $film->id]) }}" method="post" onsubmit="return confirm('Удалить этот фильм?')">
                             @csrf
                             @method('DELETE')
+
+                            @php
+                                $path= 'storage/folder/'.$film->imagePath;
+                            @endphp
                             {{--Возможность удаления фильма по нажатию на изображение--}}
-                            <button><img class="conf-step__movie-poster" alt={{$film->imageText}} src={{ asset($film->imagePath)}}></button>
+                            <button><img class="conf-step__movie-poster" alt="{{$film->imageText}}" src="{{ asset($film->imagePath)}}"></button>
                             <h3 class="conf-step__movie-title">{{$film->title}}</h3>
                         <p class="conf-step__movie-duration">{{$film->duration}} минут</p>
                         </form>
@@ -278,7 +286,7 @@
 
                     </div>
                     <div class="popup__wrapper">
-                        <form action="{{route('admin.createFilm')}}" method="POST" accept-charset="utf-8">
+                        <form action="{{route('admin.createFilm')}}" method="POST" accept-charset="utf-8" enctype="multipart/form-data">
                             @csrf
                         {{--}}<form action="add_movie" method="post" accept-charset="utf-8">--}}
                             <label class="conf-step__label conf-step__label-fullsize" for="title">

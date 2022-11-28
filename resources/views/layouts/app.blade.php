@@ -18,9 +18,11 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <!-- index-->
+    <!-- index
     <link rel="stylesheet" href="{{ asset('css/normalize.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">-->
+
+    <link rel="stylesheet" href="{{ asset('css/all.css') }}">
 
 
 

@@ -3,7 +3,7 @@
 <section class="movie">
     <div class="movie__info">
         <div class="movie__poster">
-            <img class="movie__poster-image" alt={{$film->imageText}} src={{$film->imagePath}}>
+            <img class="movie__poster-image" alt="{{$film->imageText}}" src="{{$film->imagePath}}">
         </div>
         <div class="movie__description">
             <h2 class="movie__title">{{$film->title}}</h2>

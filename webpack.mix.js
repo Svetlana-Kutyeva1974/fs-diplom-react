@@ -26,6 +26,9 @@ mix.copyDirectory('resources/i', 'public/i');
 mix.copyDirectory('resources/css', 'public/css');
 
 mix.styles(
-    ['resources/css/normilize.css', 'resources/css/styles.css', 'resources/css/normilizeAdmin.css', 'resources/css/stylesAdmin.css'],
+    ['resources/css/normalize.css', 'resources/css/styles.css', 'resources/css/normalizeAdmin.css', 'resources/css/stylesAdmin.css'],
     'public/css/all.css'
 );
+
+mix.scripts(['resources/js/accordeon.js', 'resources/js/demo.js'], 'public/js/all.js');
+//mix.js('public/js/all.js', 'public/js').sourceMaps();

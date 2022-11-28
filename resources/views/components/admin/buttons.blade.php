@@ -1,11 +1,12 @@
 
-{{--dump($hall['id'])--}}{{--dump($selected_hall)--}} {{--$seats->where('rowNumber', 1)--}}
+{{--dd($hall->{'id'})--}}{{--dump($selected_hall)--}} {{--$seats->where('rowNumber', 1)--}}
 {{--dump($hall->{'nameHall'})--}}
 {{-- $hall->{'id'}-- }} {{dump($selected_hall)}}
 {{--Компонент Конфигурация мест зала администратора--}}
 {{-- json_decode($hall->{'typeOfSeats'})->{"1,2"}-- }}
 {{--<form action="{{route('admin.editHall', ['hall' => $hall])}}" method="POST" accept-charset="utf-8">
     @csrf--}}
+
 
 <div class="conf-step__hall">
     <div class="conf-step__hall-wrapper">

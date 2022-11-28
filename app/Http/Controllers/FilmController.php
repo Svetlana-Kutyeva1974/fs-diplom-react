@@ -8,6 +8,7 @@ use http\Client\Response;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class FilmController extends Controller
 {
@@ -30,12 +31,29 @@ class FilmController extends Controller
      */
     public function create(Request $request)
     {
-        //var_dump($request->all());//dd($request["imagePath"]);
+        var_dump($request->all());//
+        dump('image path ');
+        dump($request["imagePath"]);
+        if ($request->isMethod('post') && $request->file('imagePath')) {
+
+            $file = $request->file('imagePath');
+            dump('basename ');
+            dump($request->file('imagePath'));
+            $upload_folder = 'public/i';
+            $filename = $file->getClientOriginalName(); // image.jpg
+
+            dump($filename);
+            Storage::putFileAs($upload_folder, $file, $filename);
+
+        }
+        //dd($request->imagePath);
+        //$request->imagePath->store('$request->imagePath'); //filename.jpg = $request["imagePath"]
+        //dd($path);
         DB::table('films')->insert([
             'title' => $request["title"],
             'description' => $request["description"],
             'duration' => $request["duration"] ?? 130,
-            'imagePath' => 'i/poster2.jpg',
+            'imagePath' => '/storage/i/'.$filename ?? 'i/poster2.jpg',//$request->imagePath ?? 'i/poster2.jpg',//$path = $request->photo->storeAs('images', 'filename.jpg');
             'imageText' => '' ?? $request["title"],
             'origin'=> $request["origin"] ?? '',
         ]);
