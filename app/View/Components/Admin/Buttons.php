@@ -6,13 +6,13 @@ use Illuminate\View\Component;
 
 class Buttons extends Component
 {
-    public $hall, $seance, $dateChosen, $film, $seats, $selected_hall, $disabled;
+    public $hall, $seance, $dateChosen, $film, $seats, $selected_hall, $disabled, $open;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct( $disabled='false', $seats='', $hall='', $seance='', $film='',  $dateChosen='', $selected_hall='1')
+    public function __construct($open='0', $disabled='false', $seats='', $hall='', $seance='', $film='',  $dateChosen='', $selected_hall='1')
     {
         $this->disabled = $disabled;
         $this->hall = $hall;
@@ -20,6 +20,7 @@ class Buttons extends Component
         $this->seance = $seance;
         $this->dateChosen = $dateChosen;
         $this->seats = $seats;
+        $this->open = $open;
         $this->selected_hall = $selected_hall;
     }
 

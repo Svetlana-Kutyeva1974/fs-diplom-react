@@ -26,9 +26,10 @@ class Hall extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function seance()
+    public function seances()
     {
-        return $this->hasMany('App\Seance', 'hall_id');
+        //return $this->hasMany('App\Seance', 'hall_id');
+        return $this->hasMany(Seance::class);
     }
     /**
      * Return seats in this room

@@ -19,6 +19,8 @@ class CreateSeancesTable extends Migration
             $table->dateTime('startSeance');
             $table->integer('hall_id');
             $table->integer('film_id');
+            //$table->foreign('hall_id')->references('id')->on('halls')->onDelete('cascade');
+            //$table->foreign('film_id')->references('id')->on('films')->onUpdate('cascade');
         });
     }
 

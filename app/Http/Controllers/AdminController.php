@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Admin;
 use App\Models\Film;
+use App\Models\Hall;
 use App\Models\Seance;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -13,6 +14,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Route;
+use mysql_xdevapi\Collection;
 
 class AdminController extends Controller
 {
@@ -24,8 +27,8 @@ class AdminController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-
-
+        //dump($user);
+        dump($request->all());
         /*if (! $user->is_admin) {
         return redirect('/');
         }*/
@@ -38,10 +41,42 @@ class AdminController extends Controller
             //$seances1 = Seance::all();$fl = Film::all()->first();
             $dateCurrent = $request->dateCurrent ?? substr(Carbon::now(), 0, 10);//'2022-11-05 16:00:22'
             $dateChosen = $request->dateChosen ?? substr(Carbon::now(), 0, 10);//'2022-11-05 16:00:22'
-            //$selected_hall = '';
-            $selected_hall =  ($request->selected_hall) ?? '1';
-            //dump($halls);//dump($user);//dd($dateChosen);//dd($selected_hall);
-            return view('admin.home', ['selected_hall' => $selected_hall, 'user'=> $user, 'films' => $films, 'halls' => $halls, 'seances'=> $seances, 'dateCurrent' => $dateCurrent, 'dateChosen'=> $dateChosen, 'seats'=> $seats]);
+
+
+        //dump('request1    ');
+        //var_dump($request->selected_hall);
+            $selected_hall = ($request->selected_hall) ?: '1';
+            //dump($halls);//dump($user);//dd($dateChosen);//
+            //dump('request2    ');
+           //dump($request->selected_hall);
+        //dump('zal vib    ');
+        //var_dump(Hall::all()->where('id',$selected_hall)->first());
+        //var_dump(Hall::all()->where('id',$selected_hall)->first()->id);
+        //dump($halls->where('id',$selected_hall)[1]);!!! нельзя так, офсет будет разный у залов , правильно, как выше
+        dump($halls->where('id',$selected_hall)->first());
+        dump($halls->where('id',$selected_hall)->first()->id);
+            //dump($halls[$selected_hall]);//здесь не по id а по порядку номеров в коллекции второй по id это первый!
+            //dump($halls[$selected_hall]->id);
+        //dump('новое selected-hall  ');
+            //var_dump($selected_hall);
+            //dump($seats->first());
+            //dump($seances);
+        /*if($param === 1) {
+            $text = "Приостановить продажу билетов";
+        } else {
+            $text = "Открыть продажу билетов";
+        }*/
+            $open = $request->open;
+            //var_dump($open);
+            if ($request->open === null) return redirect()->route('admin.open', ['param' => 0]);
+            $text= ($request->open == null || $request->open == '0' ) ? 'Открыть продажу билетов' : 'Приостановить продажу билетов'  ;
+            //dd(Route::currentRouteName());
+            //dump(Route::getCurrentRoute());
+            //dump($request->all());
+            //dump($text);
+            //if($this->route->hasRoute('admin.open'))
+            //var_dump($halls);
+            return view('admin.home', ['open'=> $open, 'text'=> $text ,'selected_hall' => $selected_hall, 'user'=> $user, 'films' => $films, 'halls' => $halls, 'seances'=> $seances, 'dateCurrent' => $dateCurrent, 'dateChosen'=> $dateChosen, 'seats'=> $seats]);
     }
 
     /**
@@ -114,4 +149,5 @@ class AdminController extends Controller
     {
         //
     }
+
 }

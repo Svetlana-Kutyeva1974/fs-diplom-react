@@ -20,6 +20,8 @@ class CreateTicketsTable extends Migration
             $table->integer('count');
             $table->integer('film_id');
             $table->integer('seance_id');
+            //$table->intr('film_id');
+            //$table->foreign('seance_id')->references('id')->on('seances')->onDelete('cascade');
         });
     }
 

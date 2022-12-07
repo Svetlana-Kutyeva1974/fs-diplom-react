@@ -68,7 +68,7 @@ class TicketController extends Controller
         //Создание билета
         DB::table('tickets')->insert([
             'qrCod' => Hash::make($string),
-            'film_id' => $film['id'],
+            'film_id' => $film['id'],// не нужно, опрределяем через seance
             'count' => $request['count'],
             'seance_id' => $seance['id'],//Hash::make('секрет'),
             'created_at' => Carbon::now(), //date("Y-m-d H:i:s"),//Carbon::now()

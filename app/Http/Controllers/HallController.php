@@ -102,8 +102,12 @@ class HallController extends Controller
     public function edit(Request $request, Hall $hall)
     {
         //dump($request->all());
+        $json_seat = json_decode($request['json_seat']);
+        dump($json_seat);
+
         $hall1 = $request['hall'];
-        //dump($request['hall']);//dump($hall1['id']);//dump(json_decode($request['newTypeOfSeats']));
+        dump($request['hall']);
+        ////dump($hall1['id']);//dump(json_decode($request['newTypeOfSeats']));
 
         $hall_new_decode = json_decode($request['newTypeOfSeats']);
         $hall_decode = json_decode($hall1['typeOfSeats']);
@@ -117,6 +121,15 @@ class HallController extends Controller
 
         $hall=Hall::find($hall1['id']);
         $hall['typeOfSeats'] = $hall1['typeOfSeats'];
+        // сохраняем новое количество рядов в новом зале...
+        // А если было больше: убрать/ Если было меньше добавить seats?
+        if ($json_seat[1] !=='0') {
+            $hall['col'] = $json_seat[1];
+        }
+        if ($json_seat[0] !=='0') {
+            $hall['row'] = $json_seat[0];
+        }
+
         $hall->save();       //dump('изменилис');//dump($hall1['id']);//dump($hall);
 
         //return redirect()->route('admin.index', ['selected_hall' => $hall1['id']]);
@@ -145,8 +158,28 @@ class HallController extends Controller
     //public function destroy(Request $request, $id)
     public function destroy($id)
     {
+        $hall = Hall::find($id);
+
         Hall::find($id)->delete();//Hall::find($request->id)->delete();
         //return redirect()->back();
         return redirect()->route('admin.home');
+    }
+
+    /**
+     * opem/close the specified resource from storage.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function open($param)
+    {
+        //закрытие продаж
+        $halls= DB::table('halls')->get();
+        foreach($halls as $hall) {
+            $new = Hall::find($hall->id);
+            $new->open = $param;
+            $new->save();
+        }
+
+        return redirect()->route('admin.home', ['open'=> $param]);
     }
 }

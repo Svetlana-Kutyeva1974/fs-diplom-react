@@ -4,12 +4,13 @@
 <html lang="en">
 <!--
 <div style="width: 1000px; margin: 10px auto 0; border: 2px solid;">
-    <div>Привет, {{$user['name']}}</div><br>
+    <div>Привет, {{$user->name}}</div><br>
     <div> Ваш ID : {{$user->id}}</div><br>
     <div>Email: {{$user->email}}</div><br>
     {{--<hr style="color: #333; border: 1px solid;width: 50%;"><br>--}}
 </div>
 -->
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -55,17 +56,18 @@
             <ul class="conf-step__list">
                 @foreach ($halls as $hall)
                     {{-- Форма создания зала--}}
+
                     <form action="{{ route('admin.destroyHall', ['id' => $hall->id]) }}" method="post" onsubmit="return confirm('Удалить этот зал?')">
                         @csrf
                         @method('DELETE')
                         <li>{{$hall->nameHall}}
-                        <button id="{{$hall->id}}"  class="conf-step__button conf-step__button-trash"  >
+                        <button id="{{$hall->id}}"  class="conf-step__button conf-step__button-trash" @if ($open === '1') disabled @endif >
                         </button>
                         </li>
                     </form>
                 @endforeach
             </ul>
-            <button id= "create" onclick = "clickAdd(id)"  class="conf-step__button conf-step__button-accent">Создать зал</button>
+            <button id= "create" onclick = "clickAdd(id)"  class="conf-step__button conf-step__button-accent" @if ($open=== '1') disabled @endif>Создать зал</button>
 
         </div>
         {{-- Popup Меню создания зала--}}
@@ -85,11 +87,11 @@
                             {{--@method('PUT')--}}
                             <label class="conf-step__label conf-step__label-fullsize" for="name">
                                 Название зала
-                                <input class="conf-step__input" type="text" placeholder="Например, «Зал 1»" name="name" required="">
+                                <input class="conf-step__input" type="text" placeholder="Например, «Зал 1»" name="name" required="" @if ($open === '1') disabled @endif >
                             </label>
                             <div class="conf-step__buttons text-center">
-                                <input type="submit" value="Добавить зал" class="conf-step__button conf-step__button-accent">
-                                <button onclick = "cl2(id)" class="conf-step__button conf-step__button-regular" href="#">Отменить</button>
+                                <input type="submit" value="Добавить зал" class="conf-step__button conf-step__button-accent" @if ($open === '1') disabled @endif >
+                                <button id="create_down" onclick = "cl2(id)" class="conf-step__button conf-step__button-regular" href="#" @if ($open ==='1') disabled @endif >Отменить</button>
                             </div>
                         </form>
                     </div>
@@ -116,29 +118,30 @@
                     //dump($hall->id);
                 @endphp
                 @foreach ($halls as $hall)
-                    {{--var_dump($hall)--}}
-                    {{--dump($selected_hall)--}} {{--dd($halls->where('id',$selected_hall))--}}
                     <li>{{--$selected_hall--}}{{--dd(count($halls))--}}
-                        @if($hall->{'id'} === $selected_hall) {{-- @if($i === $selected_hall ))   id="{{$hall->id}}"--}}
-                           {{-- var_dump($hall)--}}
-                        @php
+                        @if($hall->{'id'} == $selected_hall) {{-- @if($i === $selected_hall ))   id="{{$hall->id}}"--}}
+                           {{--var_dump($hall->id)--}}
+                        {{--}}@php
 
                             $hall_sel= $hall;
                             //dump($selected_hall);
                             //dump($hall_sel);
-                        @endphp
-                            <input id="{{$hall->id}}" onclick = "clickRadio(id)" type="radio" class="conf-step__radio" name="chairs-hall" value="{{$hall->nameHall}}" checked><span class="conf-step__selector">{{$hall->nameHall}}</span></li>
+                        @endphp--}}
+                            <input id="{{$hall->{'id'} }}" onclick = "clickRadio(id)" type="radio" class="conf-step__radio" name="chairs-hall" value="{{$hall->nameHall}}" checked @if ($open === '1') disabled @endif><span class="conf-step__selector">{{$hall->nameHall}}</span></li>
                     @else
-                        <input id="{{$hall->id}}" onclick = "clickRadio(id)" type="radio" class="conf-step__radio" name="chairs-hall" value="{{$hall->nameHall}}"><span class="conf-step__selector">{{$hall->nameHall}}</span></li>
+                        <input id="{{$hall->{'id'} }}" onclick = "clickRadio(id)" type="radio" class="conf-step__radio" name="chairs-hall" value="{{$hall->nameHall}}" @if ($open === '1') disabled @endif><span class="conf-step__selector">{{$hall->nameHall}}</span></li>
                         @endif
                         </li>
                         @endforeach
             </ul>
+            {{--var_dump($hall_sel)--}}
+
+            {{--var_dump($halls->where('id',$selected_hall)->first())--}}
             <p class="conf-step__paragraph">Укажите количество рядов и максимальное количество кресел в ряду:</p>
             <div class="conf-step__legend">
-                <label class="conf-step__label">Рядов, шт<input id="countRow" type="text" class="conf-step__input" placeholder="{{$halls->where('id', $selected_hall)[0]->row}}" value="{{$halls->where('id', $selected_hall)[0]->row}}" ></label>
+                <label class="conf-step__label">Рядов, шт<input id="countRow" type="text" class="conf-step__input seats" placeholder="{{$halls->where('id',$selected_hall)->first()->row}}" value="{{$halls->where('id',$selected_hall)->first()->row}}" @if ($open === '1') disabled @endif></label>
                 <span class="multiplier">x</span>
-                <label class="conf-step__label">Мест, шт<input id="countCol" type="text" class="conf-step__input" placeholder="{{$halls->where('id', $selected_hall)[0]->col}}" value="{{$halls->where('id', $selected_hall)[0]->col}}" ></label>
+                <label class="conf-step__label">Мест, шт<input id="countCol" type="text" class="conf-step__input seats" placeholder="{{$halls->where('id',$selected_hall)->first()->col}}" value="{{$halls->where('id',$selected_hall)->first()->col}}" @if ($open === '1') disabled @endif ></label>
             </div>
             <p class="conf-step__paragraph">Теперь вы можете указать типы кресел на схеме зала:</p>
             <div class="conf-step__legend">
@@ -155,8 +158,10 @@
                 $isTrue = false;
             @endphp
             {{--dd($halls->where('id', $selected_hall))--}}
+            {{--var_dump($halls->where('id',$selected_hall)->first())--}}
 
-            <x-admin.buttons :disabled="$isTrue" :seats="$seats" :seance="$seances" :film="$films" :hall="$halls[$selected_hall-1]" :selected_hall="$selected_hall">
+            {{--var_dump($halls->where('id',$selected_hall)->first()->id)--}}
+            <x-admin.buttons :open="$open" :disabled="$isTrue" :seats="$seats" :seance="$seances" :film="$films" :hall="$halls->where('id',$selected_hall)->first()" :selected_hall="$selected_hall">
             </x-admin.buttons>
             {{--<x-admin.buttons :seats="$seats" :seance="$seances" :film="$films" :hall="$halls[$selected_hall-1]" :selected_hall="$selected_hall">
             </x-admin.buttons>--}}
@@ -173,34 +178,48 @@
             <p class="conf-step__paragraph">Выберите зал для конфигурации:</p>
             <ul class="conf-step__selectors-box">
                 @foreach ($halls as $hall)
-
                     <li>
-                        @if($hall->id === $selected_hall)
-
-                            <input id="{{$hall->id}}" onclick = "clickRadio(id)" type="radio" class="conf-step__radio" name="prices-hall" value="{{$hall->nameHall}}" checked><span class="conf-step__selector">{{$hall->nameHall}}</span></li>
+                        @if($hall->{'id'} === $selected_hall)
+                           {{--}} @php
+                                $hall_sel2= $hall;
+                                //dump($selected_hall);
+                                //dump($hall_sel2);
+                                //dump($hall_sel2->countNormal);
+                                //dump($hall_sel2->nameHall);
+                            @endphp--}}
+                            {{--dump($hall->id)--}}
+                            <input id="{{$hall->id}}" onclick = "clickRadio(id)" type="radio" class="conf-step__radio" name="prices-hall" value="{{$hall->nameHall}}" checked @if ($open === '1') disabled @endif ><span class="conf-step__selector">{{$hall->nameHall}}</span> </li>
                         @else
-                    <input id="{{$hall->id}}" onclick = "clickRadio(id)" type="radio" class="conf-step__radio" name="prices-hall" value="{{$hall->nameHall}}"><span class="conf-step__selector">{{$hall->nameHall}}</span></li>
-                         @endif
-                    </li>
+                            <input id="{{$hall->id}}" onclick = "clickRadio(id)" type="radio" class="conf-step__radio" name="prices-hall" value="{{$hall->nameHall}}" @if ($open === '1') disabled @endif ><span class="conf-step__selector">{{$hall->nameHall}}</span> </li>
+                      @endif
+                      </li>
                 @endforeach
             </ul>
+            {{--$hall_sel2--}}
+
+            {{--var_dump($hall_sel2)--}}
 
             <p class="conf-step__paragraph">Установите цены для типов кресел:</p>
             <div class="conf-step__legend">
-                <label class="conf-step__label">Цена, рублей<input id="countNormal" type="text" class="conf-step__input count" placeholder="0" value="500" ></label>
+                <label class="conf-step__label">Цена, рублей<input id="countNormal" type="text" class="conf-step__input count" placeholder="0" value="{{ $halls->where('id',$selected_hall)->first()->countNormal }}" @if ($open === '1') disabled @endif ></label>
                 за <span class="conf-step__chair conf-step__chair_standart"></span> обычные кресла
             </div>
             <div class="conf-step__legend">
-                <label class="conf-step__label">Цена, рублей<input id="countVip" type="text" class="conf-step__input count" placeholder="0" value="1000"></label>
+                <label class="conf-step__label">Цена, рублей<input id="countVip" type="text" class="conf-step__input count" placeholder="0" value="{{ $halls->where('id',$selected_hall)->first()->countVip }}" @if ($open === '1') disabled @endif ></label>
                 за <span class="conf-step__chair conf-step__chair_vip"></span> VIP кресла
             </div>
 
             <fieldset class="conf-step__buttons text-center">
-                <button class="conf-step__button conf-step__button-regular">Отмена</button>
-                <input id="update" onclick = "clickUpdate()" type="submit" value="Сохранить" class="conf-step__button conf-step__button-accent">
+                <button class="conf-step__button conf-step__button-regular" @if ($open === '1') disabled @endif>Отмена</button>
+                <input id="update" type="submit" value="Сохранить" class="conf-step__button conf-step__button-accent" @if ($open === '1') disabled @endif >
+
+                <!--<input id="update" onclick = "clickUpdate()" type="submit" value="Сохранить" class="conf-step__button conf-step__button-accent" @if ($open === '1') disabled @endif >-->
             </fieldset>
         </div>
     </section>
+    {{--dd($halls)--}}
+    {{--dd($halls->where('id',$selected_hall)->first())--}}
+
 
     {{--Формирование сетки сеансов--}}
     <section class="conf-step">
@@ -209,7 +228,7 @@
         </header>
         <div class="conf-step__wrapper">
             <p class="conf-step__paragraph">
-                <button id="addFilm" onclick = "clickAdd(id)" class="conf-step__button conf-step__button-accent">Добавить фильм</button>
+                <button id="addFilm" onclick = "clickAdd(id)" class="conf-step__button conf-step__button-accent" @if ($open === '1') disabled @endif >Добавить фильм</button>
             </p>
             {{--Блок оглавления фильмов --}}
             <div class="conf-step__movies">
@@ -224,7 +243,7 @@
                                 $path= 'storage/folder/'.$film->imagePath;
                             @endphp
                             {{--Возможность удаления фильма по нажатию на изображение--}}
-                            <button><img class="conf-step__movie-poster" alt="{{$film->imageText}}" src="{{ asset($film->imagePath)}}"></button>
+                            <button @if ($open === '1') disabled @endif ><img class="conf-step__movie-poster" alt="{{$film->imageText}}" src="{{ asset($film->imagePath)}}" ></button>
                             <h3 class="conf-step__movie-title">{{$film->title}}</h3>
                         <p class="conf-step__movie-duration">{{$film->duration}} минут</p>
                         </form>
@@ -233,8 +252,50 @@
             </div>
             {{--конец блок оглавления фильмов --}}
 
+            {{-- Меню popupe добавления севнса--}}
+            <div class="popup">
+                <div class="popup__container">
+                    <div class="popup__content">
+                        <div class="popup__header">
+                            <h2 class="popup__title">
+                                Добавление сеанса
+                                <a class="popup__dismiss" href="#" onclick = "cl3(id)"><img src="i/close.png" alt="Закрыть"></a>
+                            </h2>
+
+                        </div>
+                        <div class="popup__wrapper">
+                            <form action="add_movie" method="post" accept-charset="utf-8">
+                                <label class="conf-step__label conf-step__label-fullsize" for="hall">
+                                    Название зала
+                                    <select class="conf-step__input" name="hall" required>
+                                        <option value="1" selected>Зал 1</option>
+                                        <option value="2">Зал 2</option>
+                                    </select>
+                                </label>
+                                <label class="conf-step__label conf-step__label-fullsize" for="name">
+                                    Время начала
+                                    <input class="conf-step__input" type="time" value="00:00" name="start_time" required>
+                                </label>
+
+                                <label class="conf-step__label conf-step__label-fullsize" for="name">
+                                    Название зала
+                                    <input class="conf-step__input" type="text" placeholder="Например, &laquo;Зал 1&raquo;" name="name" required>
+                                </label>
+
+                                <div class="conf-step__buttons text-center">
+                                    <input type="submit" value="Добавить" class="conf-step__button conf-step__button-accent">
+                                    <button class="conf-step__button conf-step__button-regular">Отменить</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{-- Конец Меню popupe добавления сеанса--}}
+
             {{--Блок сетки фильмов --}}
             <div class="conf-step__seances">
+                {{-- сетка фильмов для зала  --}}
                 <div class="conf-step__seances-hall">
                     <h3 class="conf-step__seances-title">Зал 1</h3>
                     <div class="conf-step__seances-timeline">
@@ -268,8 +329,8 @@
             </div>
 
             <fieldset class="conf-step__buttons text-center">
-                <button class="conf-step__button conf-step__button-regular">Отмена</button>
-                <input type="submit" value="Сохранить" class="conf-step__button conf-step__button-accent">
+                <button class="conf-step__button conf-step__button-regular" href="#" @if ($open === '1') disabled @endif >Отмена</button>
+                <input type="submit" value="Сохранить" class="conf-step__button conf-step__button-accent" href="#" @if ($open === '1') disabled @endif >
             </fieldset>
         </div>
         {{--Конец блока сетки фильмов --}}
@@ -291,34 +352,34 @@
                         {{--}}<form action="add_movie" method="post" accept-charset="utf-8">--}}
                             <label class="conf-step__label conf-step__label-fullsize" for="title">
                                 Название фильма
-                                <input class="conf-step__input" type="text" placeholder="Например, &laquo;Фильм&raquo;" name="title" required>
+                                <input class="conf-step__input" type="text" placeholder="Например, &laquo;Фильм&raquo;" name="title" required @if ($open === '1') disabled @endif>
                             </label>
 
                             <label class="conf-step__label conf-step__label-fullsize" for="description">
                                 Описание фильма
-                                <input class="conf-step__input" type="text" placeholder="Например, &laquo;О Фильме&raquo;" name="description" required>
+                                <input class="conf-step__input" type="text" placeholder="Например, &laquo;О Фильме&raquo;" name="description" required @if ($open === '1') disabled @endif >
                             </label>
 
                             <label class="conf-step__label conf-step__label-fullsize" for="duration">
                                 Длительность фильма
-                                <input class="conf-step__input" type="text" placeholder="Например, &laquo;130&raquo;" name="duration" required>
+                                <input class="conf-step__input" type="text" placeholder="Например, &laquo;130&raquo;" name="duration" required @if ($open === '1') disabled @endif >
                             </label>
 
                             <label class="conf-step__label conf-step__label-fullsize" for="origin">
                                 Страна фильма
-                                <input class="conf-step__input" type="text" placeholder="Например, &laquo;Россия&raquo;" name="origin" required>
+                                <input class="conf-step__input" type="text" placeholder="Например, &laquo;Россия&raquo;" name="origin" required @if ($open === '1') disabled @endif >
                             </label>
                             <label class="conf-step__label conf-step__label-fullsize" for="imagaPath">
                                 Изображение фильма
-                                <input type="file" class="form-control-file" name="imagePath" accept="image/png, image/jpeg">
+                                <input type="file" class="form-control-file" name="imagePath" accept="image/png, image/jpeg" @if ($open === '1') disabled @endif >
                             </label>
                             {{--
                             input type="file" class="form-control-file" name="image" accept="image/png, image/jpeg">
                             --}}
 
                             <div class="conf-step__buttons text-center">
-                                <input type="submit" value="Добавить фильм" class="conf-step__button conf-step__button-accent">
-                                <button id="cancel" onclick = "cl2(id)" class="conf-step__button conf-step__button-regular">Отменить</button>
+                                <input type="submit" value="Добавить фильм" class="conf-step__button conf-step__button-accent" @if ($open === '1') disabled @endif >
+                                <button id="cancel" onclick = "cl2(id)" class="conf-step__button conf-step__button-regular" @if ($open === '1') disabled @endif >Отменить</button>
                             </div>
                         </form>
                     </div>
@@ -334,18 +395,76 @@
         </header>
         <div class="conf-step__wrapper text-center">
             <p class="conf-step__paragraph">Всё готово, теперь можно:</p>
-            <button id="open" class="conf-step__button conf-step__button-accent active">Открыть продажу билетов</button>
+            <button id="open" onclick = "clickOpen(id)" class="conf-step__button conf-step__button-accent active" value="{{$open}}">{{$text}}</button>
             {{--}}<button id="open" class="conf-step__button conf-step__button-accent">Приостановить продажу билетов</button>--}}
         </div>
     </section>
-</main>
+   </main>
 
 <script src="{{ asset('js/accordeon.js')}}"></script>
 
 <script>
+    //alert('скрипты');
     let idLast = 1;
-    const input = document.querySelectorAll('.count');
-    let count = [];
+    const input = document.querySelectorAll('.count');//кнопки input цен
+    const input_row_col = document.querySelectorAll('.seats');//кнопки input место/ряд
+
+    const input_button = [...Array.of(document.querySelectorAll('button')), ...Array.of(document.querySelectorAll('input'))];
+    console.log('все кнопки и инп',input_button);
+
+    let count = [0,0];
+    let count_row_col = [0,0];
+    let json_row_col = JSON.stringify(count_row_col);
+    let json_count = JSON.stringify(count);
+
+    //Обработчик ввода стоимости места в зале
+    Array.from(input).forEach((button, index, arr) => {
+        button.oninput = function () {
+            //count[index] = button.value;
+            console.log(button.value, arr[index].value, count);
+        }
+        button.onchange = function () {
+            count[index] = button.value;
+            console.log('конец');
+            console.log(button.value, count, count.length);
+            json_count=JSON.stringify(count);
+            console.log('count json:', json_count);
+
+        }
+    });
+    //console.log('count massiv:',count[0], count[1], count.length);
+    //const json=JSON.stringify(count);
+    //console.log('count json:', json);
+    document.getElementById('update');
+
+
+    //Обработчик ввода ряда, места в зале////повтор
+    Array.from(input_row_col).forEach((button, index, arr) => {
+        button.oninput = function () {
+            //count[index] = button.value;
+            console.log(button.value, arr[index].value, count_row_col);
+        }
+        button.onchange = function () {
+            count_row_col[index] = button.value;
+            json_row_col=JSON.stringify(count_row_col);
+            console.log('конец');
+            console.log(button.value, count_row_col, count_row_col.length);
+            console.log('count json_row:', json_row_col);
+        }
+    });
+    //console.log('count_row_col massive:', count_row_col[0], count_row_col[1], count_row_col.length);
+    /*
+    for(let j=0; j<count_row_col.length; j++){
+        console.log('count_row_col massive:', count_row_col[j]);
+    }*/
+    //const json_row_col=JSON.stringify(count_row_col);
+    //console.log('count json_row:', json_row_col);
+    //document.getElementById('update');
+
+
+
+
+
 
     // Обработка выбора типа места по клику
     function select(id, hall){
@@ -388,7 +507,7 @@
     function editSeats(id){
         // Меняем массив typeOfSeats - типы мест в зале(нажатие сохранить)
         console.log('editSeats');
-        alert('id hall', id);
+        alert(id);
         //let newTypeOfSeats= {};
         let newTypeOfSeats= [];
         Array.of(document.querySelectorAll('button.conf-step__chair')).forEach((element, index, array) => {
@@ -410,19 +529,26 @@
         });
 
         const json=JSON.stringify(newTypeOfSeats);//console.log('json  selectedddd', json);
-        //let url = "{{route('admin.editHall', ['hall'=> $halls[$selected_hall-1], 'newTypeOfSeats' => 'json'])}}";
+        //let url = "{{--route('admin.editHall', ['hall'=> $halls[$selected_hall-1], 'newTypeOfSeats' => 'json'])--}}";
+
+        //let url = "{{--route('admin.editHall', ['hall'=> $hall, 'newTypeOfSeats' => 'json', 'user'=> $user, 'films' => $films, 'halls' => $halls, 'seances'=> $seances, 'dateCurrent' => $dateCurrent, 'dateChosen'=> $dateChosen, 'seats'=> $seats])--}}";
+
+        // было работало let url = "{{--route('admin.editHall', ['hall'=> $halls->where('id', $selected_hall)[0], 'newTypeOfSeats' => 'json', 'json_seat' => 'json_row_col'])--}}";
+        let url = "{{route('admin.editHall', ['hall'=> $halls->where('id', $selected_hall)->first(), 'newTypeOfSeats' => 'json', 'json_seat' => 'json_row_col'])}}";
+
+        //?????? let url = "{{--route('admin.editHall', ['hall'=> $hall_sel, 'newTypeOfSeats' => 'json', 'json_seat' => 'json_row_col'])--}}";
 
 
-        //let url = "{{route('admin.editHall', ['hall'=> $hall, 'newTypeOfSeats' => 'json', 'user'=> $user, 'films' => $films, 'halls' => $halls, 'seances'=> $seances, 'dateCurrent' => $dateCurrent, 'dateChosen'=> $dateChosen, 'seats'=> $seats])}}";
-        let url = "{{route('admin.editHall', ['hall'=> $halls->where("id", $selected_hall)[0], 'newTypeOfSeats' => 'json'])}}";
 
         //console.log('url   ',url);console.log('selected url  ', selected);
         //let hl= '$halls->where("id", $selected_hall)[0]';//$halls->where('id', $selected_hall)[0]
         //url = url.replace('hl', hl);
         url = url.replace('json', json);//console.log('replace url  ', url);
+        url = url.replace('json_row_col', json_row_col);//
+        console.log('replace url  ', url);
         url = url.replaceAll('&amp;', '&');//console.log('replace amp url  ', url);
         console.log('получили url для обновления   ',url);
-        window.location.href = url;
+        //window.location.href = url;
     }
 
     //Открыть форму добавления зала/фильма
@@ -459,34 +585,84 @@
 
     //Переключатель зала
     function clickRadio(id){
-        console.log(document.getElementById('countNormal'));
-        document.getElementById('countNormal').value = '{{$hall->countNormal}}';
-        document.getElementById('countVip').value = '{{$hall->countVip}}';
+        //alert('clickradio');
+        //console.log(document.getElementById('countNormal'));
+        //console.log(document.getElementById('countVip'));
+        //document.getElementById('countNormal').value = '{{$hall->countNormal}}';
+        //document.getElementById('countVip').value = '{{$hall->countVip}}';
         console.log('clickradio', id);
         idLast = id;
         //alert( idLast);
-        //url = "{{route('admin.home',['selected_hall' => 'id', 'films' => $films, 'halls' => $halls, 'seances'=> $seances, 'dateCurrent' => $dateCurrent, 'dateChosen'=> $dateChosen, 'seats'=> $seats])}}";
-        url = "{{ route('admin.home',['selected_hall' => 'id']) }}";
-        //url = "{{route('admin.home',['selected_hall' => 'id', 'user' => $user,'films' => $films, 'halls' => $halls, 'seances'=> $seances, 'dateCurrent' => $dateCurrent, 'dateChosen'=> $dateChosen, 'seats'=> $seats])}}";
-        idi = String(id);
-        url = url.replace('id', idi);
+        let url = "{{ route('admin.home',['selected_hall' => 'id', 'open'=> $open, 'text'=> $text]) }}";
+        let idi = String(id);
+        console.log('idi', id);
+        url = url.replace('id', +idi);
+        //url = url.replace('open_2', `${ {{--$open --}}}`);
+
+        //url = url.replace('text_2', `${ {{--$text--}} }`);
         url = url.replaceAll('&amp;', '&');
         console.log('replaceed amp url  ', url);
-        alert(url);
+       // alert(url);
+        //alert(`${ {{$hall->{'id'} }} }`);
+        window.location.href= url
+    }
+    // переключатель блокировка/разблокировка редактирования(добавление св-ва disabled)
+    function disabled(parametr) {
+        console.log(parametr);
+        input_button.forEach((element, index, array) => {
+           // alert('кнопкb',element.length,index, array[index]);
+            for(let i=0; i<element.length; i++) {
+                //element[i].disabled = !element[i].disabled;
+                element[i].disabled = parametr;
+                console.log('massiv ',element[i], element[i].disabled);
+                //console.log('massiv',newTypeOfSeats[i]);
+            }
+        });
+    }
+
+    // переключатель открытие/закрытие продаж
+    function clickOpen(id)
+    {
+        elem = document.getElementById(`${id}`);
+        console.log(elem, +elem.value, !Boolean(+elem.value));
+        //alert(elem, +elem.value, !Boolean(+elem.value));
+        url = "{{ route('admin.open',['param' => 'id']) }}";
+
+        url = url.replace('id', +!Boolean(+elem.value));
+        url = url.replaceAll('&amp;', '&');
+        console.log('replaceed amp url  ', url);
+        console.log(url);
+        elem.value = +!Boolean(+elem.value);
+        console.log(elem.value, " new value ",elem);
+        //id = !(id);
+        //elem.classList.toggle("active");
+        /*if(elem.value === "1") {
+            elem.textContent = "Приостановить продажу билетов";
+        } else {
+            elem.textContent = "Открыть продажу билетов";
+        }*/
+        //alert(document.getElementById(`${id}`).value);
+        if(elem.value === "1") {
+            disabled(true);
+        } else {
+            disabled(false);
+        }
+        elem.disabled = false;
         window.location.href= url
     }
 
 
 
 
-    //Обновление инфо о ценах кресел в зале..не работает
+
+    //Обновление инфо о ценах кресел в зале не работает
     /*
     function clickUpdate(id){
 
         console.log('clickradio', id);
         const json=JSON.stringify(count);
 
-        //let url = "{{route('admin.updateHall', ['hall'=> $hall, 'count' => 'json'])}}";
+        //let url = "{{--route('admin.updateHall', ['hall'=> $hall, 'count' => 'json'])--}}";
         url = url.replace('json', json);
         url = url.replaceAll('&amp;', '&');
         console.log('replaceed amp url  ', url);
@@ -510,22 +686,10 @@
     --}}
 
     //console.log(input);
-    //Обработчик ввода стоимости места в зале
-    Array.from(input).forEach((button, index, arr) => {
-        button.oninput = function () {
-            //count[index] = button.value;
-            console.log(button.value, arr[index].value);
-        }
-        button.onchange = function () {
-            count[index] = button.value;
-            console.log('конец');
-            console.log(button.value);
-        }
-    });
-    console.log('count:',count);
-    const json=JSON.stringify(count);
-    document.getElementById('update')
+
+
 </script>
+
 </body>
 </html>
 
@@ -538,8 +702,10 @@
 @endif
 @endauth
 
+width: calc(1440px * 0.5);
+//1440 минут в сутках. 1 минута = 0,5 пикселя. Блок фильма длиной 120 минут будет 60 пикселей по ширине.
 
 
-
+https://codelab.pro/drag-and-drop-api-podrobnoe-rukovodstvo-na-javascript/ drad-drop
 https://qna.habr.com/q/256784
 -->

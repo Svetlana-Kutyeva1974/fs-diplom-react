@@ -25,9 +25,11 @@ class Film extends Model
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
 
-    public function seance()
+    public function seances()
     {
-        return $this->hasMany(Seance::class, 'film_id');
+        //return $this->hasMany(Seance::class, 'film_id');
+        return $this->hasMany(Seance::class);
+
         // return $this->hasMany('App\Seance');
         //return $this->belongsToMany('App\Seance', 'film_id');
     }

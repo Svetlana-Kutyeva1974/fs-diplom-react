@@ -18,7 +18,7 @@ class TicketSeeder extends Seeder
         DB::table('tickets')->insert([
             'qrCod' => Hash::make('Фильм : Атака, сеанс 1, ряд 1, место 6, стоимость 1000'),
             'seance_id' => 1,
-            'film_id' => 1,
+            'film_id' => 1,//? не нужно, опрределяем через seance
             'count' => 1000,
         ]);
 

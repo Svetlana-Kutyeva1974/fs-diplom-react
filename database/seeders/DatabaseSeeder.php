@@ -19,8 +19,8 @@ class DatabaseSeeder extends Seeder
             HallSeeder::class,
             AdminSeeder::class,
             FilmSeeder::class,
-            TicketSeeder::class,
             SeanceSeeder::class,
+            TicketSeeder::class,
             SeatSeeder::class,
         ]);
     }
