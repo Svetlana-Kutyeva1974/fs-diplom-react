@@ -32,7 +32,7 @@ Route::group([ 'middleware' => 'auth'  ],  function () {
         'prefix' => 'admin',
     ], function () {
         Route::get('/', [App\Http\Controllers\AdminController::class, 'index'])->name('admin.home');
-        Route::get('/{param}', [App\Http\Controllers\HallController::class, 'open'])->name('admin.open');
+        Route::get('/open/{param}', [App\Http\Controllers\HallController::class, 'open'])->name('admin.open');
         Route::any('/createHall', [App\Http\Controllers\HallController::class, 'create'])->name('admin.createHall');
         Route::any('/destroyHall/{id}', [App\Http\Controllers\HallController::class, 'destroy'])->name('admin.destroyHall');
         Route::any('/updateHall', [App\Http\Controllers\HallController::class, 'update'])->name('admin.updateHall');

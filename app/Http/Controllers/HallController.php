@@ -46,7 +46,7 @@ class HallController extends Controller
             }
 
             //$seats = json_encode($seats);
-            $seats = json_encode(["1,1"=>"NORM","1,2"=>"NORM","1,3"=> "NORM", "1,4"=>"NORM","1,5"=>"NORM","1,6"=> "NORM", "1,7"=>"NORM","1,8"=>"NORM","1,9"=> "NORM","1,10"=>"NORM","1,11"=>"NORM","1,12"=> "NORM", "2,1"=>"NORM","2,2"=>"NORM","2,3"=> "NORM", "2,4"=>"NORM","2,5"=>"NORM","2,6"=> "NORM", "2,7"=>"NORM","2,8"=>"NORM","2,9"=> "NORM","2,10"=>"NORM","2,11"=>"NORM","2,12"=> "NORM", "3,1"=>"NORM","3,2"=>"NORM","3,3"=> "NORM", "3,4"=>"NORM","3,5"=>"NORM","3,6"=> "NORM", "3,7"=>"NORM","3,8"=>"FAIL","3,9"=> "NORM","3,10"=>"NORM","3,11"=>"NORM","3,12"=> "NORM","4,1"=>"NORM","4,2"=>"NORM","4,3"=> "NORM", "4,4"=>"NORM","4,5"=>"NORM","4,6"=> "NORM", "4,7"=>"NORM","4,8"=>"NORM","4,9"=> "NORM","4,10"=>"NORM","4,11"=>"NORM","4,12"=> "NORM","5,1"=>"NORM","5,2"=>"NORM","5,3"=> "NORM", "5,4"=>"NORM","5,5"=>"NORM","5,6"=> "NORM", "5,7"=>"NORM","5,8"=>"NORM","5,9"=> "NORM","5,10"=>"NORM","5,11"=>"FAIL","5,12"=> "NORM","6,1"=>"NORM","6,2"=>"NORM","6,3"=> "NORM", "6,4"=>"NORM","6,5"=>"NORM","6,6"=> "NORM", "6,7"=>"NORM","6,8"=>"NORM","6,9"=> "NORM","6,10"=>"NORM","6,11"=>"NORM","6,12"=> "NORM", "7,1"=>"NORM","7,2"=>"NORM","7,3"=> "NORM", "7,4"=>"NORM","7,5"=>"NORM","7,6"=> "NORM", "7,7"=>"NORM","7,8"=>"NORM","7,9"=> "NORM","7,10"=>"NORM","7,11"=>"FAIL","7,12"=> "NORM", "8,1"=>"NORM","8,2"=>"NORM","8,3"=> "NORM", "8,4"=>"NORM","8,5"=>"NORM","8,6"=> "NORM", "8,7"=>"NORM","8,8"=>"FAIL","8,9"=> "NORM","8,10"=>"NORM","8,11"=>"FAIL","8,12"=> "NORM", "9,1"=>"NORM","9,2"=>"NORM","9,3"=> "NORM", "9,4"=>"NORM","9,5"=>"NORM","9,6"=> "NORM", "9,7"=>"NORM","9,8"=>"NORM","9,9"=> "NORM","9,10"=>"NORM","9,11"=>"NORM","9,12"=> "NORM", "10,1"=>"NORM","10,2"=>"FAIL","10,3"=> "NORM", "10,4"=>"NORM","10,5"=>"NORM","10,6"=> "NORM", "10,7"=>"NORM","10,8"=>"NORM","10,9"=> "NORM","10,10"=>"NORM","10,11"=>"NORM","10,12"=> "NORM"]);
+            $seats = json_encode(["1,1"=>"NORM","1,2"=>"NORM","1,3"=> "NORM", "1,4"=>"NORM","1,5"=>"NORM","1,6"=> "NORM", "1,7"=>"NORM","1,8"=>"NORM","1,9"=> "NORM","1,10"=>"NORM","1,11"=>"NORM","1,12"=> "NORM", "2,1"=>"NORM","2,2"=>"NORM","2,3"=> "NORM", "2,4"=>"NORM","2,5"=>"NORM","2,6"=> "NORM", "2,7"=>"NORM","2,8"=>"NORM","2,9"=> "NORM","2,10"=>"NORM","2,11"=>"NORM","2,12"=> "NORM", "3,1"=>"NORM","3,2"=>"NORM","3,3"=> "NORM", "3,4"=>"NORM","3,5"=>"NORM","3,6"=> "NORM", "3,7"=>"NORM","3,8"=>"FAIL","3,9"=> "NORM","3,10"=>"NORM","3,11"=>"NORM","3,12"=> "NORM","4,1"=>"NORM","4,2"=>"NORM","4,3"=> "NORM", "4,4"=>"NORM","4,5"=>"NORM","4,6"=> "NORM", "4,7"=>"NORM","4,8"=>"NORM","4,9"=> "NORM","4,10"=>"NORM","4,11"=>"NORM","4,12"=> "NORM","5,1"=>"NORM","5,2"=>"NORM","5,3"=> "NORM", "5,4"=>"NORM","5,5"=>"NORM","5,6"=> "NORM", "5,7"=>"NORM","5,8"=>"NORM","5,9"=> "NORM","5,10"=>"NORM","5,11"=>"NORM","5,12"=> "NORM","6,1"=>"NORM","6,2"=>"NORM","6,3"=> "NORM", "6,4"=>"NORM","6,5"=>"NORM","6,6"=> "NORM", "6,7"=>"NORM","6,8"=>"NORM","6,9"=> "NORM","6,10"=>"NORM","6,11"=>"NORM","6,12"=> "NORM", "7,1"=>"NORM","7,2"=>"NORM","7,3"=> "NORM", "7,4"=>"NORM","7,5"=>"NORM","7,6"=> "NORM", "7,7"=>"NORM","7,8"=>"NORM","7,9"=> "NORM","7,10"=>"NORM","7,11"=>"NORM","7,12"=> "NORM", "8,1"=>"NORM","8,2"=>"NORM","8,3"=> "NORM", "8,4"=>"NORM","8,5"=>"NORM","8,6"=> "NORM", "8,7"=>"NORM","8,8"=>"NORM","8,9"=> "NORM","8,10"=>"NORM","8,11"=>"NORM","8,12"=> "NORM", "9,1"=>"NORM","9,2"=>"NORM","9,3"=> "NORM", "9,4"=>"NORM","9,5"=>"NORM","9,6"=> "NORM", "9,7"=>"NORM","9,8"=>"NORM","9,9"=> "NORM","9,10"=>"NORM","9,11"=>"NORM","9,12"=> "NORM", "10,1"=>"NORM","10,2"=>"NORM","10,3"=> "NORM", "10,4"=>"NORM","10,5"=>"NORM","10,6"=> "NORM", "10,7"=>"NORM","10,8"=>"NORM","10,9"=> "NORM","10,10"=>"NORM","10,11"=>"NORM","10,12"=> "NORM"]);
 
 
             DB::table('halls')->insert([
@@ -101,21 +101,26 @@ class HallController extends Controller
      */
     public function edit(Request $request, Hall $hall)
     {
-        //dump($request->all());
+        dump($request->all());
         $json_seat = json_decode($request['json_seat']);
         dump($json_seat);
 
         $hall1 = $request['hall'];
+        dump('edit hall:');
         dump($request['hall']);
         ////dump($hall1['id']);//dump(json_decode($request['newTypeOfSeats']));
 
         $hall_new_decode = json_decode($request['newTypeOfSeats']);
         $hall_decode = json_decode($hall1['typeOfSeats']);
+        dump($hall_decode);
+        dump($hall_new_decode);
         $i=0;
         foreach ($hall_decode as $key => $value) {
+            //dump($i);dump($key);dump($hall_new_decode[$i]->{"value"});
             $hall_decode->{$key} = $hall_new_decode[$i]->{"value"};
             //dump($key."value ".$hall_decode->{$key}."new  ". $hall_new_decode[$i]->{"value"});
             $i++;
+            //if($i===100) {dump('i=105');}
         }
         $hall1['typeOfSeats'] = json_encode($hall_decode, JSON_THROW_ON_ERROR);
 
@@ -123,17 +128,20 @@ class HallController extends Controller
         $hall['typeOfSeats'] = $hall1['typeOfSeats'];
         // сохраняем новое количество рядов в новом зале...
         // А если было больше: убрать/ Если было меньше добавить seats?
-        if ($json_seat[1] !=='0') {
+        dump($json_seat[0], $json_seat[1]);
+        dump($json_seat[1] != 0);
+        if ($json_seat[1] != 0) {
             $hall['col'] = $json_seat[1];
         }
-        if ($json_seat[0] !=='0') {
+        if ($json_seat[0] != 0) {
             $hall['row'] = $json_seat[0];
         }
 
-        $hall->save();       //dump('изменилис');//dump($hall1['id']);//dump($hall);
-
+        $hall->save();
+        var_dump($hall);
         //return redirect()->route('admin.index', ['selected_hall' => $hall1['id']]);
-        return redirect()->route('admin.home');
+
+        return redirect()->route('admin.home', ['open'=> $request['open'], 'selected_hall' => $request['selected_hall']]);
         //return view('admin.index',['selected_hall' => $hall1['id'], 'user'=> $request->user, 'films' => $request->films, 'halls' => $request->halls, 'seances'=> $request->seances, 'dateCurrent' => $request->dateCurrent, 'dateChosen'=> $request->dateChosen, 'seats'=> $request->seats]);
     }
 

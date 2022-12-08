@@ -48,7 +48,7 @@
 <main class="conf-steps">
     {{-- Создание зала +++++++++++++++++++++++++++++--}}
     <section class="conf-step">
-        <header class="conf-step__header conf-step__header_opened">
+        <header class="conf-step__header conf-step__header_closed">
             <h2 class="conf-step__title">Управление залами</h2>
         </header>
         <div class="conf-step__wrapper">
@@ -171,7 +171,7 @@
 
     {{--Установка цен--}}
     <section class="conf-step">
-        <header class="conf-step__header conf-step__header_opened">
+        <header class="conf-step__header conf-step__header_closed">
             <h2 class="conf-step__title">Конфигурация цен</h2>
         </header>
         <div class="conf-step__wrapper">
@@ -223,7 +223,7 @@
 
     {{--Формирование сетки сеансов--}}
     <section class="conf-step">
-        <header class="conf-step__header conf-step__header_opened">
+        <header class="conf-step__header conf-step__header_closed">
             <h2 class="conf-step__title">Сетка сеансов</h2>
         </header>
         <div class="conf-step__wrapper">
@@ -449,7 +449,7 @@
             json_row_col=JSON.stringify(count_row_col);
             console.log('конец');
             console.log(button.value, count_row_col, count_row_col.length);
-            console.log('count json_row:', json_row_col);
+            console.log('count json_row_col:', json_row_col);
         }
     });
     //console.log('count_row_col massive:', count_row_col[0], count_row_col[1], count_row_col.length);
@@ -528,27 +528,23 @@
             }
         });
 
-        const json=JSON.stringify(newTypeOfSeats);//console.log('json  selectedddd', json);
-        //let url = "{{--route('admin.editHall', ['hall'=> $halls[$selected_hall-1], 'newTypeOfSeats' => 'json'])--}}";
-
+        let json_string=JSON.stringify(newTypeOfSeats);
         //let url = "{{--route('admin.editHall', ['hall'=> $hall, 'newTypeOfSeats' => 'json', 'user'=> $user, 'films' => $films, 'halls' => $halls, 'seances'=> $seances, 'dateCurrent' => $dateCurrent, 'dateChosen'=> $dateChosen, 'seats'=> $seats])--}}";
 
         // было работало let url = "{{--route('admin.editHall', ['hall'=> $halls->where('id', $selected_hall)[0], 'newTypeOfSeats' => 'json', 'json_seat' => 'json_row_col'])--}}";
-        let url = "{{route('admin.editHall', ['hall'=> $halls->where('id', $selected_hall)->first(), 'newTypeOfSeats' => 'json', 'json_seat' => 'json_row_col'])}}";
+        let url = "{{route('admin.editHall', ['hall'=> $halls->where('id', $selected_hall)->first(), 'newTypeOfSeats' => 'json_string', 'json_seat' => 'json_row_col'])}}";
 
         //?????? let url = "{{--route('admin.editHall', ['hall'=> $hall_sel, 'newTypeOfSeats' => 'json', 'json_seat' => 'json_row_col'])--}}";
 
-
-
-        //console.log('url   ',url);console.log('selected url  ', selected);
-        //let hl= '$halls->where("id", $selected_hall)[0]';//$halls->where('id', $selected_hall)[0]
-        //url = url.replace('hl', hl);
-        url = url.replace('json', json);//console.log('replace url  ', url);
-        url = url.replace('json_row_col', json_row_col);//
+        url = url.replace('json_string', json_string);//console.log('replace url  ', url);
+        url = url.replace('json_row_col', json_row_col);
         console.log('replace url  ', url);
-        url = url.replaceAll('&amp;', '&');//console.log('replace amp url  ', url);
+        console.log('count json_row:', json_row_col);
+        alert(json_row_col);
+        url = url.replaceAll('&amp;', '&');
         console.log('получили url для обновления   ',url);
-        //window.location.href = url;
+        alert(url);
+        window.location.href = url;
     }
 
     //Открыть форму добавления зала/фильма
@@ -585,25 +581,15 @@
 
     //Переключатель зала
     function clickRadio(id){
-        //alert('clickradio');
-        //console.log(document.getElementById('countNormal'));
-        //console.log(document.getElementById('countVip'));
-        //document.getElementById('countNormal').value = '{{$hall->countNormal}}';
-        //document.getElementById('countVip').value = '{{$hall->countVip}}';
         console.log('clickradio', id);
         idLast = id;
         //alert( idLast);
         let url = "{{ route('admin.home',['selected_hall' => 'id', 'open'=> $open, 'text'=> $text]) }}";
         let idi = String(id);
         console.log('idi', id);
-        url = url.replace('id', +idi);
-        //url = url.replace('open_2', `${ {{--$open --}}}`);
-
-        //url = url.replace('text_2', `${ {{--$text--}} }`);
+        url = url.replace('id', +idi);    //url = url.replace('open_2', `${ {{--$open --}}}`);
         url = url.replaceAll('&amp;', '&');
-        console.log('replaceed amp url  ', url);
-       // alert(url);
-        //alert(`${ {{$hall->{'id'} }} }`);
+        console.log('replaceed amp url  ', url);   // alert(url);
         window.location.href= url
     }
     // переключатель блокировка/разблокировка редактирования(добавление св-ва disabled)
@@ -652,16 +638,11 @@
     }
 
 
-
-
-
     //Обновление инфо о ценах кресел в зале не работает
     /*
     function clickUpdate(id){
-
         console.log('clickradio', id);
         const json=JSON.stringify(count);
-
         //let url = "{{--route('admin.updateHall', ['hall'=> $hall, 'count' => 'json'])--}}";
         url = url.replace('json', json);
         url = url.replaceAll('&amp;', '&');
@@ -669,25 +650,6 @@
         //window.location.href= url;
     }
     */
-
-    {{--работало, но теперь не нужно
-    function clickDestroy(id){
-        console.log('hall id:', id);
-        let url = "{{ route('admin.destroyHall', ['id' => 'json'] ) }}";
-        console.log('url  ', url);
-        //let json=JSON.stringify(id);
-        let json = Number(id);
-        url = url.replace('json', json);
-        //console.log('replaceed id url  ', url);
-        url = url.replaceAll('&amp;', '&');
-        console.log('replaceed amp url  ', url);
-        window.location.href= url;
-    }
-    --}}
-
-    //console.log(input);
-
-
 </script>
 
 </body>

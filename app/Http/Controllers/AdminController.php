@@ -70,8 +70,8 @@ class AdminController extends Controller
             //var_dump($open);
             if ($request->open === null) return redirect()->route('admin.open', ['param' => 0]);
             $text= ($request->open == null || $request->open == '0' ) ? 'Открыть продажу билетов' : 'Приостановить продажу билетов'  ;
-            //dd(Route::currentRouteName());
-            //dump(Route::getCurrentRoute());
+            dump(Route::currentRouteName());
+            dump(Route::getCurrentRoute());
             //dump($request->all());
             //dump($text);
             //if($this->route->hasRoute('admin.open'))
