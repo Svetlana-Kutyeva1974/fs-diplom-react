@@ -48,28 +48,32 @@
 <main class="conf-steps">
     {{-- Создание зала +++++++++++++++++++++++++++++--}}
     <section class="conf-step">
-        <header class="conf-step__header conf-step__header_closed">
+        <header class="conf-step__header conf-step__header_opened">
             <h2 class="conf-step__title">Управление залами</h2>
         </header>
         <div class="conf-step__wrapper">
             <p class="conf-step__paragraph">Доступные залы:</p>
             <ul class="conf-step__list">
+
                 @foreach ($halls as $hall)
                     {{-- Форма создания зала--}}
-
-                    <form action="{{ route('admin.destroyHall', ['id' => $hall->id]) }}" method="post" onsubmit="return confirm('Удалить этот зал?')">
+                    {{--<form action="{{ route('admin.destroyHall', ['id' => $hall->id]) }}" method="post" onsubmit="return confirm('Удалить этот зал?')">
                         @csrf
-                        @method('DELETE')
+                        @method('DELETE')--}}
+
                         <li>{{$hall->nameHall}}
-                        <button id="{{$hall->id}}"  class="conf-step__button conf-step__button-trash" @if ($open === '1') disabled @endif >
-                        </button>
+                             @include('admin.delete', ['hall'=> $hall])
+                            <button id="{{$hall->id}}" onclick = "popupToggle(id)"  class="conf-step__button conf-step__button-trash" @if ($open === '1') disabled @endif >
+                            </button>
                         </li>
-                    </form>
+                    {{--</form>--}}
+
                 @endforeach
             </ul>
             <button id= "create" onclick = "clickAdd(id)"  class="conf-step__button conf-step__button-accent" @if ($open=== '1') disabled @endif>Создать зал</button>
 
         </div>
+
         {{-- Popup Меню создания зала--}}
         <div class="popup">
             <div class="popup__container">
@@ -211,7 +215,7 @@
 
             <fieldset class="conf-step__buttons text-center">
                 <button class="conf-step__button conf-step__button-regular" @if ($open === '1') disabled @endif>Отмена</button>
-                <input id="update" type="submit" value="Сохранить" class="conf-step__button conf-step__button-accent" @if ($open === '1') disabled @endif >
+                <input id="{{$hall->id}}" onclick = "clickEditPrice(id)" type="submit" value="Сохранить" class="conf-step__button conf-step__button-accent" @if ($open === '1') disabled @endif >
 
                 <!--<input id="update" onclick = "clickUpdate()" type="submit" value="Сохранить" class="conf-step__button conf-step__button-accent" @if ($open === '1') disabled @endif >-->
             </fieldset>
@@ -414,8 +418,8 @@
 
     let count = [0,0];
     let count_row_col = [0,0];
-    let json_row_col = JSON.stringify(count_row_col);
-    let json_count = JSON.stringify(count);
+    let json_row_col = JSON.stringify(count_row_col);// типы мест
+    let json_count = JSON.stringify(count);// стоимость мест
 
     //Обработчик ввода стоимости места в зале
     Array.from(input).forEach((button, index, arr) => {
@@ -428,7 +432,7 @@
             console.log('конец');
             console.log(button.value, count, count.length);
             json_count=JSON.stringify(count);
-            console.log('count json:', json_count);
+            console.log('count json_count:', json_count);
 
         }
     });
@@ -546,6 +550,18 @@
         alert(url);
         window.location.href = url;
     }
+    // редактирование цен
+    function clickEditPrice(id){
+        let url = "{{route('admin.editPriceHall', ['hall'=> $halls->where('id', $selected_hall)->first(), 'count' => 'json_count'])}}";
+        //alert(json_count);
+        url = url.replace('json_count', json_count);
+        console.log('replace url  ', url);
+        url = url.replaceAll('&amp;', '&');
+        console.log('получили url для обновления   ',url);
+       // alert(url);
+        window.location.href = url;
+
+    }
 
     //Открыть форму добавления зала/фильма
     function clickAdd(id){
@@ -637,6 +653,14 @@
         window.location.href= url
     }
 
+    function popupToggle(id){
+        //alert(id);
+        let p= 'popup'+`${id}`;
+        //alert(p);
+        const  popup = document.getElementById(p);
+       // alert(popup.classList);
+        popup.classList.toggle('active')
+    }
 
     //Обновление инфо о ценах кресел в зале не работает
     /*

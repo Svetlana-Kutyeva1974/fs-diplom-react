@@ -542,3 +542,71 @@ input[type='radio'], input[type='submit'], button, .conf-step__header, select {
 
 /*# sourceMappingURL=styles.css.map */
 
+/*#popup{*/
+    /*position: fixed;*//*фиксированное позиционирование*/
+    /*top: -100%;*//*прячем окно за пределы видимости*/
+    /*left: 50%;*//*позиция окна слева*/
+    /*transform: translate(-50%,-50%);
+    z-index: 1000;*//*на верхний слой*/
+    /*background: #fff;
+    width: 450px;
+    padding: 80px 50px 50px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+    transition: 0.5s;
+    visibility: hidden;*/ /*скрываем окно*/
+/*}*/
+/*#popup.active{
+    visibility: visible;*//*показываем окно*/
+    /*top: 50%;*/  /*окно выдвигается сверху*/
+/*}*/
+/*#popup .popup__container{
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;*/   /*направление главной оси*/
+/*}*/
+/*
+#popup .popup__container img{
+    max-width: 80px;
+}
+#popup .popup__container h2{
+    font-size: 24px;
+    font-weight: 500;
+    color: #333;
+    margin: 20px 0 10px;
+}
+#popup .popup__container p{
+    text-align: center;
+    font-size: 16px;
+    color: #333;
+}
+#popup .popup__container .inputBox{
+    position: relative;
+    width: 100%;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#popup .popup__container .inputBox input{
+    width: 100%;
+    border: 1px solid rgba(0,0,0,0.2);
+    padding: 15px;
+    outline: none;
+    font-size: 18px;
+}
+#popup .popup__container .inputBox input[type="submit"]{
+    max-width: 150px;
+    background: #E57373;
+    color: #fff;
+    border: none;
+}
+.close{
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    cursor: pointer;
+}
+*/

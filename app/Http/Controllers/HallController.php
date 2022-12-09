@@ -140,9 +140,36 @@ class HallController extends Controller
         $hall->save();
         var_dump($hall);
         //return redirect()->route('admin.index', ['selected_hall' => $hall1['id']]);
+        return redirect()->route('admin.home', ['open'=> $hall['open'], 'selected_hall' => $hall['id']]);
 
-        return redirect()->route('admin.home', ['open'=> $request['open'], 'selected_hall' => $request['selected_hall']]);
+        //return redirect()->route('admin.home', ['open'=> $request['open'], 'selected_hall' => $request['selected_hall']]);
         //return view('admin.index',['selected_hall' => $hall1['id'], 'user'=> $request->user, 'films' => $request->films, 'halls' => $request->halls, 'seances'=> $request->seances, 'dateCurrent' => $request->dateCurrent, 'dateChosen'=> $request->dateChosen, 'seats'=> $request->seats]);
+    }
+
+    public function editPriceHall(Request $request, Hall $hall)
+    {
+
+        dump($request->all());
+        dump($request->open);
+        $hall1 = $request['hall'];
+        $hall = Hall::find($hall1['id']);
+        $count = json_decode($request['count']);
+        if ($count[1] != 0) {
+            $hall['countNormal'] = $count[1];
+        }
+        if ($count[0] != 0) {
+            $hall['countVip'] = $count[0];
+        }
+        $hall->save();
+        dump($hall['open']);
+        dump($hall['id']);
+        //dd();
+        //кстати б интересно open  , selected_hall реально не даны, но они как-то схватываются?
+        //лучше сделать $hall['open'], $hall['id']:::
+        return redirect()->route('admin.home', ['open'=> $hall['open'], 'selected_hall' => $hall['id']]);
+        //return redirect()->route('admin.home', ['open'=> $request['open'], 'selected_hall' => $request['selected_hall']]);
+        //
+        //return redirect()->route('admin.home');//это тоже работает?
     }
 
     /**
@@ -166,11 +193,12 @@ class HallController extends Controller
     //public function destroy(Request $request, $id)
     public function destroy($id)
     {
+        dump($id);
         $hall = Hall::find($id);
 
         Hall::find($id)->delete();//Hall::find($request->id)->delete();
-        //return redirect()->back();
-        return redirect()->route('admin.home');
+        return redirect()->back();
+        //return redirect()->route('admin.home');
     }
 
     /**

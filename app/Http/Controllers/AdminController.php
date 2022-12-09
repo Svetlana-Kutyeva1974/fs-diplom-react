@@ -44,9 +44,11 @@ class AdminController extends Controller
 
 
         //dump('request1    ');
-        //var_dump($request->selected_hall);
-            $selected_hall = ($request->selected_hall) ?: '1';
-            //dump($halls);//dump($user);//dd($dateChosen);//
+
+            $selected_hall = ($request->selected_hall) ?: $halls->first()->id;
+        dump($selected_hall);
+        dump($halls->first()->id);
+            dump($halls);//dump($user);//dd($dateChosen);//
             //dump('request2    ');
            //dump($request->selected_hall);
         //dump('zal vib    ');
@@ -151,3 +153,4 @@ class AdminController extends Controller
     }
 
 }
+//https://codepen.io/webdevtips-ru/pen/OJmydVd

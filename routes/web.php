@@ -37,6 +37,7 @@ Route::group([ 'middleware' => 'auth'  ],  function () {
         Route::any('/destroyHall/{id}', [App\Http\Controllers\HallController::class, 'destroy'])->name('admin.destroyHall');
         Route::any('/updateHall', [App\Http\Controllers\HallController::class, 'update'])->name('admin.updateHall');
         Route::any('/editHall', [App\Http\Controllers\HallController::class, 'edit'])->name('admin.editHall');
+        Route::any('/editPriceHall', [App\Http\Controllers\HallController::class, 'editPriceHall'])->name('admin.editPriceHall');
           //Route::resource('/hall{id}', [App\Http\Controllers\HallController::class]);
         Route::any('/createFilm', [App\Http\Controllers\FilmController::class, 'create'])->name('admin.createFilm');
         Route::any('/destroyFilm/{id}', [App\Http\Controllers\FilmController::class, 'destroy'])->name('admin.destroyFilm');
