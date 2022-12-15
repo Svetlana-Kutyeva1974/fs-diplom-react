@@ -56,12 +56,13 @@
             <ul class="conf-step__list">
 
                 @foreach ($halls as $hall)
-                    {{-- Форма создания зала--}}
+                    {{-- Форма создания зала// когда было с confirm--}}
                     {{--<form action="{{ route('admin.destroyHall', ['id' => $hall->id]) }}" method="post" onsubmit="return confirm('Удалить этот зал?')">
                         @csrf
                         @method('DELETE')--}}
 
                         <li>{{$hall->nameHall}}
+                             {{-- Форма создания зала popup--}}
                              @include('admin.delete', ['hall'=> $hall])
                             <button id="{{$hall->id}}" onclick = "popupToggle(id)"  class="conf-step__button conf-step__button-trash" @if ($open === '1') disabled @endif >
                             </button>
@@ -104,7 +105,7 @@
         </div>
 
     </section>
-    {{-- Конец секции создания зала--}}
+    {{-- Конец секции создания зала+++++++++++++++++--}}
 
     {{-- Конфигурация зала!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!--}}
     <section id="2" class="conf-step">
@@ -119,13 +120,13 @@
                     //$count = count($halls);
                     //dump($halls);
                     //dump($selected_hall);
-                    //dump($hall->id);
+                    //dump($hall->id);9933
                 @endphp
                 @foreach ($halls as $hall)
                     <li>{{--$selected_hall--}}{{--dd(count($halls))--}}
                         @if($hall->{'id'} == $selected_hall) {{-- @if($i === $selected_hall ))   id="{{$hall->id}}"--}}
                            {{--var_dump($hall->id)--}}
-                        {{--}}@php
+                        {{--@php
 
                             $hall_sel= $hall;
                             //dump($selected_hall);
@@ -155,10 +156,10 @@
                 <p class="conf-step__hint">Чтобы изменить вид кресла, нажмите по нему левой кнопкой мыши</p>
             </div>
             {{-- Схема зала--}}
-            {{--}}@php
+            {{--@php
                 $selected = [];
-            @endphp
---}}        @php
+            @endphp--}}
+                @php
                 $isTrue = false;
             @endphp
             {{--dd($halls->where('id', $selected_hall))--}}
@@ -172,8 +173,9 @@
 
         </div>
     </section>
+    {{-- Конец секции конфигурация зала!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!--}}
 
-    {{--Установка цен--}}
+    {{--Установка цен++++++++++++++++++++++++++++++--}}
     <section id="3" class="conf-step">
         <header class="conf-step__header conf-step__header_opened">
             <h2 class="conf-step__title">Конфигурация цен</h2>
@@ -184,7 +186,7 @@
                 @foreach ($halls as $hall)
                     <li>
                         @if($hall->{'id'} === $selected_hall)
-                           {{--}} @php
+                           {{--@php
                                 $hall_sel2= $hall;
                                 //dump($selected_hall);
                                 //dump($hall_sel2);
@@ -199,9 +201,6 @@
                       </li>
                 @endforeach
             </ul>
-            {{--$hall_sel2--}}
-
-            {{--var_dump($hall_sel2)--}}
 
             <p class="conf-step__paragraph">Установите цены для типов кресел:</p>
             <div class="conf-step__legend">
@@ -224,10 +223,11 @@
     {{--dd($halls)--}}
     {{--dd($halls->where('id',$selected_hall)->first())--}}
 
+    {{-- Конец секции установки цен  +++++++++++++++++++++++++++++++++++++--}}
 
-    {{--Формирование сетки сеансов--}}
+    {{--Формирование сетки сеансов  +++++++++++++++++++++++++++++++++++++++++++--}}
     <section id="4" class="conf-step">
-        <header class="conf-step__header conf-step__header_closed">
+        <header class="conf-step__header conf-step__header_opened">
             <h2 class="conf-step__title">Сетка сеансов</h2>
         </header>
         <div class="conf-step__wrapper">
@@ -247,11 +247,11 @@
                                 $path= 'storage/folder/'.$film->imagePath;
                             @endphp
                             {{--Возможность удаления фильма по нажатию на изображение--}}
-                            <button @if ($open === '1') disabled @endif ><img class="conf-step__movie-poster" alt="{{$film->imageText}}" src="{{ asset($film->imagePath)}}" ></button>
+                            <button type="image" @if ($open === '1') disabled @endif ><img class="conf-step__movie-poster" alt="{{$film->imageText}}" src="{{ asset($film->imagePath)}}" ></button>
                             <h3 class="conf-step__movie-title">{{$film->title}}</h3>
                         <p class="conf-step__movie-duration">{{$film->duration}} минут</p>
                         </form>
-                        @include('admin.add_seance', ['film'=> $film])
+                        @include('admin.add_seance', ['film'=> $film, 'halls'=> $halls])
                     </div>
                 @endforeach
             </div>
@@ -356,8 +356,9 @@
         </div> {{--popup--}}
         </div> {{-- wrapper?--}}
     </section>
+    {{-- Конец секции сетки сеансов!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!--}}
 
-    {{--Открытие продажи--}}
+    {{--Открытие продажи  ++++++++++++++++++++++++++++++++++++++++++++++--}}
     <section id="5" class="conf-step">
         <header class="conf-step__header conf-step__header_opened">
             <h2 class="conf-step__title">Открыть продажи</h2>
@@ -368,6 +369,7 @@
             {{--}}<button id="open" class="conf-step__button conf-step__button-accent">Приостановить продажу билетов</button>--}}
         </div>
     </section>
+    {{--Конец секции открытие продажи  ++++++++++++++++++++++++++++++++++++++++++++++--}}
    </main>
 
 <script src="{{ asset('js/accordeon.js')}}"></script>
@@ -444,154 +446,171 @@
     console.log('cards2 i this', this, cards2);
     for (const card of cards2) {
         card.onmouseenter = function Enter(e) {
+            event.preventDefault();
+            console.log('cards2 e.target', e.target);
+            if (e.target.closest('.conf-step__movie').classList.contains('conf-step__movie')) {
+                console.log('cards2 e.target.children', e.target.children[0]);
+                e.target.children[0].classList.add('active');
+            }
+
+            /*
+            card.addEventListener('click', (event) => {
+                console.log('cards2 e.target.children', event.target.children[0]);
+                event.target.children[0].classList.add('active');
+            })
+            */
 
 
-            card.addEventListener('mousedown', (event) => {
+                card.addEventListener('mousedown', (event) => {
 
-                event.preventDefault();
-                let draggedEl = null;
-                let ghostEl = null;
-
-
-                //let element2 = event.target.closest('.div-body');
-                //console.log('===========', e.target, element2 );
-
-                let element3 = event.target.closest('.conf-step__movie');
-                //let element_color = element3.style.backgroundColor;   ///
-                //let element_color = element3.closest('.conf-step__movies').children[3].backgroundColor;
-                //let element_color = element3.closest('.conf-step__movies').backgroundColor;
-
-                // работало let element_color = element3.backgroundColor;
-                console.log('===========e.target =======element3!!!!', event.target, element3 );              ///
+                    event.preventDefault();
+                    let draggedEl = null;
+                    let ghostEl = null;
 
 
-                if (!e.target.classList.contains('conf-step__movie')) {
-                    return;
-                }                                                             ///
+                    //let element2 = event.target.closest('.div-body');
+                    //console.log('===========', e.target, element2 );
+
+                    let element3 = event.target.closest('.conf-step__movie');
+                    //let element_color = element3.style.backgroundColor;   ///
+                    //let element_color = element3.closest('.conf-step__movies').children[3].backgroundColor;
+                    //let element_color = element3.closest('.conf-step__movies').backgroundColor;
+
+                    // работало let element_color = element3.backgroundColor;
+                    console.log('===========e.target =======element3!!!!', event.target, element3);              ///
 
 
-                if (event.target.closest('.conf-step__movie').classList.contains('conf-step__movie')) {
-
-                    element3.style.cursor = 'grabbing';
-
-                    draggedEl = element3;
-                    console.log('тянем это div', draggedEl);
-
-                    ghostEl = element3.cloneNode(true);
-                    ghostEl.classList.add('dragged');
-                    document.body.appendChild(ghostEl);
-                    ghostEl.style.position = 'absolute';
-                    ghostEl.style.zIndex = 1000;
-                    ghostEl.style.width = `${element3.offsetWidth}px`;
-                    ghostEl.style.left = `${event.pageX - ghostEl.offsetWidth / 2}px`;
-                    ghostEl.style.top = `${event.pageY - ghostEl.offsetHeight / 2}px`;
-                    ghostEl.style.backgroundColor = 'green';
-                    ghostEl.style.opacity = 0.6;
-                    console.log('скопировали это dip', ghostEl);
-                    //document.querySelector('.conf-step__seances-timeline.drop-area').style.backgroundColor = 'yellow';
-                    //document.querySelector('.conf-step__seances-timeline.drop-area').style.backgroundColor = 'blue';
-                }
-
-                console.log('слушаем это dip', card.closest('.conf-step__movies').nextElementSibling);
-                //console.log('слушаем2 это dip', card.closest('.conf-step__wrapper'));
-
-                card.closest('.conf-step__movies').nextElementSibling.addEventListener('mousemove', (e) => {
-                    e.preventDefault(); // не даём выделять элементы
-                    if (!draggedEl) {
+                    if (!e.target.classList.contains('conf-step__movie')) {
                         return;
-                    }
-                    ghostEl.style.left = `${e.pageX - ghostEl.offsetWidth / 2}px`;
-                    ghostEl.style.top = `${e.pageY - ghostEl.offsetHeight / 2}px`;
-                    console.log('позиция', ghostEl.style.left,ghostEl.style.top);
-                    console.log('event mousemove\n', e.target, e.currentTarget);
-                });
-                //отпустили блок
-                document.addEventListener('mouseup', (e) => {
-                    //e.stopPropagation();
-                    //e.preventDefault(); // не даём выделять элементы
-                    console.log('event mouseup!!!!!!', e.target, e.currentTarget, e.relatedTarget);
-                    console.log('draddedEl', draggedEl);
-                    console.log('ghost', ghostEl);
-                    if (!draggedEl) {
-                        return;
+                    }                                                             ///
+
+
+                    if (event.target.closest('.conf-step__movie').classList.contains('conf-step__movie')) {
+
+                        element3.style.cursor = 'grabbing';
+
+                        draggedEl = element3;
+                        console.log('тянем это div', draggedEl);
+
+                        ghostEl = element3.cloneNode(true);
+                        ghostEl.classList.add('dragged');
+                        document.body.appendChild(ghostEl);
+                        ghostEl.style.position = 'absolute';
+                        ghostEl.style.zIndex = 1000;
+                        ghostEl.style.width = `${element3.offsetWidth}px`;
+                        ghostEl.style.left = `${event.pageX - ghostEl.offsetWidth / 2}px`;
+                        ghostEl.style.top = `${event.pageY - ghostEl.offsetHeight / 2}px`;
+                        ghostEl.style.backgroundColor = 'green';
+                        ghostEl.style.opacity = 0.6;
+                        console.log('скопировали это dip', ghostEl);
+                        //document.querySelector('.conf-step__seances-timeline.drop-area').style.backgroundColor = 'yellow';
+                        //document.querySelector('.conf-step__seances-timeline.drop-area').style.backgroundColor = 'blue';
                     }
 
-                    let closest = document.elementFromPoint(e.clientX, e.clientY);// p- элемент
-                    console.log('closest 1 и 2\n', closest, document.elementsFromPoint(e.clientX, e.clientY));
-                    console.log('dragged parent\n', draggedEl.parentElement, draggedEl.parentElement.parentNode);
-                    console.log('ghostd parent\n', ghostEl.parentElement, ghostEl.parentElement.parentNode);
+                    console.log('слушаем это dip', card.closest('.conf-step__movies').nextElementSibling);
+                    //console.log('слушаем2 это dip', card.closest('.conf-step__wrapper'));
 
-                    let closestParent = closest.closest('.conf-step__movie');//div
-                    console.log('closestparent   2el\n', closestParent);
-
-                    //const parent = closest.closest('div.conf-step__seances-hall');
-                    console.log('element3\n', element3);
-                    //let parent = element3.closest(".conf-step__seances-hall");
-                    //let parent = closest.closest('.conf-step__seances-timeline.drop-area');
-                    //let parent =closestParent.closest('.conf-step__seances-hall');
-                    let parent, col;
-                    for (const el of [...Array.from(document.elementsFromPoint(e.clientX, e.clientY))]) {
-                        if (el.classList.contains('conf-step__seances-timeline')) {
-                            console.log("ребенок ok555555",el);
-                            parent = el;
-                            //col =  parent.style.backgroundColor;
-                            parent.style.backgroundColor = 'yellow';
+                    card.closest('.conf-step__movies').nextElementSibling.addEventListener('mousemove', (e) => {
+                        e.preventDefault(); // не даём выделять элементы
+                        if (!draggedEl) {
+                            return;
                         }
-                        console.log("ребенок",el);
-                    }
-                    //let parentChild1= parent.lastElementChild;
-                    //alert('child', parentChild1);
+                        ghostEl.style.left = `${e.pageX - ghostEl.offsetWidth / 2}px`;
+                        ghostEl.style.top = `${e.pageY - ghostEl.offsetHeight / 2}px`;
+                        console.log('позиция', ghostEl.style.left, ghostEl.style.top);
+                        console.log('event mousemove\n', e.target, e.currentTarget);
+                    });
+                    //отпустили блок
+                    document.addEventListener('mouseup', (e) => {
+                        //e.stopPropagation();
+                        //e.preventDefault(); // не даём выделять элементы
+                        console.log('event mouseup!!!!!!', e.target, e.currentTarget, e.relatedTarget);
+                        console.log('draddedEl', draggedEl);
+                        console.log('ghost', ghostEl);
+                        if (!draggedEl) {
+                            return;
+                        }
 
-                    console.log('parent conf-step__seances-hall\n', parent);
-                    //let parent = closest.closest('.conf-step__seances-timeline.drop-area');
+                        let closest = document.elementFromPoint(e.clientX, e.clientY);// p- элемент
+                        console.log('closest 1 и 2\n', closest, document.elementsFromPoint(e.clientX, e.clientY));
+                        console.log('dragged parent\n', draggedEl.parentElement, draggedEl.parentElement.parentNode);
+                        console.log('ghostd parent\n', ghostEl.parentElement, ghostEl.parentElement.parentNode);
 
-                    console.log('кидаем это на e.currentTarget', '\n ghostEl',ghostEl, '\n dragged',draggedEl, '\n etarget', e.target, '\n closest', closest, '\n carrenttag', e.currentTarget);
-                    console.log('childrene.currentTarget', e.currentTarget.children);
-                    console.log('childrene.Target', e.target.children);
-                    //console.log('parent', parent);
-                    //console.log('closestparent', closestParent);
-                    const { top } = closest.getBoundingClientRect();
-                    /*if (e.pageY > window.scrollY + top + closest.offsetHeight / 2) {
-                       parent.children[1].appendChild(draggedEl);
-                    } else {
-                      parent.children[1].insertBefore(draggedEl, closestParent);
-                    }*/
+                        let closestParent = closest.closest('.conf-step__movie');//div
+                        console.log('closestparent   2el\n', closestParent);
 
-                    //if (e.pageX > window.scrollX + top + closest.offsetWidth / 2) {
-                    console.log('вставляем сюда',  parent);
-                    // parent.children[1].appendChild(draggedEl);
-                    //показать попап
-                    shows1(1);
+                        //const parent = closest.closest('div.conf-step__seances-hall');
+                        console.log('element3\n', element3);
+                        //let parent = element3.closest(".conf-step__seances-hall");
+                        //let parent = closest.closest('.conf-step__seances-timeline.drop-area');
+                        //let parent =closestParent.closest('.conf-step__seances-hall');
+                        let parent, col;
+                        for (const el of [...Array.from(document.elementsFromPoint(e.clientX, e.clientY))]) {
+                            if (el.classList.contains('conf-step__seances-timeline')) {
+                                console.log("ребенок ok555555", el);
+                                parent = el;
+                                //col =  parent.style.backgroundColor;
+                                parent.style.backgroundColor = 'yellow';
+                            }
+                            console.log("ребенок", el);
+                        }
+                        //let parentChild1= parent.lastElementChild;
+                        //alert('child', parentChild1);
 
-                    draggedEl.style.width = '60px';
-                    draggedEl.style.height ='40px';
-                    //draggedEl.style.backgroundColor = `${element_color}`;//'magenta';
-                    draggedEl.style.overflow = 'hidden';
-                    draggedEl.style.opacity = 0.6;
-                    draggedEl.style.left = '60px';
-                    draggedEl.classList.value= 'conf-step__seances-movie';
-                    //document.querySelector('.conf-step__seances-timeline').append(draggedEl);
-                    parent.append(draggedEl);
+                        console.log('parent conf-step__seances-hall\n', parent);
+                        //let parent = closest.closest('.conf-step__seances-timeline.drop-area');
+
+                        console.log('кидаем это на e.currentTarget', '\n ghostEl', ghostEl, '\n dragged', draggedEl, '\n etarget', e.target, '\n closest', closest, '\n carrenttag', e.currentTarget);
+                        console.log('childrene.currentTarget', e.currentTarget.children);
+                        console.log('childrene.Target', e.target.children);
+                        //console.log('parent', parent);
+                        //console.log('closestparent', closestParent);
+                        const {top} = closest.getBoundingClientRect();
+                        /*if (e.pageY > window.scrollY + top + closest.offsetHeight / 2) {
+                           parent.children[1].appendChild(draggedEl);
+                        } else {
+                          parent.children[1].insertBefore(draggedEl, closestParent);
+                        }*/
+
+                        //if (e.pageX > window.scrollX + top + closest.offsetWidth / 2) {
+                        console.log('вставляем сюда', parent);
+                        // parent.children[1].appendChild(draggedEl);
+                        //показать попап / предотвратить дроп
+                        //shows1(1);
+
+                        draggedEl.style.width = '60px';
+                        draggedEl.style.height = '40px';
+                        //draggedEl.style.backgroundColor = `${element_color}`;//'magenta';
+                        draggedEl.style.overflow = 'hidden';
+                        draggedEl.style.opacity = 0.6;
+                        draggedEl.style.left = '60px';
+                        draggedEl.classList.value = 'conf-step__seances-movie';
+                        //document.querySelector('.conf-step__seances-timeline').append(draggedEl);
+                        parent.append(draggedEl);
 
 
-                    //} else {
-                    // parent.children[1].insertBefore(draggedEl, closestParent);
-                    //}
-                    document.body.removeChild(ghostEl);
-                    //parent.style.backgroundColor = col;
-                    //document.body.remove(ghostEl);
-                    ghostEl = null;
-                    draggedEl = null;
-                    /*card.removeEventListener('mousedown', (event) => {
-                        event.preventDefault();
-                    };*/
-                });
-            });//  mousedown
+                        //} else {
+                        // parent.children[1].insertBefore(draggedEl, closestParent);
+                        //}
+                        document.body.removeChild(ghostEl);
+                        //parent.style.backgroundColor = col;
+                        //document.body.remove(ghostEl);
+                        ghostEl = null;
+                        draggedEl = null;
+                        //e.preventDefault();
+                        //показать попап
+                        shows1('1');
+
+                        /*card.removeEventListener('mousedown', (event) => {
+                            event.preventDefault();
+                        };*/
+                    });
+                });//  mousedown
+            //}; //if
         };
 
         card.onmouseleave = function Leave(ev) {
             ev.preventDefault();
-
         };
 
     }//for

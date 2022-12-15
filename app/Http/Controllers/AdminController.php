@@ -29,6 +29,7 @@ class AdminController extends Controller
         $user = Auth::user();
         //dump($user);
         dump($request->all());
+        
         /*if (! $user->is_admin) {
         return redirect('/');
         }*/
@@ -43,20 +44,23 @@ class AdminController extends Controller
             $dateChosen = $request->dateChosen ?? substr(Carbon::now(), 0, 10);//'2022-11-05 16:00:22'
 
 
-        //dump('request1    ');
-
             $selected_hall = ($request->selected_hall) ?: $halls->first()->id;
-        dump($selected_hall);
-        dump($halls->first()->id);
-            dump($halls);//dump($user);//dd($dateChosen);//
+
+        //dump($selected_hall);
+        //dump($halls->first()->id);
+
+
+
             //dump('request2    ');
            //dump($request->selected_hall);
         //dump('zal vib    ');
         //var_dump(Hall::all()->where('id',$selected_hall)->first());
         //var_dump(Hall::all()->where('id',$selected_hall)->first()->id);
         //dump($halls->where('id',$selected_hall)[1]);!!! нельзя так, офсет будет разный у залов , правильно, как выше
-        dump($halls->where('id',$selected_hall)->first());
-        dump($halls->where('id',$selected_hall)->first()->id);
+
+        //dump($halls->where('id',$selected_hall)->first());
+        //dump($halls->where('id',$selected_hall)->first()->id);
+
             //dump($halls[$selected_hall]);//здесь не по id а по порядку номеров в коллекции второй по id это первый!
             //dump($halls[$selected_hall]->id);
         //dump('новое selected-hall  ');
@@ -72,8 +76,10 @@ class AdminController extends Controller
             //var_dump($open);
             if ($request->open === null) return redirect()->route('admin.open', ['param' => 0]);
             $text= ($request->open == null || $request->open == '0' ) ? 'Открыть продажу билетов' : 'Приостановить продажу билетов'  ;
-            dump(Route::currentRouteName());
-            dump(Route::getCurrentRoute());
+
+            //dump(Route::currentRouteName());
+            //dump(Route::getCurrentRoute());
+
             //dump($request->all());
             //dump($text);
             //if($this->route->hasRoute('admin.open'))
