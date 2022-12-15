@@ -155,10 +155,10 @@ class HallController extends Controller
         $hall = Hall::find($hall1['id']);
         $count = json_decode($request['count']);
         if ($count[1] != 0) {
-            $hall['countNormal'] = $count[1];
+            $hall['countVip'] = $count[1];
         }
         if ($count[0] != 0) {
-            $hall['countVip'] = $count[0];
+            $hall['countNormal'] = $count[0];
         }
         $hall->save();
         dump($hall['open']);

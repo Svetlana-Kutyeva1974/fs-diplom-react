@@ -24,9 +24,14 @@ class SeanceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $open= $request->open ?? 0;
+        $selected_hall= $request->hall->{'id'} ?? '1';
+        dd($request->all());
+
+        return redirect()->route('admin.home', ['open'=> $open, 'selected_hall' => $selected_hall]);
+
     }
 
     /**

@@ -47,7 +47,7 @@
 
 <main class="conf-steps">
     {{-- Создание зала +++++++++++++++++++++++++++++--}}
-    <section class="conf-step">
+    <section id="1" class="conf-step">
         <header class="conf-step__header conf-step__header_opened">
             <h2 class="conf-step__title">Управление залами</h2>
         </header>
@@ -70,7 +70,7 @@
 
                 @endforeach
             </ul>
-            <button id= "create" onclick = "clickAdd(id)"  class="conf-step__button conf-step__button-accent" @if ($open=== '1') disabled @endif>Создать зал</button>
+            <button id= "create" onclick = "clickAddHall(id)"  class="conf-step__button conf-step__button-accent" @if ($open=== '1') disabled @endif>Создать зал</button>
 
         </div>
 
@@ -107,7 +107,7 @@
     {{-- Конец секции создания зала--}}
 
     {{-- Конфигурация зала!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!--}}
-    <section class="conf-step">
+    <section id="2" class="conf-step">
         <header class="conf-step__header conf-step__header_opened">
             <h2 class="conf-step__title">Конфигурация залов</h2>
         </header>
@@ -174,8 +174,8 @@
     </section>
 
     {{--Установка цен--}}
-    <section class="conf-step">
-        <header class="conf-step__header conf-step__header_closed">
+    <section id="3" class="conf-step">
+        <header class="conf-step__header conf-step__header_opened">
             <h2 class="conf-step__title">Конфигурация цен</h2>
         </header>
         <div class="conf-step__wrapper">
@@ -226,20 +226,20 @@
 
 
     {{--Формирование сетки сеансов--}}
-    <section class="conf-step">
+    <section id="4" class="conf-step">
         <header class="conf-step__header conf-step__header_closed">
             <h2 class="conf-step__title">Сетка сеансов</h2>
         </header>
         <div class="conf-step__wrapper">
             <p class="conf-step__paragraph">
-                <button id="addFilm" onclick = "clickAdd(id)" class="conf-step__button conf-step__button-accent" @if ($open === '1') disabled @endif >Добавить фильм</button>
+                <button id="addFilm" onclick = "clickAddFilm(id)" class="conf-step__button conf-step__button-accent" @if ($open === '1') disabled @endif >Добавить фильм</button>
             </p>
             {{--Блок оглавления фильмов --}}
             <div class="conf-step__movies">
                 @foreach ($films as $film)
-                    <div class="conf-step__movie">
+                    <div class="conf-step__movie" draggable="true" style="cursor: grabbing;">
                         {{-- Форма добавления фильма--}}
-                        <form action="{{ route('admin.destroyFilm', ['id' => $film->id]) }}" method="post" onsubmit="return confirm('Удалить этот фильм?')">
+                        <form  action="{{ route('admin.destroyFilm', ['id' => $film->id]) }}" method="post" onsubmit="return confirm('Удалить этот фильм?')">
                             @csrf
                             @method('DELETE')
 
@@ -251,58 +251,20 @@
                             <h3 class="conf-step__movie-title">{{$film->title}}</h3>
                         <p class="conf-step__movie-duration">{{$film->duration}} минут</p>
                         </form>
+                        @include('admin.add_seance', ['film'=> $film])
                     </div>
                 @endforeach
             </div>
             {{--конец блок оглавления фильмов --}}
 
-            {{-- Меню popupe добавления севнса--}}
-            <div class="popup">
-                <div class="popup__container">
-                    <div class="popup__content">
-                        <div class="popup__header">
-                            <h2 class="popup__title">
-                                Добавление сеанса
-                                <a class="popup__dismiss" href="#" onclick = "cl3(id)"><img src="i/close.png" alt="Закрыть"></a>
-                            </h2>
-
-                        </div>
-                        <div class="popup__wrapper">
-                            <form action="add_movie" method="post" accept-charset="utf-8">
-                                <label class="conf-step__label conf-step__label-fullsize" for="hall">
-                                    Название зала
-                                    <select class="conf-step__input" name="hall" required>
-                                        <option value="1" selected>Зал 1</option>
-                                        <option value="2">Зал 2</option>
-                                    </select>
-                                </label>
-                                <label class="conf-step__label conf-step__label-fullsize" for="name">
-                                    Время начала
-                                    <input class="conf-step__input" type="time" value="00:00" name="start_time" required>
-                                </label>
-
-                                <label class="conf-step__label conf-step__label-fullsize" for="name">
-                                    Название зала
-                                    <input class="conf-step__input" type="text" placeholder="Например, &laquo;Зал 1&raquo;" name="name" required>
-                                </label>
-
-                                <div class="conf-step__buttons text-center">
-                                    <input type="submit" value="Добавить" class="conf-step__button conf-step__button-accent">
-                                    <button class="conf-step__button conf-step__button-regular">Отменить</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {{-- Конец Меню popupe добавления сеанса--}}
-
             {{--Блок сетки фильмов --}}
             <div class="conf-step__seances">
                 {{-- сетка фильмов для зала  --}}
-                <div class="conf-step__seances-hall">
-                    <h3 class="conf-step__seances-title">Зал 1</h3>
-                    <div class="conf-step__seances-timeline">
+                @foreach ($halls as $hall)
+                <div id="{{$hall->id}}" class="conf-step__seances-hall">
+                    <h3 class="conf-step__seances-title">{{$hall->nameHall}}</h3>
+                    <div class="conf-step__seances-timeline drop-area">
+
                         <div class="conf-step__seances-movie" style="width: 60px; background-color: rgb(133, 255, 137); left: 0;">
                             <p class="conf-step__seances-movie-title">Миссия выполнима</p>
                             <p class="conf-step__seances-movie-start">00:00</p>
@@ -315,11 +277,13 @@
                             <p class="conf-step__seances-movie-title">Звёздные войны XXIII: Атака клонированных клонов</p>
                             <p class="conf-step__seances-movie-start">14:00</p>
                         </div>
+
                     </div>
                 </div>
-                <div class="conf-step__seances-hall">
-                    <h3 class="conf-step__seances-title">Зал 2</h3>
-                    <div class="conf-step__seances-timeline">
+                {{--}}
+                <div id="{{$hall->id}}" class="conf-step__seances-hall">
+                    <h3 class="conf-step__seances-title">{{$hall->nameHall}}</h3>
+                    <div class="conf-step__seances-timeline drop-area">
                         <div class="conf-step__seances-movie" style="width: 65px; background-color: rgb(202, 255, 133); left: 595px;">
                             <p class="conf-step__seances-movie-title">Звёздные войны XXIII: Атака клонированных клонов</p>
                             <p class="conf-step__seances-movie-start">19:50</p>
@@ -330,14 +294,14 @@
                         </div>
                     </div>
                 </div>
-            </div>
-
+            </div>--}}
+            @endforeach
             <fieldset class="conf-step__buttons text-center">
                 <button class="conf-step__button conf-step__button-regular" href="#" @if ($open === '1') disabled @endif >Отмена</button>
                 <input type="submit" value="Сохранить" class="conf-step__button conf-step__button-accent" href="#" @if ($open === '1') disabled @endif >
             </fieldset>
         </div>
-        {{--Конец блока сетки фильмов --}}
+        {{--Конец блока сетки фильмов <div class="conf-step__seances">--}}
 
         {{-- Меню popup добавления фильма--}}
         <div class="popup">
@@ -389,11 +353,12 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> {{--popup--}}
+        </div> {{-- wrapper?--}}
     </section>
 
     {{--Открытие продажи--}}
-    <section class="conf-step">
+    <section id="5" class="conf-step">
         <header class="conf-step__header conf-step__header_opened">
             <h2 class="conf-step__title">Открыть продажи</h2>
         </header>
@@ -465,11 +430,176 @@
     //console.log('count json_row:', json_row_col);
     //document.getElementById('update');
 
+    //для диплома drag-drop film
+
+    const shows1 = (id) => {
+        const popupe = `.conf-step__movie #popup${id}.popup`;
+        console.log('popup',popupe);
+        const headers = document.querySelector(popupe);
+        console.log('popup element', headers);
+        headers.classList.toggle('active');
+    }
+
+    const cards2 = [...Array.from(document.querySelectorAll('.conf-step__movie'))];
+    console.log('cards2 i this', this, cards2);
+    for (const card of cards2) {
+        card.onmouseenter = function Enter(e) {
+
+
+            card.addEventListener('mousedown', (event) => {
+
+                event.preventDefault();
+                let draggedEl = null;
+                let ghostEl = null;
+
+
+                //let element2 = event.target.closest('.div-body');
+                //console.log('===========', e.target, element2 );
+
+                let element3 = event.target.closest('.conf-step__movie');
+                //let element_color = element3.style.backgroundColor;   ///
+                //let element_color = element3.closest('.conf-step__movies').children[3].backgroundColor;
+                //let element_color = element3.closest('.conf-step__movies').backgroundColor;
+
+                // работало let element_color = element3.backgroundColor;
+                console.log('===========e.target =======element3!!!!', event.target, element3 );              ///
+
+
+                if (!e.target.classList.contains('conf-step__movie')) {
+                    return;
+                }                                                             ///
+
+
+                if (event.target.closest('.conf-step__movie').classList.contains('conf-step__movie')) {
+
+                    element3.style.cursor = 'grabbing';
+
+                    draggedEl = element3;
+                    console.log('тянем это div', draggedEl);
+
+                    ghostEl = element3.cloneNode(true);
+                    ghostEl.classList.add('dragged');
+                    document.body.appendChild(ghostEl);
+                    ghostEl.style.position = 'absolute';
+                    ghostEl.style.zIndex = 1000;
+                    ghostEl.style.width = `${element3.offsetWidth}px`;
+                    ghostEl.style.left = `${event.pageX - ghostEl.offsetWidth / 2}px`;
+                    ghostEl.style.top = `${event.pageY - ghostEl.offsetHeight / 2}px`;
+                    ghostEl.style.backgroundColor = 'green';
+                    ghostEl.style.opacity = 0.6;
+                    console.log('скопировали это dip', ghostEl);
+                    //document.querySelector('.conf-step__seances-timeline.drop-area').style.backgroundColor = 'yellow';
+                    //document.querySelector('.conf-step__seances-timeline.drop-area').style.backgroundColor = 'blue';
+                }
+
+                console.log('слушаем это dip', card.closest('.conf-step__movies').nextElementSibling);
+                //console.log('слушаем2 это dip', card.closest('.conf-step__wrapper'));
+
+                card.closest('.conf-step__movies').nextElementSibling.addEventListener('mousemove', (e) => {
+                    e.preventDefault(); // не даём выделять элементы
+                    if (!draggedEl) {
+                        return;
+                    }
+                    ghostEl.style.left = `${e.pageX - ghostEl.offsetWidth / 2}px`;
+                    ghostEl.style.top = `${e.pageY - ghostEl.offsetHeight / 2}px`;
+                    console.log('позиция', ghostEl.style.left,ghostEl.style.top);
+                    console.log('event mousemove\n', e.target, e.currentTarget);
+                });
+                //отпустили блок
+                document.addEventListener('mouseup', (e) => {
+                    //e.stopPropagation();
+                    //e.preventDefault(); // не даём выделять элементы
+                    console.log('event mouseup!!!!!!', e.target, e.currentTarget, e.relatedTarget);
+                    console.log('draddedEl', draggedEl);
+                    console.log('ghost', ghostEl);
+                    if (!draggedEl) {
+                        return;
+                    }
+
+                    let closest = document.elementFromPoint(e.clientX, e.clientY);// p- элемент
+                    console.log('closest 1 и 2\n', closest, document.elementsFromPoint(e.clientX, e.clientY));
+                    console.log('dragged parent\n', draggedEl.parentElement, draggedEl.parentElement.parentNode);
+                    console.log('ghostd parent\n', ghostEl.parentElement, ghostEl.parentElement.parentNode);
+
+                    let closestParent = closest.closest('.conf-step__movie');//div
+                    console.log('closestparent   2el\n', closestParent);
+
+                    //const parent = closest.closest('div.conf-step__seances-hall');
+                    console.log('element3\n', element3);
+                    //let parent = element3.closest(".conf-step__seances-hall");
+                    //let parent = closest.closest('.conf-step__seances-timeline.drop-area');
+                    //let parent =closestParent.closest('.conf-step__seances-hall');
+                    let parent, col;
+                    for (const el of [...Array.from(document.elementsFromPoint(e.clientX, e.clientY))]) {
+                        if (el.classList.contains('conf-step__seances-timeline')) {
+                            console.log("ребенок ok555555",el);
+                            parent = el;
+                            //col =  parent.style.backgroundColor;
+                            parent.style.backgroundColor = 'yellow';
+                        }
+                        console.log("ребенок",el);
+                    }
+                    //let parentChild1= parent.lastElementChild;
+                    //alert('child', parentChild1);
+
+                    console.log('parent conf-step__seances-hall\n', parent);
+                    //let parent = closest.closest('.conf-step__seances-timeline.drop-area');
+
+                    console.log('кидаем это на e.currentTarget', '\n ghostEl',ghostEl, '\n dragged',draggedEl, '\n etarget', e.target, '\n closest', closest, '\n carrenttag', e.currentTarget);
+                    console.log('childrene.currentTarget', e.currentTarget.children);
+                    console.log('childrene.Target', e.target.children);
+                    //console.log('parent', parent);
+                    //console.log('closestparent', closestParent);
+                    const { top } = closest.getBoundingClientRect();
+                    /*if (e.pageY > window.scrollY + top + closest.offsetHeight / 2) {
+                       parent.children[1].appendChild(draggedEl);
+                    } else {
+                      parent.children[1].insertBefore(draggedEl, closestParent);
+                    }*/
+
+                    //if (e.pageX > window.scrollX + top + closest.offsetWidth / 2) {
+                    console.log('вставляем сюда',  parent);
+                    // parent.children[1].appendChild(draggedEl);
+                    //показать попап
+                    shows1(1);
+
+                    draggedEl.style.width = '60px';
+                    draggedEl.style.height ='40px';
+                    //draggedEl.style.backgroundColor = `${element_color}`;//'magenta';
+                    draggedEl.style.overflow = 'hidden';
+                    draggedEl.style.opacity = 0.6;
+                    draggedEl.style.left = '60px';
+                    draggedEl.classList.value= 'conf-step__seances-movie';
+                    //document.querySelector('.conf-step__seances-timeline').append(draggedEl);
+                    parent.append(draggedEl);
+
+
+                    //} else {
+                    // parent.children[1].insertBefore(draggedEl, closestParent);
+                    //}
+                    document.body.removeChild(ghostEl);
+                    //parent.style.backgroundColor = col;
+                    //document.body.remove(ghostEl);
+                    ghostEl = null;
+                    draggedEl = null;
+                    /*card.removeEventListener('mousedown', (event) => {
+                        event.preventDefault();
+                    };*/
+                });
+            });//  mousedown
+        };
+
+        card.onmouseleave = function Leave(ev) {
+            ev.preventDefault();
+
+        };
+
+    }//for
 
 
 
 
-
+    //==================================== function==========================
     // Обработка выбора типа места по клику
     function select(id, hall){
         let rand;
@@ -564,10 +694,18 @@
     }
 
     //Открыть форму добавления зала/фильма
-    function clickAdd(id){
+    function clickAddFilm(id){
         console.log(id);
         console.log(document.getElementById(id));
-        console.log(document.getElementById(id).closest('.conf-step'));
+        //console.log(document.getElementById(id).closest('.conf-step'));
+        console.log(document.getElementById(id).closest('.conf-step__wrapper').children[3]);
+        document.getElementById(id).closest('.conf-step__wrapper').children[3].classList.add("active");
+    }
+    //Открыть форму добавления зала/фильма
+    function clickAddHall(id){
+        console.log(id);
+        console.log(document.getElementById(id));
+        //console.log(document.getElementById(id).closest('.conf-step'));
         console.log(document.getElementById(id).closest('.conf-step').children[2]);
         document.getElementById(id).closest('.conf-step').children[2].classList.add("active");
     }
@@ -661,6 +799,9 @@
        // alert(popup.classList);
         popup.classList.toggle('active')
     }
+    //dragdrop
+
+
 
     //Обновление инфо о ценах кресел в зале не работает
     /*

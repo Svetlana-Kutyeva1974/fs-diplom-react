@@ -41,6 +41,8 @@ Route::group([ 'middleware' => 'auth'  ],  function () {
           //Route::resource('/hall{id}', [App\Http\Controllers\HallController::class]);
         Route::any('/createFilm', [App\Http\Controllers\FilmController::class, 'create'])->name('admin.createFilm');
         Route::any('/destroyFilm/{id}', [App\Http\Controllers\FilmController::class, 'destroy'])->name('admin.destroyFilm');
+
+        Route::any('/createSeance', [App\Http\Controllers\SeanceController::class, 'create'])->name('admin.createSeance');
     });
 });
 
