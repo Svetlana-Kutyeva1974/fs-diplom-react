@@ -29,7 +29,7 @@ class AdminController extends Controller
         $user = Auth::user();
         //dump($user);
         dump($request->all());
-        
+
         /*if (! $user->is_admin) {
         return redirect('/');
         }*/

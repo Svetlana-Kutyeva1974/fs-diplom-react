@@ -225,6 +225,8 @@
 
     {{-- Конец секции установки цен  +++++++++++++++++++++++++++++++++++++--}}
 
+
+
     {{--Формирование сетки сеансов  +++++++++++++++++++++++++++++++++++++++++++--}}
     <section id="4" class="conf-step">
         <header class="conf-step__header conf-step__header_opened">
@@ -249,9 +251,13 @@
                             {{--Возможность удаления фильма по нажатию на изображение--}}
                             <button type="image" @if ($open === '1') disabled @endif ><img class="conf-step__movie-poster" alt="{{$film->imageText}}" src="{{ asset($film->imagePath)}}" ></button>
                             <h3 class="conf-step__movie-title">{{$film->title}}</h3>
-                        <p class="conf-step__movie-duration">{{$film->duration}} минут</p>
+                            <p class="conf-step__movie-duration">{{$film->duration}} минут</p>
+                            <button href="#" class="task__remove visible conf-step__button conf-step__button-trash"></button>
+
                         </form>
+
                         @include('admin.add_seance', ['film'=> $film, 'halls'=> $halls])
+
                     </div>
                 @endforeach
             </div>
@@ -358,6 +364,7 @@
     </section>
     {{-- Конец секции сетки сеансов!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!--}}
 
+
     {{--Открытие продажи  ++++++++++++++++++++++++++++++++++++++++++++++--}}
     <section id="5" class="conf-step">
         <header class="conf-step__header conf-step__header_opened">
@@ -446,22 +453,16 @@
     console.log('cards2 i this', this, cards2);
     for (const card of cards2) {
         card.onmouseenter = function Enter(e) {
-            event.preventDefault();
-            console.log('cards2 e.target', e.target);
-            if (e.target.closest('.conf-step__movie').classList.contains('conf-step__movie')) {
-                console.log('cards2 e.target.children', e.target.children[0]);
-                e.target.children[0].classList.add('active');
+            e.preventDefault();// если без span  то везде children 0!!!
+            if (e.target.classList.contains('.conf-step__movie') && e.target.children[2].classList.contains('.visible')) {
+                e.target.children[2].classList.remove('visible');
+
             }
 
-            /*
-            card.addEventListener('click', (event) => {
-                console.log('cards2 e.target.children', event.target.children[0]);
-                event.target.children[0].classList.add('active');
-            })
-            */
-
-
                 card.addEventListener('mousedown', (event) => {
+                    if (event.target.classList.contains('task__remove')) {
+                        return;
+                    }
 
                     event.preventDefault();
                     let draggedEl = null;
@@ -554,8 +555,6 @@
                             }
                             console.log("ребенок", el);
                         }
-                        //let parentChild1= parent.lastElementChild;
-                        //alert('child', parentChild1);
 
                         console.log('parent conf-step__seances-hall\n', parent);
                         //let parent = closest.closest('.conf-step__seances-timeline.drop-area');
@@ -600,6 +599,10 @@
                         //e.preventDefault();
                         //показать попап
                         shows1('1');
+                        event.preventDefault();
+                        return;
+
+
 
                         /*card.removeEventListener('mousedown', (event) => {
                             event.preventDefault();

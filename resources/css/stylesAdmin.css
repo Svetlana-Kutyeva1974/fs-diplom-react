@@ -542,6 +542,34 @@ input[type='radio'], input[type='submit'], button, .conf-step__header, select {
 
 /*# sourceMappingURL=styles.css.map */
 
+
+button {
+    text-decoration: none;
+    color: #000000; /* цвет ссылки нав меню*/
+    font-size: 1.5rem;
+    text-align: right;
+}
+
+.task__remove {
+    /*position: relative;*/
+    font-size: 1.2rem;
+    text-align: right;
+    display: flex;
+    top: 10px;
+    left: 90%;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: right;
+    /*flex-basis: auto;*/
+    /*left: 200px;*/
+
+}
+
+.button.task__remove.visible {
+    display: none;
+    text-decoration: none;
+    text-align: right;
+}
 /*#popup{*/
     /*position: fixed;*//*фиксированное позиционирование*/
     /*top: -100%;*//*прячем окно за пределы видимости*/
