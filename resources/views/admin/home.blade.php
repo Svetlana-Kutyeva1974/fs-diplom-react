@@ -44,11 +44,14 @@
     <div>Email: {{$user->email}}</div><br>-->
 
 </header>
+@php
+    $confstep= 'conf-step__header_closed';
+@endphp
 
 <main class="conf-steps">
     {{-- Создание зала +++++++++++++++++++++++++++++--}}
     <section id="1" class="conf-step">
-        <header class="conf-step__header conf-step__header_opened">
+        <header class="conf-step__header {{$confstep}}">
             <h2 class="conf-step__title">Управление залами</h2>
         </header>
         <div class="conf-step__wrapper">
@@ -109,32 +112,34 @@
 
     {{-- Конфигурация зала!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!--}}
     <section id="2" class="conf-step">
-        <header class="conf-step__header conf-step__header_opened">
+        <header class="conf-step__header {{$confstep}}">
             <h2 class="conf-step__title">Конфигурация залов</h2>
         </header>
         <div class="conf-step__wrapper">
             <p class="conf-step__paragraph">Выберите зал для конфигурации:</p>
             <ul class="conf-step__selectors-box">
-                @php
-                    //$i= '0';
-                    //$count = count($halls);
-                    //dump($halls);
-                    //dump($selected_hall);
-                    //dump($hall->id);9933
-                @endphp
                 @foreach ($halls as $hall)
                     <li>{{--$selected_hall--}}{{--dd(count($halls))--}}
+                        @php
+                            //$edit_hall = '1';
+                            $hall_seances= $seances->where('hall_id', $hall->id);
+                            if(count($hall_seances)>0) {
+                             $edit_hall = '0';
+                            } else {
+                             $edit_hall = '1';
+                            }
+                            //dump($hall_seances);
+                            //dump($edit_hall);
+
+                        @endphp
+                        {{--можно поставить проверку если  $edit_hall = '1', то рисовать залы if кода ниже
+                        (при этом убрать  в input  условие с $edit_hall)--}}
                         @if($hall->{'id'} == $selected_hall) {{-- @if($i === $selected_hall ))   id="{{$hall->id}}"--}}
                            {{--var_dump($hall->id)--}}
-                        {{--@php
 
-                            $hall_sel= $hall;
-                            //dump($selected_hall);
-                            //dump($hall_sel);
-                        @endphp--}}
-                            <input id="{{$hall->{'id'} }}" onclick = "clickRadio(id)" type="radio" class="conf-step__radio" name="chairs-hall" value="{{$hall->nameHall}}" checked @if ($open === '1') disabled @endif><span class="conf-step__selector">{{$hall->nameHall}}</span></li>
+                            <input id="{{$hall->{'id'} }}" onclick = "clickRadio(id)" type="radio" class="conf-step__radio" name="chairs-hall" value="{{$hall->nameHall}}" checked @if ($open === '1') disabled @endif @if ($edit_hall === '0') disabled @endif ><span class="conf-step__selector">{{$hall->nameHall}}</span></li>
                     @else
-                        <input id="{{$hall->{'id'} }}" onclick = "clickRadio(id)" type="radio" class="conf-step__radio" name="chairs-hall" value="{{$hall->nameHall}}" @if ($open === '1') disabled @endif><span class="conf-step__selector">{{$hall->nameHall}}</span></li>
+                        <input id="{{$hall->{'id'} }}" onclick = "clickRadio(id)" type="radio" class="conf-step__radio" name="chairs-hall" value="{{$hall->nameHall}}" @if ($open === '1') disabled @endif @if ($edit_hall === '0') disabled @endif ><span class="conf-step__selector">{{$hall->nameHall}}</span></li>
                         @endif
                         </li>
                         @endforeach
@@ -177,26 +182,32 @@
 
     {{--Установка цен++++++++++++++++++++++++++++++--}}
     <section id="3" class="conf-step">
-        <header class="conf-step__header conf-step__header_opened">
+        <header class="conf-step__header {{$confstep}}">
             <h2 class="conf-step__title">Конфигурация цен</h2>
         </header>
         <div class="conf-step__wrapper">
             <p class="conf-step__paragraph">Выберите зал для конфигурации:</p>
             <ul class="conf-step__selectors-box">
                 @foreach ($halls as $hall)
+
                     <li>
+                        @php
+                            //$edit_hall = '1';
+                            $hall_seances= $seances->where('hall_id', $hall->id);
+                            if(count($hall_seances)>0) {
+                             $edit_hall = '0';
+                            } else {
+                             $edit_hall = '1';
+                            }
+                            //dump($hall_seances);
+                            //dump($edit_hall);
+
+                        @endphp
+
                         @if($hall->{'id'} === $selected_hall)
-                           {{--@php
-                                $hall_sel2= $hall;
-                                //dump($selected_hall);
-                                //dump($hall_sel2);
-                                //dump($hall_sel2->countNormal);
-                                //dump($hall_sel2->nameHall);
-                            @endphp--}}
-                            {{--dump($hall->id)--}}
-                            <input id="{{$hall->id}}" onclick = "clickRadio(id)" type="radio" class="conf-step__radio" name="prices-hall" value="{{$hall->nameHall}}" checked @if ($open === '1') disabled @endif ><span class="conf-step__selector">{{$hall->nameHall}}</span> </li>
+                            <input id="{{$hall->id}}" onclick = "clickRadio(id)" type="radio" class="conf-step__radio" name="prices-hall" value="{{$hall->nameHall}}" checked @if ($open === '1') disabled @endif @if ($edit_hall === '0') disabled @endif ><span class="conf-step__selector">{{$hall->nameHall}}</span> </li>
                         @else
-                            <input id="{{$hall->id}}" onclick = "clickRadio(id)" type="radio" class="conf-step__radio" name="prices-hall" value="{{$hall->nameHall}}" @if ($open === '1') disabled @endif ><span class="conf-step__selector">{{$hall->nameHall}}</span> </li>
+                            <input id="{{$hall->id}}" onclick = "clickRadio(id)" type="radio" class="conf-step__radio" name="prices-hall" value="{{$hall->nameHall}}" @if ($open === '1') disabled @endif  @if ($edit_hall === '0') disabled @endif ><span class="conf-step__selector">{{$hall->nameHall}}</span> </li>
                       @endif
                       </li>
                 @endforeach
@@ -428,6 +439,10 @@
             console.log('конец');
             console.log(button.value, count_row_col, count_row_col.length);
             console.log('count json_row_col:', json_row_col);
+            alert('idLast:');
+            alert(idLast);
+            //вызов обработчика editSeats(id)
+            editSeats(idLast);
         }
     });
     //console.log('count_row_col massive:', count_row_col[0], count_row_col[1], count_row_col.length);
@@ -663,7 +678,10 @@
     function editSeats(id){
         // Меняем массив typeOfSeats - типы мест в зале(нажатие сохранить)
         console.log('editSeats');
-        alert(id);
+        //idLast = id;
+        //alert('idLast:', idLast);
+        //alert(idLast);
+        //alert(id);
         //let newTypeOfSeats= {};
         let newTypeOfSeats= [];
         Array.of(document.querySelectorAll('button.conf-step__chair')).forEach((element, index, array) => {
@@ -704,6 +722,8 @@
     }
     // редактирование цен
     function clickEditPrice(id){
+        //idLast = id;//?
+
         let url = "{{route('admin.editPriceHall', ['hall'=> $halls->where('id', $selected_hall)->first(), 'count' => 'json_count'])}}";
         //alert(json_count);
         url = url.replace('json_count', json_count);
