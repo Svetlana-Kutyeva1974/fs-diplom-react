@@ -197,11 +197,9 @@ class HallController extends Controller
         $hall->save();
         //dump($hall);
         var_dump($hall);
-        //return redirect()->route('admin.index', ['selected_hall' => $hall1['id']]);
-        return redirect()->route('admin.home', ['open'=> $hall['open'], 'selected_hall' => $hall['id']]);
 
-        //return redirect()->route('admin.home', ['open'=> $request['open'], 'selected_hall' => $request['selected_hall']]);
-        //return view('admin.index',['selected_hall' => $hall1['id'], 'user'=> $request->user, 'films' => $request->films, 'halls' => $request->halls, 'seances'=> $request->seances, 'dateCurrent' => $request->dateCurrent, 'dateChosen'=> $request->dateChosen, 'seats'=> $request->seats]);
+        return redirect()->route('admin.home', ['open'=> $hall['open'], 'selected_hall' => $hall['id']]);
+       // return redirect()->back();
     }
 
     public function editPriceHall(Request $request, Hall $hall)

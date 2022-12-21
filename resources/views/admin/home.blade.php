@@ -45,13 +45,17 @@
 
 </header>
 @php
-    $confstep= 'conf-step__header_closed';
+    $confstep1= 'conf-step__header_closed';
+    $confstep2= 'conf-step__header_closed';
+    $confstep3= 'conf-step__header_closed';
+    $confstep4= 'conf-step__header_opened';
+    $confstep5= 'conf-step__header_opened';
 @endphp
 
 <main class="conf-steps">
     {{-- Создание зала +++++++++++++++++++++++++++++--}}
     <section id="1" class="conf-step">
-        <header class="conf-step__header {{$confstep}}">
+        <header class="conf-step__header {{$confstep1}}">
             <h2 class="conf-step__title">Управление залами</h2>
         </header>
         <div class="conf-step__wrapper">
@@ -112,7 +116,7 @@
 
     {{-- Конфигурация зала!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!--}}
     <section id="2" class="conf-step">
-        <header class="conf-step__header {{$confstep}}">
+        <header class="conf-step__header {{$confstep2}}">
             <h2 class="conf-step__title">Конфигурация залов</h2>
         </header>
         <div class="conf-step__wrapper">
@@ -182,7 +186,7 @@
 
     {{--Установка цен++++++++++++++++++++++++++++++--}}
     <section id="3" class="conf-step">
-        <header class="conf-step__header {{$confstep}}">
+        <header class="conf-step__header {{$confstep3}}">
             <h2 class="conf-step__title">Конфигурация цен</h2>
         </header>
         <div class="conf-step__wrapper">
@@ -224,7 +228,7 @@
             </div>
 
             <fieldset class="conf-step__buttons text-center">
-                <button class="conf-step__button conf-step__button-regular" @if ($open === '1') disabled @endif>Отмена</button>
+                <button onclick = " window.location.href='{{ route('admin.home', ['open'=> $open,'selected_hall' => $selected_hall]) }}' " href="#" class="conf-step__button conf-step__button-regular" @if ($open === '1') disabled @endif>Отмена</button>
                 <input id="{{$hall->id}}" onclick = "clickEditPrice(id)" type="submit" value="Сохранить" class="conf-step__button conf-step__button-accent" @if ($open === '1') disabled @endif >
 
                 <!--<input id="update" onclick = "clickUpdate()" type="submit" value="Сохранить" class="conf-step__button conf-step__button-accent" @if ($open === '1') disabled @endif >-->
@@ -240,7 +244,7 @@
 
     {{--Формирование сетки сеансов  +++++++++++++++++++++++++++++++++++++++++++--}}
     <section id="4" class="conf-step">
-        <header class="conf-step__header conf-step__header_opened">
+        <header class="conf-step__header {{$confstep4}}">
             <h2 class="conf-step__title">Сетка сеансов</h2>
         </header>
         <div class="conf-step__wrapper">
@@ -378,7 +382,7 @@
 
     {{--Открытие продажи  ++++++++++++++++++++++++++++++++++++++++++++++--}}
     <section id="5" class="conf-step">
-        <header class="conf-step__header conf-step__header_opened">
+        <header class="conf-step__header {{$confstep5}}">
             <h2 class="conf-step__title">Открыть продажи</h2>
         </header>
         <div class="conf-step__wrapper text-center">
