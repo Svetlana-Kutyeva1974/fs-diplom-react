@@ -53,7 +53,7 @@
 @endphp
 
 <main class="conf-steps">
-    {{-- Создание зала +++++++++++++++++++++++++++++--}}
+    {{-- Создание зала ///////////////////////////////////////////////--}}
     <section id="1" class="conf-step">
         <header class="conf-step__header {{$confstep1}}">
             <h2 class="conf-step__title">Управление залами</h2>
@@ -112,9 +112,9 @@
         </div>
 
     </section>
-    {{-- Конец секции создания зала+++++++++++++++++--}}
+    {{-- Конец секции создания зала ///////////////// --}}
 
-    {{-- Конфигурация зала!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!--}}
+    {{-- Конфигурация зала!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! --}}
     <section id="2" class="conf-step">
         <header class="conf-step__header {{$confstep2}}">
             <h2 class="conf-step__title">Конфигурация залов</h2>
@@ -184,7 +184,7 @@
     </section>
     {{-- Конец секции конфигурация зала!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!--}}
 
-    {{--Установка цен++++++++++++++++++++++++++++++--}}
+    {{--Установка цен  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! --}}
     <section id="3" class="conf-step">
         <header class="conf-step__header {{$confstep3}}">
             <h2 class="conf-step__title">Конфигурация цен</h2>
@@ -242,7 +242,7 @@
 
 
 
-    {{--Формирование сетки сеансов  +++++++++++++++++++++++++++++++++++++++++++--}}
+    {{--Формирование сетки сеансов  +++++++++++++++++++++++++++++++++++++++++++ --}}
     <section id="4" class="conf-step">
         <header class="conf-step__header {{$confstep4}}">
             <h2 class="conf-step__title">Сетка сеансов</h2>
@@ -282,11 +282,45 @@
             <div class="conf-step__seances">
                 {{-- сетка фильмов для зала  --}}
                 @foreach ($halls as $hall)
+
+
                 <div id="{{$hall->id}}" class="conf-step__seances-hall">
                     <h3 class="conf-step__seances-title">{{$hall->nameHall}}</h3>
                     <div class="conf-step__seances-timeline drop-area">
+                        @php
+                            $coord = 0;
+                            //$all_seances = $seances->where('hall_id', $hall->id)->where('film_id', $film->id);
+                            //print_r($all_seances);
+                            //$sorted = $all_seances->sortBy('startSeance');
+                            // Сортируем и выводим получившийся массив
+                            //uasort($array, $callbackCmpFunction); // вторым параметром указываем нашу callback функцию
+                            //print_r($sorted);
+                            // упорядочить по дате поле startSeance
+                            //https://translated.turbopages.org/proxy_u/en-ru.ru.c2af9fe9-63a36136-4101588f-74722d776562/https/stackoverflow.com/questions/37567751/laravel-sort-an-array-by-date
+                        @endphp
 
-                        <div class="conf-step__seances-movie" style="width: 60px; background-color: rgb(133, 255, 137); left: 0;">
+                        {{--}}@foreach ($films as $film)--}}
+                            @php
+                                //$all_seances = $seances->where('hall_id', $hall->id)->where('film_id', $film->id)->sortBy('startSeance');
+                                $all_seances = $seances->where('hall_id', $hall->id)->sortBy('startSeance');
+                            @endphp
+
+                        {{--}}@foreach ($seances->where('hall_id', $hall->id)->where('film_id', $film->id) as $seance)--}}
+                            @foreach ($all_seances as $seance)
+                            <div class="conf-step__seances-movie" style="width: calc({{ $films->where('id', $seance->{'film_id'})->first()->duration }}px*0.5); background-color: rgb(133, 255, 137); left: {{$coord}}px;">
+                                <p class="conf-step__seances-movie-title">{{ $films->where('id', $seance->{'film_id'})->first()->title }}</p>
+                                {{--}}<p class="conf-step__seances-movie-title">{{ $film->title }}</p> --}}
+                                <p class="conf-step__seances-movie-start">{{ substr($seance->{'startSeance'}, -8,5) }}</p>
+                            </div>
+                            @php
+                                $coord += ( $films->where('id', $seance->{'film_id'})->first()->duration )/2;
+                            @endphp
+
+                            @endforeach
+
+                        {{--}}@endforeach}}
+{{--}}
+                   {{--     <div class="conf-step__seances-movie" style="width: 60px; background-color: rgb(133, 255, 137); left: 0;">
                             <p class="conf-step__seances-movie-title">Миссия выполнима</p>
                             <p class="conf-step__seances-movie-start">00:00</p>
                         </div>
@@ -294,10 +328,12 @@
                             <p class="conf-step__seances-movie-title">Миссия выполнима</p>
                             <p class="conf-step__seances-movie-start">12:00</p>
                         </div>
+
+
                         <div class="conf-step__seances-movie" style="width: 65px; background-color: rgb(202, 255, 133); left: 420px;">
                             <p class="conf-step__seances-movie-title">Звёздные войны XXIII: Атака клонированных клонов</p>
                             <p class="conf-step__seances-movie-start">14:00</p>
-                        </div>
+                        </div>--}}
 
                     </div>
                 </div>
@@ -443,8 +479,8 @@
             console.log('конец');
             console.log(button.value, count_row_col, count_row_col.length);
             console.log('count json_row_col:', json_row_col);
-            alert('idLast:');
-            alert(idLast);
+            //alert('idLast:');
+            //alert(idLast);
             //вызов обработчика editSeats(id)
             editSeats(idLast);
         }
@@ -457,6 +493,27 @@
     //const json_row_col=JSON.stringify(count_row_col);
     //console.log('count json_row:', json_row_col);
     //document.getElementById('update');
+
+    // обработка установки цветности карточек сеансов
+    const backcolor = ['#caff85', '#85ff89', '#85ffd3','#85e2ff', '#8599ff', '#ba85ff', 'ff85fb','#ff85b1', '#ffa285'];
+    const movieparent = Array.from(document.querySelectorAll('.conf-step__movie'));//кнопки h3
+    const movie = Array.from(document.querySelectorAll('.conf-step__movie-title'));//кнопки h3
+    const seance = Array.from(document.querySelectorAll('.conf-step__seances-movie-title'));//h3
+    //closest('.conf-step__seances-movie')
+    movieparent.forEach((pp, index,arr) => {
+        console.log('ht,tyjr',pp);
+    });
+
+    seance.forEach((p, index, arr) => {
+        console.log(p, p.textContent);
+        const element = movie.find((el)=> el.textContent == p.textContent);
+        const idxelementparent = movieparent.findIndex((el)=> el == element.closest('.conf-step__movie'));
+        (idxelementparent != -1 && idxelementparent<9) ? p.closest('.conf-step__seances-movie').style.backgroundColor= backcolor[idxelementparent] : backcolor[0];
+
+        //console.log('element:\n',element, element.offsetParent);
+        //console.log('indexelementparent:\n',idxelementparent);
+        //console.log('elementparent seance:\n',p.closest('.conf-step__seances-movie'),p.closest('.conf-step__seances-movie').style.backgroundColor= backcolor[idxelementparent]);
+    });
 
     //для диплома drag-drop film
 
@@ -718,10 +775,10 @@
         url = url.replace('json_row_col', json_row_col);
         console.log('replace url  ', url);
         console.log('count json_row:', json_row_col);
-        alert(json_row_col);
+        //alert(json_row_col);
         url = url.replaceAll('&amp;', '&');
         console.log('получили url для обновления   ',url);
-        alert(url);
+        //alert(url);
         window.location.href = url;
     }
     // редактирование цен

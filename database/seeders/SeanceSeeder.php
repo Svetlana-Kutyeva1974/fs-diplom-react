@@ -28,7 +28,7 @@ class SeanceSeeder extends Seeder
 
         //$day= Carbon::now();
 
-        //2
+        //1 фильм 1 зал
         DB::table('seances')->insert([
             'startSeance' => Carbon::now(),
             'film_id' => 1,
@@ -40,159 +40,161 @@ class SeanceSeeder extends Seeder
 
 
         DB::table('seances')->insert([
-            'startSeance' => Carbon::now()->addMinutes(210),
+            'startSeance' => Carbon::now()->addMinutes(330),
             'film_id' => 1,
             'hall_id' => 1,
         ]);
 
         DB::table('seances')->insert([
-            'startSeance' => Carbon::now()->addMinutes(420),
+            'startSeance' => Carbon::now()->addMinutes(660),
             'film_id' => 1,
             'hall_id' => 1,
+        ]);
+        /*
+       DB::table('seances')->insert([
+           'startSeance' => Carbon::now()->addMinutes(720),
+           'film_id' => 1,
+           'hall_id' => 1,
+       ]);
+
+       DB::table('seances')->insert([
+           'startSeance' => Carbon::now()->addMinutes(130),
+           'film_id' => 1,
+           'hall_id' => 1,
+       ]);*/
+
+        //1 фильм 2 зал
+        DB::table('seances')->insert([
+            'startSeance' => Carbon::now()->addMinutes(50),//'startSeance' => Carbon::now()->addMinutes(210),
+            'film_id' => 1,
+            'hall_id' => 2,
         ]);
 
         DB::table('seances')->insert([
-            'startSeance' => Carbon::now()->addMinutes(630),
+            'startSeance' => Carbon::now()->addMinutes(280),//'startSeance' => Carbon::now()->addMinutes(420),
             'film_id' => 1,
-            'hall_id' => 1,
+            'hall_id' => 2,
         ]);
+
+
+        DB::table('seances')->insert([
+            'startSeance' => Carbon::now()->addMinutes(510),
+            'film_id' => 1,
+            'hall_id' => 2,
+        ]);
+
+        DB::table('seances')->insert([
+            'startSeance' => Carbon::now()->addMinutes(740),
+            'film_id' => 1,
+            'hall_id' => 2,
+        ]);
+
+
+        DB::table('seances')->insert([
+            'startSeance' => Carbon::now()->addMinutes(970),
+            'film_id' => 1,
+            'hall_id' => 2,
+        ]);
+
+
+        DB::table('seances')->insert([
+            'startSeance' => Carbon::now()->addMinutes(1200),
+            'film_id' => 1,
+            'hall_id' => 2,
+        ]);
+
+
+        /*2*/////1 зал
 
         DB::table('seances')->insert([
             'startSeance' => Carbon::now()->addMinutes(130),
-            'film_id' => 1,
-            'hall_id' => 1,
-        ]);
-
-        DB::table('seances')->insert([
-            'startSeance' => Carbon::now()->addMinutes(210),
-            'film_id' => 1,
-            'hall_id' => 2,
-        ]);
-
-        DB::table('seances')->insert([
-            'startSeance' => Carbon::now()->addMinutes(420),
-            'film_id' => 1,
-            'hall_id' => 2,
-        ]);
-
-
-        DB::table('seances')->insert([
-            'startSeance' => Carbon::now()->addMinutes(630),
-            'film_id' => 1,
-            'hall_id' => 2,
-        ]);
-
-        DB::table('seances')->insert([
-            'startSeance' => Carbon::now()->addMinutes(840),
-            'film_id' => 1,
-            'hall_id' => 2,
-        ]);
-
-
-        DB::table('seances')->insert([
-            'startSeance' => Carbon::now()->addMinutes(1050),
-            'film_id' => 1,
-            'hall_id' => 2,
-        ]);
-
-
-        DB::table('seances')->insert([
-            'startSeance' => Carbon::now()->addMinutes(1260),
-            'film_id' => 1,
-            'hall_id' => 2,
-        ]);
-
-
-        /*2*/
-
-        DB::table('seances')->insert([
-            'startSeance' => Carbon::now()->addMinutes(130),
             'film_id' => 2,
             'hall_id' => 1,
         ]);
 
         DB::table('seances')->insert([
-            'startSeance' => Carbon::now()->addMinutes(260),
+            'startSeance' => Carbon::now()->addMinutes(130+330),
             'film_id' => 2,
             'hall_id' => 1,
         ]);
 
         DB::table('seances')->insert([
-            'startSeance' => Carbon::now()->addMinutes(390),
+            'startSeance' => Carbon::now()->addMinutes(130+660),
             'film_id' => 2,
             'hall_id' => 1,
         ]);
-
+        /*
         DB::table('seances')->insert([
-            'startSeance' => Carbon::now()->addMinutes(410),
+            'startSeance' => Carbon::now()->addMinutes(560),
             'film_id' => 2,
             'hall_id' => 1,
         ]);
-
-        DB::table('seances')->insert([
+        */
+        /////////////////////////2 фильм 2 зал
+        /*DB::table('seances')->insert([
             'startSeance' => Carbon::now(),
             'film_id' => 2,
             'hall_id' => 2,
         ]);
-
+        */
         DB::table('seances')->insert([
-            'startSeance' => Carbon::now()->addMinutes(210),
+            'startSeance' => Carbon::now()->addMinutes(50+130),
             'film_id' => 2,
             'hall_id' => 2,
         ]);
 
         DB::table('seances')->insert([
-            'startSeance' => Carbon::now()->addMinutes(420),
-            'film_id' => 2,
-            'hall_id' => 2,
-        ]);
-
-
-        DB::table('seances')->insert([
-            'startSeance' => Carbon::now()->addMinutes(630),
-            'film_id' => 2,
-            'hall_id' => 2,
-        ]);
-
-        DB::table('seances')->insert([
-            'startSeance' => Carbon::now()->addMinutes(840),
+            'startSeance' => Carbon::now()->addMinutes(50+130+230),
             'film_id' => 2,
             'hall_id' => 2,
         ]);
 
 
         DB::table('seances')->insert([
-            'startSeance' => Carbon::now()->addMinutes(1050),
+            'startSeance' => Carbon::now()->addMinutes(50+130+460),
+            'film_id' => 2,
+            'hall_id' => 2,
+        ]);
+
+        DB::table('seances')->insert([
+            'startSeance' => Carbon::now()->addMinutes(50+130+690),
             'film_id' => 2,
             'hall_id' => 2,
         ]);
 
 
+        DB::table('seances')->insert([
+            'startSeance' => Carbon::now()->addMinutes(50+130+920),
+            'film_id' => 2,
+            'hall_id' => 2,
+        ]);
+
+        /*
         DB::table('seances')->insert([
             'startSeance' => Carbon::now()->addMinutes(1260),
             'film_id' => 2,
             'hall_id' => 2,
         ]);
-
-        //3
+*/
+        //.............3фильм 1 зал
         DB::table('seances')->insert([
-            'startSeance' => Carbon::now()->addMinutes(200),
+            'startSeance' => Carbon::now()->addMinutes(230),
             'film_id' => 3,
             'hall_id' => 1,
         ]);
 
         DB::table('seances')->insert([
-            'startSeance' => Carbon::now()->addMinutes(130),
+            'startSeance' => Carbon::now()->addMinutes(230+330),
             'film_id' => 3,
             'hall_id' => 1,
         ]);
 
         DB::table('seances')->insert([
-            'startSeance' => Carbon::now()->addMinutes(260),
+            'startSeance' => Carbon::now()->addMinutes(230+660),
             'film_id' => 3,
             'hall_id' => 1,
         ]);
-
+        /*
         DB::table('seances')->insert([
             'startSeance' => Carbon::now()->addMinutes(390),
             'film_id' => 3,
@@ -237,7 +239,7 @@ class SeanceSeeder extends Seeder
             'startSeance' => Carbon::now()->addMinutes(1210),
             'film_id' => 3,
             'hall_id' => 1,
-        ]);
+        ]);*/
 
     }
 }
