@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Film;
 use App\Models\Seance;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class SeanceController extends Controller
 {
@@ -28,8 +30,25 @@ class SeanceController extends Controller
     {
         $open= $request->open ?? 0;
         $selected_hall= $request->hall->{'id'} ?? '1';
-        dd($request->all());
-
+        $seance_id_last= Seance::all()->last()->id;
+        dump($seance_id_last);
+        dump($request->all());
+        $data = explode(" ", Carbon::now());
+        dump($data);
+        $data[1]=$request['start_seance'];
+        dump($data);
+        $data = implode(" ", $data);
+        //dd($data);
+        //
+        DB::table('seances')->insert([
+            'film_id' => $request['film_id'],// не нужно, опрределяем через seance
+            'hall_id' => $request['hall_id'],
+            //'seance_id' => seance_id_last,//Hash::make('секрет'),
+            'created_at' => Carbon::now(), //date("Y-m-d H:i:s"),//Carbon::now()
+            'updated_at' => Carbon::now(),//date("Y-m-d H:i:s"),//Carbon::now()
+            'startSeance'=> $data,
+        ]);
+        //dd();
         return redirect()->route('admin.home', ['open'=> $open, 'selected_hall' => $selected_hall]);
 
     }

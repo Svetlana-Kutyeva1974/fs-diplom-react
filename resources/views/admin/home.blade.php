@@ -359,58 +359,8 @@
             </fieldset>
         </div>
         {{--Конец блока сетки фильмов <div class="conf-step__seances">--}}
+            @include('admin.add_film') {{-- подключаем Меню popup добавления фильма--}}
 
-        {{-- Меню popup добавления фильма--}}
-        <div class="popup">
-            <div class="popup__container">
-                <div class="popup__content">
-                    <div class="popup__header">
-                        <h2 class="popup__title">
-                            Добавление фильма
-                            <a id="dismiss2" class="popup__dismiss" href="#" onclick = "cl3(id)"><img src="i/close.png" alt="Закрыть"></a>
-                        </h2>
-
-                    </div>
-                    <div class="popup__wrapper">
-                        <form action="{{route('admin.createFilm')}}" method="POST" accept-charset="utf-8" enctype="multipart/form-data">
-                            @csrf
-                        {{--}}<form action="add_movie" method="post" accept-charset="utf-8">--}}
-                            <label class="conf-step__label conf-step__label-fullsize" for="title">
-                                Название фильма
-                                <input class="conf-step__input" type="text" placeholder="Например, &laquo;Фильм&raquo;" name="title" required @if ($open === '1') disabled @endif>
-                            </label>
-
-                            <label class="conf-step__label conf-step__label-fullsize" for="description">
-                                Описание фильма
-                                <input class="conf-step__input" type="text" placeholder="Например, &laquo;О Фильме&raquo;" name="description" required @if ($open === '1') disabled @endif >
-                            </label>
-
-                            <label class="conf-step__label conf-step__label-fullsize" for="duration">
-                                Длительность фильма
-                                <input class="conf-step__input" type="text" placeholder="Например, &laquo;130&raquo;" name="duration" required @if ($open === '1') disabled @endif >
-                            </label>
-
-                            <label class="conf-step__label conf-step__label-fullsize" for="origin">
-                                Страна фильма
-                                <input class="conf-step__input" type="text" placeholder="Например, &laquo;Россия&raquo;" name="origin" required @if ($open === '1') disabled @endif >
-                            </label>
-                            <label class="conf-step__label conf-step__label-fullsize" for="imagaPath">
-                                Изображение фильма
-                                <input type="file" class="form-control-file" name="imagePath" accept="image/png, image/jpeg" @if ($open === '1') disabled @endif >
-                            </label>
-                            {{--
-                            input type="file" class="form-control-file" name="image" accept="image/png, image/jpeg">
-                            --}}
-
-                            <div class="conf-step__buttons text-center">
-                                <input type="submit" value="Добавить фильм" class="conf-step__button conf-step__button-accent" @if ($open === '1') disabled @endif >
-                                <button id="cancel" onclick = "cl2(id)" class="conf-step__button conf-step__button-regular" @if ($open === '1') disabled @endif >Отменить</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div> {{--popup--}}
         </div> {{-- wrapper?--}}
     </section>
     {{-- Конец секции сетки сеансов!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!--}}
@@ -427,7 +377,7 @@
             {{--}}<button id="open" class="conf-step__button conf-step__button-accent">Приостановить продажу билетов</button>--}}
         </div>
     </section>
-    {{--Конец секции открытие продажи  ++++++++++++++++++++++++++++++++++++++++++++++--}}
+    {{--Конец секции открытие продажи  ++++++++++++++++++++++++++++++++++++++++++++++  --}}
    </main>
 
 <script src="{{ asset('js/accordeon.js')}}"></script>
@@ -516,10 +466,22 @@
     });
 
     //для диплома drag-drop film
+    let idHallForSelect= 0;
 
     const shows1 = (id) => {
+        //поставить нужный зал select
+        let selected = Array.from(document.forms.seance.select_hall.options);
+        selected.forEach((p, index, arr) => {
+            console.log('element:\n',p.value);
+            if(p.value===idHallForSelect) {
+                document.forms.seance.select_hall.selectedIndex= index;
+            }
+        });
+
+        // показать меню добавления сеанса
         const popupe = `.conf-step__movie #popup${id}.popup`;
         console.log('popup',popupe);
+        console.log('id',id);
         const headers = document.querySelector(popupe);
         console.log('popup element', headers);
         headers.classList.toggle('active');
@@ -527,9 +489,11 @@
 
     const cards2 = [...Array.from(document.querySelectorAll('.conf-step__movie'))];
     console.log('cards2 i this', this, cards2);
+    let isDragging = false;
     for (const card of cards2) {
         card.onmouseenter = function Enter(e) {
             e.preventDefault();// если без span  то везде children 0!!!
+            isDragging = true;
             if (e.target.classList.contains('.conf-step__movie') && e.target.children[2].classList.contains('.visible')) {
                 e.target.children[2].classList.remove('visible');
 
@@ -537,6 +501,9 @@
 
                 card.addEventListener('mousedown', (event) => {
                     if (event.target.classList.contains('task__remove')) {
+                        return;
+                    }
+                    if(!isDragging){
                         return;
                     }
 
@@ -589,9 +556,15 @@
 
                     card.closest('.conf-step__movies').nextElementSibling.addEventListener('mousemove', (e) => {
                         e.preventDefault(); // не даём выделять элементы
+                        if(!isDragging){
+                            return;
+                        }
+
                         if (!draggedEl) {
                             return;
                         }
+
+
                         ghostEl.style.left = `${e.pageX - ghostEl.offsetWidth / 2}px`;
                         ghostEl.style.top = `${e.pageY - ghostEl.offsetHeight / 2}px`;
                         console.log('позиция', ghostEl.style.left, ghostEl.style.top);
@@ -600,10 +573,15 @@
                     //отпустили блок
                     document.addEventListener('mouseup', (e) => {
                         //e.stopPropagation();
-                        //e.preventDefault(); // не даём выделять элементы
+                        e.preventDefault(); // не даём выделять элементы
+                        if(!isDragging){
+                            return;
+                        }
+                       // e.stopPropagation();
                         console.log('event mouseup!!!!!!', e.target, e.currentTarget, e.relatedTarget);
                         console.log('draddedEl', draggedEl);
                         console.log('ghost', ghostEl);
+
                         if (!draggedEl) {
                             return;
                         }
@@ -626,10 +604,12 @@
                             if (el.classList.contains('conf-step__seances-timeline')) {
                                 console.log("ребенок ok555555", el);
                                 parent = el;
+                                idHallForSelect= parent.parentElement.id;
                                 //col =  parent.style.backgroundColor;
-                                parent.style.backgroundColor = 'yellow';
+                                //parent.style.backgroundColor = 'yellow';
                             }
                             console.log("ребенок", el);
+                            console.log("idHallForSelect", idHallForSelect);
                         }
 
                         console.log('parent conf-step__seances-hall\n', parent);
@@ -653,43 +633,78 @@
                         //показать попап / предотвратить дроп
                         //shows1(1);
 
-                        draggedEl.style.width = '60px';
+                        /*draggedEl.style.width = '60px';
                         draggedEl.style.height = '40px';
-                        //draggedEl.style.backgroundColor = `${element_color}`;//'magenta';
                         draggedEl.style.overflow = 'hidden';
                         draggedEl.style.opacity = 0.6;
                         draggedEl.style.left = '60px';
                         draggedEl.classList.value = 'conf-step__seances-movie';
                         //document.querySelector('.conf-step__seances-timeline').append(draggedEl);
-                        parent.append(draggedEl);
+                            parent.append(draggedEl);*/
 
 
-                        //} else {
-                        // parent.children[1].insertBefore(draggedEl, closestParent);
-                        //}
-                        document.body.removeChild(ghostEl);
+                            document.body.removeChild(ghostEl);
                         //parent.style.backgroundColor = col;
                         //document.body.remove(ghostEl);
+
+                        console.log('\n ghostEl', ghostEl.children[1].id[5]);
+                        const idd = ghostEl.children[1].id[5];
                         ghostEl = null;
                         draggedEl = null;
+                        //card.onmouseenter = null;
                         //e.preventDefault();
+
+
+                        // сбрасываем все обработчики
+                        document.removeEventListener('mouseup', (e) => {
+                            e.preventDefault();
+                            //e.stopPropagation();
+                        });
+                        for (const card of cards2) {
+
+                        card.closest('.conf-step__movies').nextElementSibling.removeEventListener('mousemove', (e) => {
+                            e.preventDefault();
+                            //e.stopPropagation();
+                        });
+
+                            card.removeEventListener('mousedown', (e) => {
+                                //e.preventDefault();
+                                //e.stopPropagation();
+                            });
+
+
+
+                            card.onmouseenter = null;
+                            card.onmouseleave = null;
+                        }
+                        /*document.addEventListener("click", handler, true);
+                        function handler(e) {
+                            e.stopPropagation();
+                            e.preventDefault();
+                        }*/
                         //показать попап
-                        shows1('1');
-                        event.preventDefault();
-                        return;
+                        shows1(idd);
+                        //event.preventDefault();
+                        isDragging = false;
 
 
+                        //card.onmousedown = null;
+                        //document.onmouseup = null;
+                        //card.closest('.conf-step__movies').nextElementSibling.onmousemove = null;
 
-                        /*card.removeEventListener('mousedown', (event) => {
-                            event.preventDefault();
-                        };*/
+
+                        //return;
+
                     });
                 });//  mousedown
+
+
             //}; //if
         };
 
         card.onmouseleave = function Leave(ev) {
             ev.preventDefault();
+            //ev.target.closest('.conf-step__movie').style.cursor = 'pointer';
         };
 
     }//for
@@ -795,6 +810,29 @@
         window.location.href = url;
 
     }
+    // создание сеанса
+    function clickCreateSeance(id) {
+        //idLast = id;//?
+
+        const form= document.forms.seance;
+        console.log(form);
+        console.log(form.elements,form.elements[0].value, form.elements[1].value, form.elements[2].value);
+        let selected = Array.from(document.forms.seance.select_hall.options);
+        console.log('select ', selected, document.forms.seance.select_hall.innerText, document.forms.seance.select_hall.selectedIndex);
+        console.log('элемент', selected[document.forms.seance.select_hall.selectedIndex].innerText, 'id',selected[document.forms.seance.select_hall.selectedIndex].value, form.elements[2].value);
+        alert('seance');
+        let url = "{{route('admin.createSeance', ['film_id'=> 'filmId', 'hall_id'=> 'hallId', 'start_seance' => 'startSeance'])}}";
+        //alert(json_count);
+        url = url.replace('startSeance', form.elements[2].value);
+        url = url.replace('filmId', id);
+        url = url.replace('hallId', selected[document.forms.seance.select_hall.selectedIndex].value);
+        console.log('replace url  ', url);
+        url = url.replaceAll('&amp;', '&');
+        console.log('получили url для обновления   ',url);
+        // alert(url);
+        window.location.href = url;
+    }
+
 
     //Открыть форму добавления зала/фильма
     function clickAddFilm(id){
