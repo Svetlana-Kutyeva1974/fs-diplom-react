@@ -63,53 +63,19 @@
             <ul class="conf-step__list">
 
                 @foreach ($halls as $hall)
-                    {{-- Форма создания зала// когда было с confirm--}}
-                    {{--<form action="{{ route('admin.destroyHall', ['id' => $hall->id]) }}" method="post" onsubmit="return confirm('Удалить этот зал?')">
-                        @csrf
-                        @method('DELETE')--}}
-
+                    {{-- Форма создания зала--}}
                         <li>{{$hall->nameHall}}
                              {{-- Форма создания зала popup--}}
                              @include('admin.delete', ['hall'=> $hall])
                             <button id="{{$hall->id}}" onclick = "popupToggle(id)"  class="conf-step__button conf-step__button-trash" @if ($open === '1') disabled @endif >
                             </button>
                         </li>
-                    {{--</form>--}}
-
                 @endforeach
             </ul>
             <button id= "create" onclick = "clickAddHall(id)"  class="conf-step__button conf-step__button-accent" @if ($open=== '1') disabled @endif>Создать зал</button>
 
         </div>
-
-        {{-- Popup Меню создания зала--}}
-        <div class="popup">
-            <div class="popup__container">
-                <div class="popup__content">
-                    <div class="popup__header">
-                        <h2 class="popup__title">
-                            Добавление зала
-                            <a id="dismiss1" class="popup__dismiss" href="#" onclick = "cl3(id)"><img src="i/close.png" alt="Закрыть"></a>
-                        </h2>
-
-                    </div>
-                    <div class="popup__wrapper">
-                        <form action="{{route('admin.createHall')}}" method="POST" accept-charset="utf-8">
-                            @csrf
-                            {{--@method('PUT')--}}
-                            <label class="conf-step__label conf-step__label-fullsize" for="name">
-                                Название зала
-                                <input class="conf-step__input" type="text" placeholder="Например, «Зал 1»" name="name" required="" @if ($open === '1') disabled @endif >
-                            </label>
-                            <div class="conf-step__buttons text-center">
-                                <input type="submit" value="Добавить зал" class="conf-step__button conf-step__button-accent" @if ($open === '1') disabled @endif >
-                                <button id="create_down" onclick = "cl2(id)" class="conf-step__button conf-step__button-regular" href="#" @if ($open ==='1') disabled @endif >Отменить</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+        @include('admin.add_hall') {{-- подключаем Меню popup добавления зала--}}
 
     </section>
     {{-- Конец секции создания зала ///////////////// --}}
@@ -125,16 +91,13 @@
                 @foreach ($halls as $hall)
                     <li>{{--$selected_hall--}}{{--dd(count($halls))--}}
                         @php
-                            //$edit_hall = '1';
+
                             $hall_seances= $seances->where('hall_id', $hall->id);
                             if(count($hall_seances)>0) {
                              $edit_hall = '0';
                             } else {
                              $edit_hall = '1';
                             }
-                            //dump($hall_seances);
-                            //dump($edit_hall);
-
                         @endphp
                         {{--можно поставить проверку если  $edit_hall = '1', то рисовать залы if кода ниже
                         (при этом убрать  в input  условие с $edit_hall)--}}
@@ -165,20 +128,13 @@
                 <p class="conf-step__hint">Чтобы изменить вид кресла, нажмите по нему левой кнопкой мыши</p>
             </div>
             {{-- Схема зала--}}
-            {{--@php
-                $selected = [];
-            @endphp--}}
                 @php
                 $isTrue = false;
             @endphp
-            {{--dd($halls->where('id', $selected_hall))--}}
-            {{--var_dump($halls->where('id',$selected_hall)->first())--}}
-
+            {{--dd($halls->where('id', $selected_hall))--}} {{--var_dump($halls->where('id',$selected_hall)->first())--}}
             {{--var_dump($halls->where('id',$selected_hall)->first()->id)--}}
             <x-admin.buttons :open="$open" :disabled="$isTrue" :seats="$seats" :seance="$seances" :film="$films" :hall="$halls->where('id',$selected_hall)->first()" :selected_hall="$selected_hall">
             </x-admin.buttons>
-            {{--<x-admin.buttons :seats="$seats" :seance="$seances" :film="$films" :hall="$halls[$selected_hall-1]" :selected_hall="$selected_hall">
-            </x-admin.buttons>--}}
 
         </div>
     </section>
@@ -203,9 +159,6 @@
                             } else {
                              $edit_hall = '1';
                             }
-                            //dump($hall_seances);
-                            //dump($edit_hall);
-
                         @endphp
 
                         @if($hall->{'id'} === $selected_hall)
@@ -268,7 +221,6 @@
                             <h3 class="conf-step__movie-title">{{$film->title}}</h3>
                             <p class="conf-step__movie-duration">{{$film->duration}} минут</p>
                             <button href="#" class="task__remove visible conf-step__button conf-step__button-trash"></button>
-
                         </form>
 
                         @include('admin.add_seance', ['film'=> $film, 'halls'=> $halls])
@@ -282,8 +234,6 @@
             <div class="conf-step__seances">
                 {{-- сетка фильмов для зала  --}}
                 @foreach ($halls as $hall)
-
-
                 <div id="{{$hall->id}}" class="conf-step__seances-hall">
                     <h3 class="conf-step__seances-title">{{$hall->nameHall}}</h3>
                     <div class="conf-step__seances-timeline drop-area">
@@ -298,14 +248,12 @@
                             // упорядочить по дате поле startSeance
                             //https://translated.turbopages.org/proxy_u/en-ru.ru.c2af9fe9-63a36136-4101588f-74722d776562/https/stackoverflow.com/questions/37567751/laravel-sort-an-array-by-date
                         @endphp
-
-                        {{--}}@foreach ($films as $film)--}}
                             @php
                                 //$all_seances = $seances->where('hall_id', $hall->id)->where('film_id', $film->id)->sortBy('startSeance');
-                                $all_seances = $seances->where('hall_id', $hall->id)->sortBy('startSeance');
-                            @endphp
+                                $all_seances = $seances->where('hall_id', $hall->id)->unique('startSeance')->sortBy('startSeance');
 
-                        {{--}}@foreach ($seances->where('hall_id', $hall->id)->where('film_id', $film->id) as $seance)--}}
+                            @endphp
+                            {{--@foreach ($seances->where('hall_id', $hall->id)->where('film_id', $film->id) as $seance)--}}
                             @foreach ($all_seances as $seance)
                             <div class="conf-step__seances-movie" style="width: calc({{ $films->where('id', $seance->{'film_id'})->first()->duration }}px*0.5); background-color: rgb(133, 255, 137); left: {{$coord}}px;">
                                 <p class="conf-step__seances-movie-title">{{ $films->where('id', $seance->{'film_id'})->first()->title }}</p>
@@ -317,9 +265,6 @@
                             @endphp
 
                             @endforeach
-
-                        {{--}}@endforeach}}
-{{--}}
                    {{--     <div class="conf-step__seances-movie" style="width: 60px; background-color: rgb(133, 255, 137); left: 0;">
                             <p class="conf-step__seances-movie-title">Миссия выполнима</p>
                             <p class="conf-step__seances-movie-start">00:00</p>
@@ -383,7 +328,6 @@
 <script src="{{ asset('js/accordeon.js')}}"></script>
 
 <script>
-    //alert('скрипты');
     let idLast = 1;
     const input = document.querySelectorAll('.count');//кнопки input цен
     const input_row_col = document.querySelectorAll('.seats');//кнопки input место/ряд
@@ -470,11 +414,13 @@
 
     const shows1 = (id) => {
         //поставить нужный зал select
-        let selected = Array.from(document.forms.seance.select_hall.options);
+        //const id_popup = `${id}`;
+        //console.log('id_popup',id_popup);
+        let selected = Array.from(document.forms[`seance${id}`].select_hall.options);
         selected.forEach((p, index, arr) => {
             console.log('element:\n',p.value);
-            if(p.value===idHallForSelect) {
-                document.forms.seance.select_hall.selectedIndex= index;
+            if(p.value === idHallForSelect) {
+                document.forms[`seance${id}`].select_hall.selectedIndex= index;
             }
         });
 
@@ -672,33 +618,20 @@
                                 //e.stopPropagation();
                             });
 
-
-
                             card.onmouseenter = null;
                             card.onmouseleave = null;
                         }
-                        /*document.addEventListener("click", handler, true);
-                        function handler(e) {
-                            e.stopPropagation();
-                            e.preventDefault();
-                        }*/
+
                         //показать попап
                         shows1(idd);
                         //event.preventDefault();
                         isDragging = false;
-
-
                         //card.onmousedown = null;
                         //document.onmouseup = null;
                         //card.closest('.conf-step__movies').nextElementSibling.onmousemove = null;
-
-
                         //return;
-
                     });
                 });//  mousedown
-
-
             //}; //if
         };
 
@@ -708,9 +641,6 @@
         };
 
     }//for
-
-
-
 
     //==================================== function==========================
     // Обработка выбора типа места по клику
@@ -727,7 +657,7 @@
         console.log('dele тип в массиве', arr);
         console.log(document.getElementById(id).closest('.conf-step'));
 
-        if (rand === 0){
+        if (rand === 0) {
           rand = 1;}
         else if (rand === 1) {
           rand= 2;}
@@ -813,26 +743,35 @@
     // создание сеанса
     function clickCreateSeance(id) {
         //idLast = id;//?
+        const  formsSeance= document.forms;
+        console.log('формs\n', formsSeance);
+        //for (const el of formsSeance) {
+         //   console.log('форма', el);
+        //}
+        Array.from(formsSeance).forEach((pp, index,arr) => {
+            console.log('formmmmmm',pp);
+        });
 
-        const form= document.forms.seance;
-        console.log(form);
-        console.log(form.elements,form.elements[0].value, form.elements[1].value, form.elements[2].value);
-        let selected = Array.from(document.forms.seance.select_hall.options);
-        console.log('select ', selected, document.forms.seance.select_hall.innerText, document.forms.seance.select_hall.selectedIndex);
-        console.log('элемент', selected[document.forms.seance.select_hall.selectedIndex].innerText, 'id',selected[document.forms.seance.select_hall.selectedIndex].value, form.elements[2].value);
+
+        const form= document.forms[`seance${id}`];
+        console.log('form',form);
+        console.log('form elements', form.elements);
+        console.log('form elements gjokkk',form.elements[0].value, form.elements[1].value, form.elements[2].value);
+        let selected = Array.from(document.forms[`seance${id}`].select_hall.options);
+        console.log('select ', selected, document.forms[`seance${id}`].select_hall.innerText, document.forms[`seance${id}`].select_hall.selectedIndex);
+        console.log('элемент', selected[document.forms[`seance${id}`].select_hall.selectedIndex].innerText, 'id',selected[document.forms[`seance${id}`].select_hall.selectedIndex].value, form.elements[2].value);
         alert('seance');
         let url = "{{route('admin.createSeance', ['film_id'=> 'filmId', 'hall_id'=> 'hallId', 'start_seance' => 'startSeance'])}}";
         //alert(json_count);
         url = url.replace('startSeance', form.elements[2].value);
         url = url.replace('filmId', id);
-        url = url.replace('hallId', selected[document.forms.seance.select_hall.selectedIndex].value);
+        url = url.replace('hallId', selected[document.forms[`seance${id}`].select_hall.selectedIndex].value);
         console.log('replace url  ', url);
         url = url.replaceAll('&amp;', '&');
         console.log('получили url для обновления   ',url);
-        // alert(url);
+        alert(url);
         window.location.href = url;
     }
-
 
     //Открыть форму добавления зала/фильма
     function clickAddFilm(id){
@@ -850,7 +789,6 @@
         console.log(document.getElementById(id).closest('.conf-step').children[2]);
         document.getElementById(id).closest('.conf-step').children[2].classList.add("active");
     }
-
 
     //Закрыть форму добавления зала/фильма
     function cl2(id){
@@ -915,14 +853,6 @@
         console.log(url);
         elem.value = +!Boolean(+elem.value);
         console.log(elem.value, " new value ",elem);
-        //id = !(id);
-        //elem.classList.toggle("active");
-        /*if(elem.value === "1") {
-            elem.textContent = "Приостановить продажу билетов";
-        } else {
-            elem.textContent = "Открыть продажу билетов";
-        }*/
-        //alert(document.getElementById(`${id}`).value);
         if(elem.value === "1") {
             disabled(true);
         } else {
@@ -941,27 +871,9 @@
         popup.classList.toggle('active')
     }
     //dragdrop
-
-
-
-    //Обновление инфо о ценах кресел в зале не работает
-    /*
-    function clickUpdate(id){
-        console.log('clickradio', id);
-        const json=JSON.stringify(count);
-        //let url = "{{--route('admin.updateHall', ['hall'=> $hall, 'count' => 'json'])--}}";
-        url = url.replace('json', json);
-        url = url.replaceAll('&amp;', '&');
-        console.log('replaceed amp url  ', url);
-        //window.location.href= url;
-    }
-    */
 </script>
-
 </body>
 </html>
-
-
 
 <!--
 @auth
@@ -972,8 +884,6 @@
 
 width: calc(1440px * 0.5);
 //1440 минут в сутках. 1 минута = 0,5 пикселя. Блок фильма длиной 120 минут будет 60 пикселей по ширине.
-
-
 https://codelab.pro/drag-and-drop-api-podrobnoe-rukovodstvo-na-javascript/ drad-drop
 https://qna.habr.com/q/256784
 -->

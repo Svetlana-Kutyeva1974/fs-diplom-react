@@ -10,7 +10,7 @@
 
       </div>
       <div class="popup__wrapper">
-          <form name="seance" >
+          <form name="seance{{$film->id}}" >
               {{--<form action="{{ route('admin.createSeance', ['film_id' => $film->id, 'hall_id'=> $hall->id ?? '1', 'startSeance'=> $startSeance ?? Carbon\Carbon::now()]) }}" method="POST" accept-charset="utf-8">--}}
 
               {{--}}<form action="#" method="post" accept-charset="utf-8">--}}
@@ -36,8 +36,8 @@
           </label>
           <label class="conf-step__label conf-step__label-fullsize" for="name">
 Время начала
-<input id="time" class="conf-step__input" type="time" value="00:00" name="start_time" min="06:00"
-       max="22:00" step="10" required>
+<input id="time" class="conf-step__input" type="time" value="00:00:00" name="start_time"
+       step="10" required>
           </label>
 
           <div class="conf-step__buttons text-center">
