@@ -33,9 +33,9 @@ class Seance extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function hall()
+    public function hall()// зал, в котором идут сеансы // по конкретному сеансу можно получить зал!
     {
-        return $this->belongsTo('App\Hall');
+        return $this->belongsTo(Hall::class);
     }
 
 
@@ -44,8 +44,16 @@ class Seance extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function ticket()
+    public function tickets()// все билеты к сеансу
     {
-        return $this->hasMany('App\Ticket');
+        //return $this->hasMany('App\Ticket');
+        return $this->hasMany(Ticket::class);
     }
+
+    public function seats()//все места к сеансу
+    {
+        //return $this->hasMany('App\Seance', 'hall_id');
+        return $this->hasMany(Seat::class);
+    }
+
 }

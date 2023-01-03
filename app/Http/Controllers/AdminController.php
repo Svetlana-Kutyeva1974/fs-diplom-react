@@ -84,7 +84,10 @@ class AdminController extends Controller
             //dump($text);
             //if($this->route->hasRoute('admin.open'))
             //var_dump($halls);
-            return view('admin.home', ['open'=> $open, 'text'=> $text ,'selected_hall' => $selected_hall, 'user'=> $user, 'films' => $films, 'halls' => $halls, 'seances'=> $seances, 'dateCurrent' => $dateCurrent, 'dateChosen'=> $dateChosen, 'seats'=> $seats]);
+
+            $confstep = $request->confstep ?? ['conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed'];
+
+            return view('admin.home', ['confstep'=> $confstep ,'open'=> $open, 'text'=> $text ,'selected_hall' => $selected_hall, 'user'=> $user, 'films' => $films, 'halls' => $halls, 'seances'=> $seances, 'dateCurrent' => $dateCurrent, 'dateChosen'=> $dateChosen, 'seats'=> $seats]);
     }
 
     /**

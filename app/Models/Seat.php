@@ -27,4 +27,15 @@ class Seat extends Model
     {
         return $this->belongsTo('App\Hall');
     }
+    public function seance()//все места к сеансу
+    {
+        //return $this->hasMany('App\Seance', 'hall_id');
+        return $this->belongsTo(Seance::class);
+    }
+
+    public function ticket()//все мecta к билетуу
+    {
+        //return $this->hasMany('App\Seance', 'hall_id');
+        return $this->belongsTo(Ticket::class);
+    }
 }

@@ -27,9 +27,36 @@ class SeatController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         //
+        dd($request->all());
+        $seance=$request->seance;
+        /*
+         $s= Seance::all()->last()->{'id'};
+        dump($s);
+        dump(Seance::all());
+        $hall = $s->{'hall_id'};
+        dump('созданный сеанс');
+        dd($s);
+        for ($i = 1; $i <= $hall->col; $i++) {
+            for ($j = 1; $j <= $hall->row; $j++) {
+                $ticket_id = 0;
+                $free = true;           //$hall_id = $s['hall_id'];
+                DB::table('seats')->insert([
+                    'hall_id' => $s['hall_id'],
+                    'colNumber' => $j,
+                    'rowNumber' => $i,
+                    'ticket_id' => $ticket_id,
+                    'seance_id' => $s['id'],
+                    'free' => $free, //[true, false][array_rand([true, false])],
+                ]);
+            }
+        }
+        dd('создали места?');*/
+
+
+        return redirect()->route('admin.home', ['open'=> $open, 'selected_hall' => $selected_hall]);
     }
 
     /**

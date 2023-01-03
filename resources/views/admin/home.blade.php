@@ -45,23 +45,28 @@
 
 </header>
 @php
-    $confstep1= 'conf-step__header_closed';
-    $confstep2= 'conf-step__header_closed';
-    $confstep3= 'conf-step__header_closed';
-    $confstep4= 'conf-step__header_opened';
-    $confstep5= 'conf-step__header_opened';
+    $confstep1= $confstep[0];//1= 'conf-step__header_closed';
+    $confstep2= $confstep[1];// $confstep2= 'conf-step__header_closed';
+    $confstep3= $confstep[2];//$confstep3= 'conf-step__header_closed';
+    $confstep4= $confstep[3];//$confstep4= 'conf-step__header_opened';
+    $confstep5= $confstep[4];//$confstep5= 'conf-step__header_opened';
 @endphp
 
 <main class="conf-steps">
     {{-- Создание зала ///////////////////////////////////////////////--}}
+    @if(session('status'))
+        <div class="conf-step__paragraph">
+            {{session('status')}}
+        </div>
+    @endif
     <section id="1" class="conf-step">
         <header class="conf-step__header {{$confstep1}}">
             <h2 class="conf-step__title">Управление залами</h2>
         </header>
         <div class="conf-step__wrapper">
             <p class="conf-step__paragraph">Доступные залы:</p>
-            <ul class="conf-step__list">
 
+            <ul class="conf-step__list">
                 @foreach ($halls as $hall)
                     {{-- Форма создания зала--}}
                         <li>{{$hall->nameHall}}
@@ -196,6 +201,7 @@
 
 
     {{--Формирование сетки сеансов  +++++++++++++++++++++++++++++++++++++++++++ --}}
+
     <section id="4" class="conf-step">
         <header class="conf-step__header {{$confstep4}}">
             <h2 class="conf-step__title">Сетка сеансов</h2>
@@ -205,18 +211,24 @@
                 <button id="addFilm" onclick = "clickAddFilm(id)" class="conf-step__button conf-step__button-accent" @if ($open === '1') disabled @endif >Добавить фильм</button>
             </p>
             {{--Блок оглавления фильмов --}}
+
             <div class="conf-step__movies">
+
+
                 @foreach ($films as $film)
+
                     <div class="conf-step__movie" draggable="true" style="cursor: grabbing;">
                         {{-- Форма добавления фильма--}}
+
                         <form  action="{{ route('admin.destroyFilm', ['id' => $film->id]) }}" method="post" onsubmit="return confirm('Удалить этот фильм?')">
                             @csrf
                             @method('DELETE')
 
+
                             @php
                                 $path= 'storage/folder/'.$film->imagePath;
                             @endphp
-                            {{--Возможность удаления фильма по нажатию на изображение--}}
+                            {{--Возможность удаления фильма по нажатию на изображение!!! сделать проверку на наличие сеанса при удалении/ либо вместе с сеансом удалять--}}
                             <button type="image" @if ($open === '1') disabled @endif ><img class="conf-step__movie-poster" alt="{{$film->imageText}}" src="{{ asset($film->imagePath)}}" ></button>
                             <h3 class="conf-step__movie-title">{{$film->title}}</h3>
                             <p class="conf-step__movie-duration">{{$film->duration}} минут</p>
@@ -234,7 +246,7 @@
             <div class="conf-step__seances">
                 {{-- сетка фильмов для зала  --}}
                 @foreach ($halls as $hall)
-                <div id="{{$hall->id}}" class="conf-step__seances-hall">
+                <div id="{{$hall->id}}" class="conf-step__seances-hall drop-area-into">
                     <h3 class="conf-step__seances-title">{{$hall->nameHall}}</h3>
                     <div class="conf-step__seances-timeline drop-area">
                         @php
@@ -243,6 +255,14 @@
                             //print_r($all_seances);
                             //$sorted = $all_seances->sortBy('startSeance');
                             // Сортируем и выводим получившийся массив
+                            $sean= $seances->where('hall_id', $hall->id)->where(substr('startSeance', -8,5), '10:30')->first();
+                            $collection = $seances->where('hall_id', $hall->id)->min('startSeance');
+                            //$collection = $seances->where('hall_id', $hall->id)->max('startSeance');
+
+                             //var_dump($collection);
+                             //dump($sean);
+                             //
+
                             //uasort($array, $callbackCmpFunction); // вторым параметром указываем нашу callback функцию
                             //print_r($sorted);
                             // упорядочить по дате поле startSeance
@@ -250,15 +270,16 @@
                         @endphp
                             @php
                                 //$all_seances = $seances->where('hall_id', $hall->id)->where('film_id', $film->id)->sortBy('startSeance');
-                                $all_seances = $seances->where('hall_id', $hall->id)->unique('startSeance')->sortBy('startSeance');
+                                $all_seances = $seances->where('hall_id', $hall->id)->unique('startSeance')->values()->sortBy('startSeance');
 
                             @endphp
                             {{--@foreach ($seances->where('hall_id', $hall->id)->where('film_id', $film->id) as $seance)--}}
                             @foreach ($all_seances as $seance)
-                            <div class="conf-step__seances-movie" style="width: calc({{ $films->where('id', $seance->{'film_id'})->first()->duration }}px*0.5); background-color: rgb(133, 255, 137); left: {{$coord}}px;">
+                            <div class="conf-step__seances-movie" draggable="true" style="width: calc({{ $films->where('id', $seance->{'film_id'})->first()->duration }}px*0.5); background-color: rgb(133, 255, 137); left: {{$coord}}px;">
                                 <p class="conf-step__seances-movie-title">{{ $films->where('id', $seance->{'film_id'})->first()->title }}</p>
                                 {{--}}<p class="conf-step__seances-movie-title">{{ $film->title }}</p> --}}
                                 <p class="conf-step__seances-movie-start">{{ substr($seance->{'startSeance'}, -8,5) }}</p>
+                                @include('admin.delete_seance', ['seance'=> $seance, 'film'=> $films->where('id', $seance->{'film_id'})->first(), 'hall'=>$hall])
                             </div>
                             @php
                                 $coord += ( $films->where('id', $seance->{'film_id'})->first()->duration )/2;
@@ -432,7 +453,7 @@
         console.log('popup element', headers);
         headers.classList.toggle('active');
     }
-
+    // все карточки фильма, навешиваем обработчики
     const cards2 = [...Array.from(document.querySelectorAll('.conf-step__movie'))];
     console.log('cards2 i this', this, cards2);
     let isDragging = false;
@@ -641,6 +662,12 @@
         };
 
     }//for
+
+
+    // удаление сеанса
+    const cards_seances = [...Array.from(document.querySelectorAll('.conf-step__seances-movie'))];
+    console.log('cards_seances i this', this, cards_seances);
+
 
     //==================================== function==========================
     // Обработка выбора типа места по клику

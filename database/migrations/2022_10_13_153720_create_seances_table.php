@@ -17,10 +17,14 @@ class CreateSeancesTable extends Migration
             $table->id();
             $table->timestamps();
             $table->dateTime('startSeance');
-            $table->integer('hall_id');
-            $table->integer('film_id');
-            //$table->foreign('hall_id')->references('id')->on('halls')->onDelete('cascade');
-            //$table->foreign('film_id')->references('id')->on('films')->onUpdate('cascade');
+
+            //$table->integer('hall_id');
+            //$table->integer('film_id');
+
+            $table->unsignedBigInteger('hall_id');
+            $table->foreign('hall_id')->references('id')->on('halls')->onDelete('cascade');
+            $table->unsignedBigInteger('film_id');
+            $table->foreign('film_id')->references('id')->on('films')->onUpdate('cascade');
         });
     }
 

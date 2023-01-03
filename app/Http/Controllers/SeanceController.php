@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Film;
+use App\Models\Hall;
 use App\Models\Seance;
+use App\Models\Seat;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -48,9 +50,32 @@ class SeanceController extends Controller
             'updated_at' => Carbon::now(),//date("Y-m-d H:i:s"),//Carbon::now()
             'startSeance'=> $data,
         ]);
-        //dd();
-        return redirect()->route('admin.home', ['open'=> $open, 'selected_hall' => $selected_hall]);
+        //dd($new_seance);
 
+
+        // seats создаем для созданного сеанса
+        $seance =  Seance::all()->last();
+        $hall= $seance->hall;//через отношение получаем зал
+        //$hall = Hall::all()->where('id', $seance['hall_id'])->first();
+        dump($hall);
+        //redirect()->route('admin.createSeat', ['seance'=> $seance]);
+        for ($i = 1; $i <= $hall['col']; $i++) {
+            for ($j = 1; $j <= $hall['row']; $j++) {
+
+                $seat = new Seat();
+                $seat->hall_id = $seance['hall_id'];
+                $seat->colNumber = $j;// $seat->colNumber= Hall::all()->where('id', $seance['hall_id'])->col;
+                $seat->rowNumber = $i; //Hall::all()->where('id', $seance['hall_id'])->row;
+                $seat->ticket_id = 0;
+                $seat->seance_id = $seance['id'];//Seance::all()->last()->id;
+                $seat->free = true;
+
+                $seance->seats()->save($seat);
+                //dd(seat);
+            }
+        }
+        dd($seance);
+        return redirect()->route('admin.home', ['open'=> $open, 'selected_hall' => $selected_hall]);
     }
 
     /**

@@ -25,7 +25,7 @@ class Film extends Model
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
 
-    public function seances()
+    public function seances()//сеансы которым принадлежит фильм
     {
         //return $this->hasMany(Seance::class, 'film_id');
         return $this->hasMany(Seance::class);
@@ -33,4 +33,5 @@ class Film extends Model
         // return $this->hasMany('App\Seance');
         //return $this->belongsToMany('App\Seance', 'film_id');
     }
+
 }

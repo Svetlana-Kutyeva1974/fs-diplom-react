@@ -251,9 +251,17 @@ class HallController extends Controller
     {
         dump($id);
         $hall = Hall::find($id);
-
-        Hall::find($id)->delete();//Hall::find($request->id)->delete();
-        return redirect()->back();
+        dump('зал');
+        var_dump(Hall::find($id));
+        dump('связанные сеансы');
+        dump($hall->seances);
+        if(count($hall->seances)>0){
+            //dd('');
+            return redirect()->back()->with('status','Ошибка удаления : В зале ' ."/".$hall->nameHall. "/".' существуют сеансы');
+        } else {
+            Hall::find($id)->delete();//Hall::find($request->id)->delete();
+            return redirect()->back();
+        }
         //return redirect()->route('admin.home');
     }
 
@@ -272,6 +280,6 @@ class HallController extends Controller
             $new->save();
         }
 
-        return redirect()->route('admin.home', ['open'=> $param]);
+        return redirect()->route('admin.home', [ 'open'=> $param]);
     }
 }

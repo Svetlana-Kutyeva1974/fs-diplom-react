@@ -22,9 +22,9 @@ class Ticket extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function seance()
+    public function seance() //seance к которому относятся билеты\билет
     {
-        return $this->belongsTo('App\Seance');
+        return $this->belongsTo(Seance::class);
     }
 
     /**

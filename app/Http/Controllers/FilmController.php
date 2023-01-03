@@ -129,9 +129,13 @@ class FilmController extends Controller
     public function destroy($id)
         //public function destroy(Film $film): JsonResponse
     {
-
-        Film::find($id)->delete();
-        return redirect()->back();
+        if(count(Film::find($id)->seances)>0){
+            //dd('');
+            return redirect()->back()->with('status','Ошибка удаления : для фильм ' ."/".Film::find($id)->title. "/".' существуют сеансы');
+        } else {
+            Film::find($id)->delete();
+            return redirect()->back();
+        }
     }
 
     public function seance()//: JsonResponse
