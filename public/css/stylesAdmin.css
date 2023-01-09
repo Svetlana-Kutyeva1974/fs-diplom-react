@@ -533,3 +533,46 @@ input[type='radio'], input[type='submit'], button, .conf-step__header, select {
 
 /*# sourceMappingURL=styles.css.map */
 
+.tooltip {
+    border-bottom: 1px dotted #0077AA;
+    /*cursor: help;*/
+}
+
+.tooltip::before {
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 8px 8px 8px 0px;
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.3);
+    color: #FFF;
+    content: attr(data-tooltip); /* Главная часть кода, определяющая содержимое всплывающей подсказки */
+    margin-top: 20px;
+    opacity: 0; /* Наш элемент прозрачен... */
+    padding: 3px 7px;
+    position: absolute;
+    font-size: 12px;
+    visibility: hidden; /* ...и скрыт. */
+    z-index: 20;
+    transition: all 0.4s ease-in-out; /* Добавить плавности по вкусу */
+}
+
+.tooltip:hover::before {
+    opacity: 1; /* Показываем его */
+    visibility: visible;
+}
+
+.tooltip:focus::before {
+    opacity: 1; /* Показываем его */
+    visibility: visible;
+}
+
+.tooltip:active::before {
+    opacity: 1; /* Показываем его */
+    visibility: visible;
+}
+
+.c {
+    font-size: 1.4rem;
+    color: white;
+    font-weight: 700;
+    box-shadow: 1px 1px 10px antiquewhite;
+    }
+

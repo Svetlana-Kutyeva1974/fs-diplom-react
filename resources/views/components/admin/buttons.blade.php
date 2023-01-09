@@ -48,7 +48,7 @@
 </div>
 {{--dd($selected_hall)--}}
 <fieldset class="conf-step__buttons text-center">
-<button onclick = " window.location.href='{{ route('admin.home', ['open'=> $open,'selected_hall' => $hall->{'id'}]) }}' " href="#" class="conf-step__button conf-step__button-regular" @if ($open === '1') disabled @endif>Отмена</button>
+<button onclick = " window.location.href='{{ route('admin.home', ['confstep'=> ['conf-step__header_closed',  'conf-step__header_opened', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed'],'open'=> $open,'selected_hall' => $hall->{'id'}]) }}' " href="#" class="conf-step__button conf-step__button-regular" @if ($open === '1') disabled @endif>Отмена</button>
     <!--<button id="down" onclick = "cl2(id)" href="#" class="conf-step__button conf-step__button-regular" @if ($open === '1') disabled @endif>Отмена</button>-->
     <input id="{{ $hall->{'id'} }}" onclick="editSeats(id)" type="submit" value="Сохранить" class="conf-step__button conf-step__button-accent" @if ($open === '1') disabled @endif>
 </fieldset>

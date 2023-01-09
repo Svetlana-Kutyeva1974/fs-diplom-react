@@ -55,12 +55,12 @@
 <main class="conf-steps">
     {{-- Создание зала ///////////////////////////////////////////////--}}
     @if(session('status'))
-        <div class="conf-step__paragraph">
+        <div class="conf-step__paragraph c">
             {{session('status')}}
         </div>
     @endif
     <section id="1" class="conf-step">
-        <header class="conf-step__header {{$confstep1}}">
+        <header class="conf-step__header {{$confstep[0]}}">
             <h2 class="conf-step__title">Управление залами</h2>
         </header>
         <div class="conf-step__wrapper">
@@ -87,7 +87,7 @@
 
     {{-- Конфигурация зала!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! --}}
     <section id="2" class="conf-step">
-        <header class="conf-step__header {{$confstep2}}">
+        <header class="conf-step__header {{$confstep[1]}}">
             <h2 class="conf-step__title">Конфигурация залов</h2>
         </header>
         <div class="conf-step__wrapper">
@@ -109,21 +109,19 @@
                         @if($hall->{'id'} == $selected_hall) {{-- @if($i === $selected_hall ))   id="{{$hall->id}}"--}}
                            {{--var_dump($hall->id)--}}
 
-                            <input id="{{$hall->{'id'} }}" onclick = "clickRadio(id)" type="radio" class="conf-step__radio" name="chairs-hall" value="{{$hall->nameHall}}" checked @if ($open === '1') disabled @endif @if ($edit_hall === '0') disabled @endif ><span class="conf-step__selector">{{$hall->nameHall}}</span></li>
+                            <input id="{{$hall->{'id'} }}" onclick = "clickRadio(id)" type="radio" class="conf-step__radio"  name="chairs-hall" value="{{$hall->nameHall}}" checked @if ($open === '1') disabled @endif @if ($edit_hall === '0') disabled @endif  ><span class="conf-step__selector tooltip" data-tooltip="Зал не доступен для редактирования при наличии в нем сеансов">{{$hall->nameHall}}</span></li>
                     @else
-                        <input id="{{$hall->{'id'} }}" onclick = "clickRadio(id)" type="radio" class="conf-step__radio" name="chairs-hall" value="{{$hall->nameHall}}" @if ($open === '1') disabled @endif @if ($edit_hall === '0') disabled @endif ><span class="conf-step__selector">{{$hall->nameHall}}</span></li>
+                        <input id="{{$hall->{'id'} }}" onclick = "clickRadio(id)" type="radio" class="conf-step__radio" name="chairs-hall" value="{{$hall->nameHall}}" @if ($open === '1') disabled @endif @if ($edit_hall === '0') disabled @endif ><span class="conf-step__selector tooltip" data-tooltip="Зал не доступен для редактирования при наличии в нем сеансов">{{$hall->nameHall}}</span></li>
                         @endif
                         </li>
                         @endforeach
             </ul>
-            {{--var_dump($hall_sel)--}}
 
-            {{--var_dump($halls->where('id',$selected_hall)->first())--}}
             <p class="conf-step__paragraph">Укажите количество рядов и максимальное количество кресел в ряду:</p>
             <div class="conf-step__legend">
-                <label class="conf-step__label">Рядов, шт<input id="countRow" type="text" class="conf-step__input seats" placeholder="{{$halls->where('id',$selected_hall)->first()->row}}" value="{{$halls->where('id',$selected_hall)->first()->row}}" @if ($open === '1') disabled @endif></label>
+                <label class="conf-step__label">Рядов, шт<input id="countRow" type="text" class="conf-step__input seats" placeholder=" {{$halls->where('id',$selected_hall)->first()->row }} " value=" {{$halls->where('id',$selected_hall)->first()->row }} " @if ($open === '1') disabled @endif></label>
                 <span class="multiplier">x</span>
-                <label class="conf-step__label">Мест, шт<input id="countCol" type="text" class="conf-step__input seats" placeholder="{{$halls->where('id',$selected_hall)->first()->col}}" value="{{$halls->where('id',$selected_hall)->first()->col}}" @if ($open === '1') disabled @endif ></label>
+                <label class="conf-step__label">Мест, шт<input id="countCol" type="text" class="conf-step__input seats" placeholder=" {{$halls->where('id',$selected_hall)->first()->col }} " value=" {{$halls->where('id',$selected_hall)->first()->col }} " @if ($open === '1') disabled @endif ></label>
             </div>
             <p class="conf-step__paragraph">Теперь вы можете указать типы кресел на схеме зала:</p>
             <div class="conf-step__legend">
@@ -147,7 +145,7 @@
 
     {{--Установка цен  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! --}}
     <section id="3" class="conf-step">
-        <header class="conf-step__header {{$confstep3}}">
+        <header class="conf-step__header {{$confstep[2]}}">
             <h2 class="conf-step__title">Конфигурация цен</h2>
         </header>
         <div class="conf-step__wrapper">
@@ -166,10 +164,10 @@
                             }
                         @endphp
 
-                        @if($hall->{'id'} === $selected_hall)
-                            <input id="{{$hall->id}}" onclick = "clickRadio(id)" type="radio" class="conf-step__radio" name="prices-hall" value="{{$hall->nameHall}}" checked @if ($open === '1') disabled @endif @if ($edit_hall === '0') disabled @endif ><span class="conf-step__selector">{{$hall->nameHall}}</span> </li>
+                        @if($hall->{'id'} == $selected_hall)
+                            <input id="{{$hall->id}}" onclick = "clickRadio2(id)" type="radio" class="conf-step__radio" name="prices-hall" value="{{$hall->nameHall}}" checked @if ($open === '1') disabled @endif @if ($edit_hall === '0') disabled @endif ><span class="conf-step__selector tooltip" data-tooltip="Зал не доступен для редактирования при наличии в нем сеансов">{{$hall->nameHall}}</span> </li>
                         @else
-                            <input id="{{$hall->id}}" onclick = "clickRadio(id)" type="radio" class="conf-step__radio" name="prices-hall" value="{{$hall->nameHall}}" @if ($open === '1') disabled @endif  @if ($edit_hall === '0') disabled @endif ><span class="conf-step__selector">{{$hall->nameHall}}</span> </li>
+                            <input id="{{$hall->id}}" onclick = "clickRadio2(id)" type="radio" class="conf-step__radio" name="prices-hall" value="{{$hall->nameHall}}" @if ($open === '1') disabled @endif  @if ($edit_hall === '0') disabled @endif ><span class="conf-step__selector tooltip" data-tooltip="Зал не доступен для редактирования при наличии в нем сеансов">{{$hall->nameHall}}</span> </li>
                       @endif
                       </li>
                 @endforeach
@@ -186,7 +184,7 @@
             </div>
 
             <fieldset class="conf-step__buttons text-center">
-                <button onclick = " window.location.href='{{ route('admin.home', ['open'=> $open,'selected_hall' => $selected_hall]) }}' " href="#" class="conf-step__button conf-step__button-regular" @if ($open === '1') disabled @endif>Отмена</button>
+                <button onclick = " window.location.href='{{ route('admin.home', ['confstep'=> ['conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_opened', 'conf-step__header_closed', 'conf-step__header_closed'], 'open'=> $open,'selected_hall' => $selected_hall]) }}' " href="#" class="conf-step__button conf-step__button-regular" @if ($open === '1') disabled @endif>Отмена</button>
                 <input id="{{$hall->id}}" onclick = "clickEditPrice(id)" type="submit" value="Сохранить" class="conf-step__button conf-step__button-accent" @if ($open === '1') disabled @endif >
 
                 <!--<input id="update" onclick = "clickUpdate()" type="submit" value="Сохранить" class="conf-step__button conf-step__button-accent" @if ($open === '1') disabled @endif >-->
@@ -203,7 +201,7 @@
     {{--Формирование сетки сеансов  +++++++++++++++++++++++++++++++++++++++++++ --}}
 
     <section id="4" class="conf-step">
-        <header class="conf-step__header {{$confstep4}}">
+        <header class="conf-step__header {{$confstep[3]}}">
             <h2 class="conf-step__title">Сетка сеансов</h2>
         </header>
         <div class="conf-step__wrapper">
@@ -334,7 +332,7 @@
 
     {{--Открытие продажи  ++++++++++++++++++++++++++++++++++++++++++++++--}}
     <section id="5" class="conf-step">
-        <header class="conf-step__header {{$confstep5}}">
+        <header class="conf-step__header {{$confstep[4]}}">
             <h2 class="conf-step__title">Открыть продажи</h2>
         </header>
         <div class="conf-step__wrapper text-center">
@@ -839,12 +837,12 @@
         console.log(idLast);
     }
 
-    //Переключатель зала
+    //Переключатель зала 1
     function clickRadio(id){
         console.log('clickradio', id);
         idLast = id;
         //alert( idLast);
-        let url = "{{ route('admin.home',['selected_hall' => 'id', 'open'=> $open, 'text'=> $text]) }}";
+        let url = "{{ route('admin.home',['confstep'=> ['conf-step__header_closed',  'conf-step__header_opened', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed'], 'selected_hall' => 'id', 'open'=> $open, 'text'=> $text]) }}";
         let idi = String(id);
         console.log('idi', id);
         url = url.replace('id', +idi);    //url = url.replace('open_2', `${ {{--$open --}}}`);
@@ -852,6 +850,23 @@
         console.log('replaceed amp url  ', url);   // alert(url);
         window.location.href= url
     }
+
+    //Переключатель зала 2
+    function clickRadio2(id){
+        console.log('clickradio', id);
+        idLast = id;
+        //alert( idLast);
+        let url = "{{ route('admin.home',['confstep'=> ['conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_opened', 'conf-step__header_closed', 'conf-step__header_closed'], 'selected_hall' => 'id', 'open'=> $open, 'text'=> $text]) }}";
+        let idi = String(id);
+        console.log('idi', id);
+        url = url.replace('id', +idi);    //url = url.replace('open_2', `${ {{--$open --}}}`);
+        url = url.replaceAll('&amp;', '&');
+        console.log('replaceed amp url  ', url);   // alert(url);
+        window.location.href= url
+    }
+
+
+
     // переключатель блокировка/разблокировка редактирования(добавление св-ва disabled)
     function disabled(parametr) {
         console.log(parametr);

@@ -100,7 +100,11 @@ class HallController extends Controller
                 'typeOfSeats' => $seats,
             ]);
 
-            return redirect()->route('admin.home');
+            $conf= $request['confstep'] ?? ['conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed'];
+            $conf[0]= 'conf-step__header_opened';
+            //dd($conf);
+            return redirect()->route('admin.home')->with(['confstep' => $conf]);// нельзя передать
+            //return view('admin.home', ['confstep' => $conf]);
             //return redirect()->back();
         }
     }
@@ -198,7 +202,10 @@ class HallController extends Controller
         //dump($hall);
         var_dump($hall);
 
-        return redirect()->route('admin.home', ['open'=> $hall['open'], 'selected_hall' => $hall['id']]);
+        $confstep= $request['confstep'] ?? ['conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed'];
+        $confstep[1]= 'conf-step__header_opened';
+
+        return redirect()->route('admin.home', ['confstep'=> $confstep, 'open'=> $hall['open'], 'selected_hall' => $hall['id']]);
        // return redirect()->back();
     }
 
@@ -219,10 +226,12 @@ class HallController extends Controller
         $hall->save();
         dump($hall['open']);
         dump($hall['id']);
+        $confstep= $request['confstep'] ?? ['conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed'];
+        $confstep[2]= 'conf-step__header_opened';
         //dd();
         //кстати б интересно open  , selected_hall реально не даны, но они как-то схватываются?
         //лучше сделать $hall['open'], $hall['id']:::
-        return redirect()->route('admin.home', ['open'=> $hall['open'], 'selected_hall' => $hall['id']]);
+        return redirect()->route('admin.home', ['confstep'=> $confstep, 'open'=> $hall['open'], 'selected_hall' => $hall['id']]);
         //return redirect()->route('admin.home', ['open'=> $request['open'], 'selected_hall' => $request['selected_hall']]);
         //
         //return redirect()->route('admin.home');//это тоже работает?

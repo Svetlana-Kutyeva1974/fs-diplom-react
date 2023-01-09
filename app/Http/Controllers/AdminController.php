@@ -42,9 +42,25 @@ class AdminController extends Controller
             //$seances1 = Seance::all();$fl = Film::all()->first();
             $dateCurrent = $request->dateCurrent ?? substr(Carbon::now(), 0, 10);//'2022-11-05 16:00:22'
             $dateChosen = $request->dateChosen ?? substr(Carbon::now(), 0, 10);//'2022-11-05 16:00:22'
+            //dump($halls);dump($halls->first());dump(Hall::all()->first()->seances);
 
+            $hall_holy =  $halls->first()->id;
+            $i=0;
+            foreach (Hall::all() as $value) {
+                $value;
+                //dump($value);
+                if(count($value->seances)<=0) {
+                  $hall_holy = $value->id;
+                  break;
+                }
+                $i++;
+            }
 
-            $selected_hall = ($request->selected_hall) ?: $halls->first()->id;
+            dump($hall_holy);
+        //dd();
+
+            $selected_hall = ($request->selected_hall) ?: $hall_holy;
+            //было так первый зал выбирался по умолчанию! $selected_hall = ($request->selected_hall) ?: $halls->first()->id;
 
         //dump($selected_hall);
         //dump($halls->first()->id);
@@ -84,9 +100,11 @@ class AdminController extends Controller
             //dump($text);
             //if($this->route->hasRoute('admin.open'))
             //var_dump($halls);
-
-            $confstep = $request->confstep ?? ['conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed'];
-
+            dump($request->confstep);
+            $i = session()->get('confstep');
+            dump($i);
+            $confstep = $request->confstep ?: ['conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed'];
+            //dd($confstep);
             return view('admin.home', ['confstep'=> $confstep ,'open'=> $open, 'text'=> $text ,'selected_hall' => $selected_hall, 'user'=> $user, 'films' => $films, 'halls' => $halls, 'seances'=> $seances, 'dateCurrent' => $dateCurrent, 'dateChosen'=> $dateChosen, 'seats'=> $seats]);
     }
 
