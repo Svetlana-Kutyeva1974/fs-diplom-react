@@ -116,9 +116,9 @@
 
             <p class="conf-step__paragraph">Укажите количество рядов и максимальное количество кресел в ряду:</p>
             <div class="conf-step__legend">
-                <label class="conf-step__label">Рядов, шт<input id="countRow" type="text" class="conf-step__input seats" placeholder=" {{$halls->where('id',$selected_hall)->first()->row }} " value=" {{$halls->where('id',$selected_hall)->first()->row }} " @if ($open === '1') disabled @endif></label>
+                <label class="conf-step__label">Рядов, шт<input id="countRow" type="text" class="conf-step__input seats" placeholder=" {{$halls->where('id',$selected_hall)->first()->row }} " value=" {{$halls->where('id',$selected_hall)->first()->row }} " @if ($open === '1' || $edit_hall === '0') disabled @endif></label>
                 <span class="multiplier">x</span>
-                <label class="conf-step__label">Мест, шт<input id="countCol" type="text" class="conf-step__input seats" placeholder=" {{$halls->where('id',$selected_hall)->first()->col }} " value=" {{$halls->where('id',$selected_hall)->first()->col }} " @if ($open === '1') disabled @endif ></label>
+                <label class="conf-step__label">Мест, шт<input id="countCol" type="text" class="conf-step__input seats" placeholder=" {{$halls->where('id',$selected_hall)->first()->col }} " value=" {{$halls->where('id',$selected_hall)->first()->col }} " @if ($open === '1' || $edit_hall === '0') disabled @endif ></label>
             </div>
             <p class="conf-step__paragraph">Теперь вы можете указать типы кресел на схеме зала:</p>
             <div class="conf-step__legend">
@@ -172,11 +172,11 @@
 
             <p class="conf-step__paragraph">Установите цены для типов кресел:</p>
             <div class="conf-step__legend">
-                <label class="conf-step__label">Цена, рублей<input id="countNormal" type="text" class="conf-step__input count" placeholder="0" value="{{ $halls->where('id',$selected_hall)->first()->countNormal }}" @if ($open === '1') disabled @endif ></label>
+                <label class="conf-step__label">Цена, рублей<input id="countNormal" type="text" class="conf-step__input count" placeholder="0" value="{{ $halls->where('id',$selected_hall)->first()->countNormal }}" @if ($open === '1' || $edit_hall === '0') disabled @endif ></label>
                 за <span class="conf-step__chair conf-step__chair_standart"></span> обычные кресла
             </div>
             <div class="conf-step__legend">
-                <label class="conf-step__label">Цена, рублей<input id="countVip" type="text" class="conf-step__input count" placeholder="0" value="{{ $halls->where('id',$selected_hall)->first()->countVip }}" @if ($open === '1') disabled @endif ></label>
+                <label class="conf-step__label">Цена, рублей<input id="countVip" type="text" class="conf-step__input count" placeholder="0" value="{{ $halls->where('id',$selected_hall)->first()->countVip }}" @if ($open === '1' || $edit_hall === '0') disabled @endif ></label>
                 за <span class="conf-step__chair conf-step__chair_vip"></span> VIP кресла
             </div>
 
@@ -184,7 +184,7 @@
                 <button onclick = " window.location.href='{{ route('admin.home', ['confstep'=> ['conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_opened', 'conf-step__header_closed', 'conf-step__header_closed'], 'open'=> $open,'selected_hall' => $selected_hall]) }}' " href="#" class="conf-step__button conf-step__button-regular" @if ($open === '1') disabled @endif>Отмена</button>
                 <input id="{{$hall->id}}" onclick = "clickEditPrice(id)" type="submit" value="Сохранить" class="conf-step__button conf-step__button-accent" @if ($open === '1') disabled @endif >
 
-                <!--<input id="update" onclick = "clickUpdate()" type="submit" value="Сохранить" class="conf-step__button conf-step__button-accent" @if ($open === '1') disabled @endif >-->
+                {{--<input id="update" onclick = "clickUpdate()" type="submit" value="Сохранить" class="conf-step__button conf-step__button-accent" @if ($open === '1') disabled @endif >--}}
             </fieldset>
         </div>
     </section>
@@ -227,7 +227,7 @@
                             <button type="image" @if ($open === '1') disabled @endif ><img class="conf-step__movie-poster" alt="{{$film->imageText}}" src="{{ asset($film->imagePath)}}" ></button>
                             <h3 class="conf-step__movie-title">{{$film->title}}</h3>
                             <p class="conf-step__movie-duration">{{$film->duration}} минут</p>
-                            <button href="#" class="task__remove visible conf-step__button conf-step__button-trash"></button>
+                            <button href="#" class="task__remove visible conf-step__button conf-step__button-trash" @if ($open === '1') disabled @endif></button>
                         </form>
 
                         @include('admin.add_seance', ['film'=> $film, 'halls'=> $halls])
@@ -321,8 +321,8 @@
             @endforeach
             <fieldset class="conf-step__buttons text-center">
                 {{--}}<button class="conf-step__button conf-step__button-regular" href="#" @if ($open === '1') disabled @endif >Отмена</button>--}}
-                <button  id="cancel"  onclick = " window.location.href='{{ route('admin.home', ['confstep' => ['conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_opened', 'conf-step__header_closed'],'open'=> $open,'selected_hall' => $hall->{'id'}]) }}' " href="#" class="conf-step__button conf-step__button-regular" @if ($open === '1') disabled @endif >Отменить</button>
-                <button  id="save"  onclick = " window.location.href='{{ route('admin.home', ['confstep' => ['conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_opened', 'conf-step__header_closed'],'open'=> $open,'selected_hall' => $hall->{'id'}]) }}' " href="#" class="conf-step__button conf-step__button-regular" @if ($open === '1') disabled @endif >Сохранить</button>
+                <button  id="cancel"  onclick = " window.location.href='{{ route('admin.home', ['confstep' => ['conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_opened', 'conf-step__header_closed'],'open'=> $open,'selected_hall' => $hall->{'id'}]) }}' " href="#" class="conf-step__button conf-step__button-regular" @if ($open === '1') disabled @endif >Отмена</button>
+                <input  type="submit" value="Сохранить"  id="save"  onclick = " window.location.href='{{ route('admin.home', ['confstep' => ['conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_opened', 'conf-step__header_closed'],'open'=> $open,'selected_hall' => $hall->{'id'}]) }}' " href="#" class="conf-step__button conf-step__button-accent" @if ($open === '1') disabled @endif >
 
                 {{--}}<input type="submit" value="Сохранить" class="conf-step__button conf-step__button-accent" href="#" @if ($open === '1') disabled @endif >--}}
             </fieldset>
