@@ -44,13 +44,7 @@
     <div>Email: {{$user->email}}</div><br>-->
 
 </header>
-@php
-    $confstep1= $confstep[0];//1= 'conf-step__header_closed';
-    $confstep2= $confstep[1];// $confstep2= 'conf-step__header_closed';
-    $confstep3= $confstep[2];//$confstep3= 'conf-step__header_closed';
-    $confstep4= $confstep[3];//$confstep4= 'conf-step__header_opened';
-    $confstep5= $confstep[4];//$confstep5= 'conf-step__header_opened';
-@endphp
+
 
 <main class="conf-steps">
     {{-- Создание зала ///////////////////////////////////////////////--}}
@@ -59,6 +53,9 @@
             {{session('status')}}
         </div>
     @endif
+    {{--@if(session('exeption'))
+    <h2>{{ $exception->getMessage() }}</h2>
+    @endif--}}
     <section id="1" class="conf-step">
         <header class="conf-step__header {{$confstep[0]}}">
             <h2 class="conf-step__title">Управление залами</h2>
@@ -253,12 +250,17 @@
                             //print_r($all_seances);
                             //$sorted = $all_seances->sortBy('startSeance');
                             // Сортируем и выводим получившийся массив
-                            $sean= $seances->where('hall_id', $hall->id)->where(substr('startSeance', -8,5), '10:30')->first();
+                            $sean= $seances->where('hall_id', $hall->id)->where(substr('startSeance', -8, 5), '05:05:00')->first();
+                            $sean2= collect($seances->where('hall_id', $hall->id)->where('startSeance', '2023-01-10 05:05:00')->first());
+                            $se= collect($seances->where('hall_id', $hall->id));
                             $collection = $seances->where('hall_id', $hall->id)->min('startSeance');
+                            $collection2 = $seances->where('hall_id', $hall->id)->values()->unique(substr('startSeance', -8, 5));
                             //$collection = $seances->where('hall_id', $hall->id)->max('startSeance');
 
-                             //var_dump($collection);
+                             //dump($collection2);
                              //dump($sean);
+                             //dump($sean2);
+                             //dump($se);
                              //
 
                             //uasort($array, $callbackCmpFunction); // вторым параметром указываем нашу callback функцию
@@ -268,7 +270,7 @@
                         @endphp
                             @php
                                 //$all_seances = $seances->where('hall_id', $hall->id)->where('film_id', $film->id)->sortBy('startSeance');
-                                $all_seances = $seances->where('hall_id', $hall->id)->unique('startSeance')->values()->sortBy('startSeance');
+                                $all_seances = $seances->where('hall_id', $hall->id)->unique('startSeance')->sortBy('startSeance')->values()->all();
 
                             @endphp
                             {{--@foreach ($seances->where('hall_id', $hall->id)->where('film_id', $film->id) as $seance)--}}
@@ -318,8 +320,11 @@
             </div>--}}
             @endforeach
             <fieldset class="conf-step__buttons text-center">
-                <button class="conf-step__button conf-step__button-regular" href="#" @if ($open === '1') disabled @endif >Отмена</button>
-                <input type="submit" value="Сохранить" class="conf-step__button conf-step__button-accent" href="#" @if ($open === '1') disabled @endif >
+                {{--}}<button class="conf-step__button conf-step__button-regular" href="#" @if ($open === '1') disabled @endif >Отмена</button>--}}
+                <button  id="cancel"  onclick = " window.location.href='{{ route('admin.home', ['confstep' => ['conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_opened', 'conf-step__header_closed'],'open'=> $open,'selected_hall' => $hall->{'id'}]) }}' " href="#" class="conf-step__button conf-step__button-regular" @if ($open === '1') disabled @endif >Отменить</button>
+                <button  id="save"  onclick = " window.location.href='{{ route('admin.home', ['confstep' => ['conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_opened', 'conf-step__header_closed'],'open'=> $open,'selected_hall' => $hall->{'id'}]) }}' " href="#" class="conf-step__button conf-step__button-regular" @if ($open === '1') disabled @endif >Сохранить</button>
+
+                {{--}}<input type="submit" value="Сохранить" class="conf-step__button conf-step__button-accent" href="#" @if ($open === '1') disabled @endif >--}}
             </fieldset>
         </div>
         {{--Конец блока сетки фильмов <div class="conf-step__seances">--}}
@@ -434,7 +439,7 @@
     const shows1 = (id) => {
         //поставить нужный зал select
         //const id_popup = `${id}`;
-        //console.log('id_popup',id_popup);
+        //alert('id_popup',id_popup);
         let selected = Array.from(document.forms[`seance${id}`].select_hall.options);
         selected.forEach((p, index, arr) => {
             console.log('element:\n',p.value);
@@ -451,6 +456,25 @@
         console.log('popup element', headers);
         headers.classList.toggle('active');
     }
+
+    const shows2 = (id) => {
+
+        // показать меню удаления сеанса
+        //id=2;//id фильма!!!
+        //let id_del = id.split('_');
+        //let id_film = id_del[1];
+        //let id_seance = id_del[0];
+        //const popupe = `.conf-step__seances-movie #seance25OnFilm${id}.popup`;
+        const popupe = `.conf-step__seances-movie #id?.popup`;
+       // const popupe = `#${id}.popup`;
+        console.log(popupe);
+        //alert(id);
+        const headers = document.getElementById(`${id}`);
+        console.log('popup element', headers);
+        headers.classList.toggle('active');
+    }
+
+
     // все карточки фильма, навешиваем обработчики
     const cards2 = [...Array.from(document.querySelectorAll('.conf-step__movie'))];
     console.log('cards2 i this', this, cards2);
@@ -539,6 +563,18 @@
                     document.addEventListener('mouseup', (e) => {
                         //e.stopPropagation();
                         e.preventDefault(); // не даём выделять элементы
+
+                        //сразу сбросить обработчик движения
+                        for (const card of cards2) {
+                            card.closest('.conf-step__movies').nextElementSibling.removeEventListener('mousemove', (e) => {
+                                e.preventDefault();
+                                //e.stopPropagation();
+                            });
+                        }
+
+
+
+
                         if(!isDragging){
                             return;
                         }
@@ -608,37 +644,42 @@
                             parent.append(draggedEl);*/
 
 
+
+
+
                             document.body.removeChild(ghostEl);
                         //parent.style.backgroundColor = col;
                         //document.body.remove(ghostEl);
 
                         console.log('\n ghostEl', ghostEl.children[1].id[5]);
                         const idd = ghostEl.children[1].id[5];
+
                         ghostEl = null;
                         draggedEl = null;
                         //card.onmouseenter = null;
                         //e.preventDefault();
 
 
-                        // сбрасываем все обработчики
+                        // сбрасываем все остальные обработчики (mousemove раньше всех)
                         document.removeEventListener('mouseup', (e) => {
                             e.preventDefault();
                             //e.stopPropagation();
                         });
                         for (const card of cards2) {
 
-                        card.closest('.conf-step__movies').nextElementSibling.removeEventListener('mousemove', (e) => {
+                        /*card.closest('.conf-step__movies').nextElementSibling.removeEventListener('mousemove', (e) => {
                             e.preventDefault();
                             //e.stopPropagation();
-                        });
+                        });*/
 
                             card.removeEventListener('mousedown', (e) => {
-                                //e.preventDefault();
+                                e.preventDefault();
                                 //e.stopPropagation();
                             });
 
                             card.onmouseenter = null;
                             card.onmouseleave = null;
+
                         }
 
                         //показать попап
@@ -662,10 +703,204 @@
     }//for
 
 
-    // удаление сеанса
-    const cards_seances = [...Array.from(document.querySelectorAll('.conf-step__seances-movie'))];
-    console.log('cards_seances i this', this, cards_seances);
+    // удаление сеанса --------------------------------------------------------------
+    //// все сеансы с фильмами, навешиваем обработчики
+    const cardsIseances = [...Array.from(document.querySelectorAll('.conf-step__seances-movie'))];
+    console.log('cards_seances i this', this, cardsIseances);
+    for (const card of cardsIseances) {
+        let isDrag = false;
+        card.onmouseenter = function Enter(e) {
+            e.preventDefault();// если без span  то везде children 0!!!
+            isDrag = true;
+            if (e.target.classList.contains('.conf-step__seances-movie') && e.target.children[2].classList.contains('.visible')) {
+                e.target.children[2].classList.remove('visible');
+            }
 
+            card.addEventListener('mousedown', (event) => {
+                if (event.target.classList.contains('task__remove')) {
+                    return;
+                }
+                if (!isDrag) {
+                    return;
+                }
+
+                event.preventDefault();
+                let draggedEl = null;
+                let ghostEl = null;
+
+
+                //let element2 = event.target.closest('.div-body');
+                //console.log('===========', e.target, element2 );
+
+                let element3 = event.target.closest('.conf-step__seances-movie');
+                //let element_color = element3.style.backgroundColor;   ///
+                //let element_color = element3.closest('.conf-step__movies').children[3].backgroundColor;
+                //let element_color = element3.closest('.conf-step__movies').backgroundColor;
+
+                // работало let element_color = element3.backgroundColor;
+                console.log('===========e.target =======element3!!!!', event.target, element3);              ///
+
+
+                if (!e.target.classList.contains('conf-step__seances-movie')) {
+                    return;
+                }                                                             ///
+
+
+                if (event.target.closest('.conf-step__seances-movie').classList.contains('conf-step__seances-movie')) {
+
+                    element3.style.cursor = 'grabbing';
+
+                    draggedEl = element3;
+                    console.log('тянем это div', draggedEl);
+
+                    ghostEl = element3.cloneNode(true);
+                    ghostEl.classList.add('dragged');
+                    document.body.appendChild(ghostEl);
+                    ghostEl.style.position = 'absolute';
+                    ghostEl.style.zIndex = 1000;
+                    ghostEl.style.width = `${element3.offsetWidth}px`;
+                    ghostEl.style.left = `${event.pageX - ghostEl.offsetWidth / 2}px`;
+                    ghostEl.style.top = `${event.pageY - ghostEl.offsetHeight / 2}px`;
+                    ghostEl.style.backgroundColor = 'green';
+                    ghostEl.style.opacity = 0.6;
+                    console.log('скопировали это dip', ghostEl);
+                    //document.querySelector('.conf-step__seances-timeline.drop-area').style.backgroundColor = 'yellow';
+                    //document.querySelector('.conf-step__seances-timeline.drop-area').style.backgroundColor = 'blue';
+                }
+
+                card.closest('.conf-step__seances-movie').addEventListener('mousemove', (e) => {
+                    e.preventDefault(); // не даём выделять элементы
+                    if (!isDrag) {
+                        return;
+                    }
+
+                    if (!draggedEl) {
+                        return;
+                    }
+
+
+                    ghostEl.style.left = `${e.pageX - ghostEl.offsetWidth / 2}px`;
+                    ghostEl.style.top = `${e.pageY - ghostEl.offsetHeight / 2}px`;
+                    console.log('позиция', ghostEl.style.left, ghostEl.style.top);
+                    console.log('event mousemove\n', e.target, e.currentTarget);
+
+                });
+
+                //up
+                document.addEventListener('mouseup', (e) => {
+                    //e.stopPropagation();
+                    e.preventDefault(); // не даём выделять элементы
+
+                    //сразу сбросить обработчик движения
+                    for (const card of cardsIseances) {
+                        card.closest('.conf-step__seances-movie').removeEventListener('mousemove', (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                        });
+                    }
+
+                    if (!isDrag) {
+                        return;
+                    }
+                    // e.stopPropagation();
+                    console.log('event mouseup!!!!!!', e.target, e.currentTarget, e.relatedTarget);
+                    console.log('draddedEl', draggedEl);
+                    console.log('ghost', ghostEl);
+
+                    if (!draggedEl) {
+                        return;
+                    }
+
+                    let closest = document.elementFromPoint(e.clientX, e.clientY);// p- элемент
+                    console.log('closest 1 и 2\n', closest, document.elementsFromPoint(e.clientX, e.clientY));
+                    console.log('dragged parent\n', draggedEl.parentElement, draggedEl.parentElement.parentNode);
+                    console.log('ghostd parent\n', ghostEl.parentElement, ghostEl.parentElement.parentNode);
+
+                    let closestParent = closest.closest('.conf-step__seances-movie');//div
+                    console.log('closestparent   2el\n', closestParent);
+
+                    //const parent = closest.closest('div.conf-step__seances-hall');
+                    console.log('element3\n', element3);
+                    //let parent = element3.closest(".conf-step__seances-hall");
+                    //let parent = closest.closest('.conf-step__seances-timeline.drop-area');
+                    //let parent =closestParent.closest('.conf-step__seances-hall');
+                    let parent, col;
+                    for (const el of [...Array.from(document.elementsFromPoint(e.clientX, e.clientY))]) {
+                        if (el.classList.contains('conf-step__seances-timeline')) {
+                            console.log("ребенок ok555555", el);
+                            parent = el;
+                            idHallForSelect = parent.parentElement.id;
+                            //col =  parent.style.backgroundColor;
+                            //parent.style.backgroundColor = 'yellow';
+                        }
+                        console.log("ребенок", el);
+                        console.log("idHallForSelect", idHallForSelect);
+                    }
+
+                    console.log('parent conf-step__seances-hall\n', parent);
+                    //let parent = closest.closest('.conf-step__seances-timeline.drop-area');
+
+                    console.log('кидаем это на e.currentTarget', '\n ghostEl', ghostEl, '\n dragged', draggedEl, '\n etarget', e.target, '\n closest', closest, '\n carrenttag', e.currentTarget);
+                    console.log('childrene.currentTarget', e.currentTarget.children);
+                    console.log('childrene.Target', e.target.children);
+                    //console.log('parent', parent);
+                    //console.log('closestparent', closestParent);
+                    const {top} = closest.getBoundingClientRect();
+                    /*if (e.pageY > window.scrollY + top + closest.offsetHeight / 2) {
+                       parent.children[1].appendChild(draggedEl);
+                    } else {
+                      parent.children[1].insertBefore(draggedEl, closestParent);
+                    }*/
+
+                    //if (e.pageX > window.scrollX + top + closest.offsetWidth / 2) {
+                    console.log('вставляем сюда', parent);
+
+                    document.body.removeChild(ghostEl);
+                    //parent.style.backgroundColor = col;
+                    //document.body.remove(ghostEl);
+
+                    //console.log('\n ghostEl', ghostEl.children[1].id[5]);
+                    //const idd = ghostEl.children[1].id[5];
+                    console.log('\n ghostEl', ghostEl.children[2].id);
+                    const idd = ghostEl.children[2].id;//id=seance_id_film_id
+
+
+                    ghostEl = null;
+                    draggedEl = null;
+                    //card.onmouseenter = null;
+                    //e.preventDefault();
+
+
+                    // сбрасываем все остальные обработчики (mousemove раньше всех)
+                    document.removeEventListener('mouseup', (e) => {
+                        e.preventDefault();
+                        //e.stopPropagation();
+                    });
+
+                    for (const card of cardsIseances) {
+
+                        card.removeEventListener('mousedown', (e) => {
+                            e.preventDefault();
+                            //e.stopPropagation();
+                        });
+
+                        card.onmouseenter = null;
+                        card.onmouseleave = null;
+                    }
+
+                    //показать попап
+                    shows2(idd);
+                    //event.preventDefault();
+                    isDrag = false;
+                });//  mouseup
+            });//down
+        };
+        //enter
+        card.onmouseleave = function Leave(ev) {
+            ev.preventDefault();
+        };
+
+    }
 
     //==================================== function==========================
     // Обработка выбора типа места по клику
@@ -912,6 +1147,14 @@
        // alert(popup.classList);
         popup.classList.toggle('active')
     }
+    function popupToggle2(id){
+
+        const  popup = document.getElementById(id);
+        const pop = popup.closest('.popup');
+        // alert(popup.classList);
+        pop.classList.toggle('active')
+    }
+
     //dragdrop
 </script>
 </body>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FilmCreateRequest;
 use App\Models\Film;
 use App\Models\Hall;
 use http\Client\Response;
@@ -29,7 +30,7 @@ class FilmController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create(FilmCreateRequest $request)
     {
         var_dump($request->all());//
         dump('image path ');

@@ -35,6 +35,12 @@ class SeanceSeeder extends Seeder
             'hall_id' => 1,
         ]);
 
+        DB::table('seances')->insert([
+            'startSeance' => Carbon::now()->addDays(2),
+            'film_id' => 1,
+            'hall_id' => 1,
+        ]);
+
 
         //--------------------
 

@@ -21,7 +21,7 @@ class SeatSeeder extends Seeder
              for ($i = 1; $i <= 10; $i++) {
                  for ($j = 1; $j <= 12; $j++) {
                      if(($s['id'] >= 1 && $s['id'] <=5) && (($i===1 && $j===1) || ($i===1 && $j===2) || ($i===1 && $j===4) || ($i===1 && $j===5) || ($i===1 && $j===3) || ($i===1 && $j===6))) {
-                         $ticket_id = $j+$s['id']*5 ;
+                        $ticket_id = $j+$s['id']*5 ;
                          $free = false;            //$hall_id= 1;
                      } else {
                          $ticket_id = 0;

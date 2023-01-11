@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\CustomDatabaseException;
+use App\Http\Requests\HallCreateRequest;
 use App\Models\Film;
 use App\Models\Hall;
 use App\Models\Seance;
@@ -11,6 +13,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use PHPUnit\Exception;
+use Throwable;
 
 class HallController extends Controller
 {
@@ -70,43 +74,67 @@ class HallController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create(HallCreateRequest $request)
     {
-        $user = Auth::user();
-        if (! $user->is_admin) {
-        return redirect('/');
-        } else {
-            //var_dump($request->validated());//var_dump($request->all());
-            $all = $request->all();
-            $seats =[];
-            for ($i = 1; $i <= 10; $i++) {
-                for ($j = 1; $j <= 12; $j++) {
-                    $seats["$i,$j"] = ['NORM','VIP', 'FAIL'][array_rand(['NORM','VIP', 'FIRE'])];
+        try {
+            $user = Auth::user();
+            if (!$user->is_admin) {
+                return redirect('/');
+            } else {
+                //var_dump($request->validated());//var_dump($request->all());
+                $all = $request->all();
 
+                // dd($all);
+                $seats = [];
+                for ($i = 1; $i <= 10; $i++) {
+                    for ($j = 1; $j <= 12; $j++) {
+                        $seats["$i,$j"] = ['NORM', 'VIP', 'FAIL'][array_rand(['NORM', 'VIP', 'FIRE'])];
+
+                    }
                 }
+
+                //$seats = json_encode($seats);
+                $seats = json_encode(["1,1" => "NORM", "1,2" => "NORM", "1,3" => "NORM", "1,4" => "NORM", "1,5" => "NORM", "1,6" => "NORM", "1,7" => "NORM", "1,8" => "NORM", "1,9" => "NORM", "1,10" => "NORM", "1,11" => "NORM", "1,12" => "NORM", "2,1" => "NORM", "2,2" => "NORM", "2,3" => "NORM", "2,4" => "NORM", "2,5" => "NORM", "2,6" => "NORM", "2,7" => "NORM", "2,8" => "NORM", "2,9" => "NORM", "2,10" => "NORM", "2,11" => "NORM", "2,12" => "NORM", "3,1" => "NORM", "3,2" => "NORM", "3,3" => "NORM", "3,4" => "NORM", "3,5" => "NORM", "3,6" => "NORM", "3,7" => "NORM", "3,8" => "NORM", "3,9" => "NORM", "3,10" => "NORM", "3,11" => "NORM", "3,12" => "NORM", "4,1" => "NORM", "4,2" => "NORM", "4,3" => "NORM", "4,4" => "NORM", "4,5" => "NORM", "4,6" => "NORM", "4,7" => "NORM", "4,8" => "NORM", "4,9" => "NORM", "4,10" => "NORM", "4,11" => "NORM", "4,12" => "NORM", "5,1" => "NORM", "5,2" => "NORM", "5,3" => "NORM", "5,4" => "NORM", "5,5" => "NORM", "5,6" => "NORM", "5,7" => "NORM", "5,8" => "NORM", "5,9" => "NORM", "5,10" => "NORM", "5,11" => "NORM", "5,12" => "NORM", "6,1" => "NORM", "6,2" => "NORM", "6,3" => "NORM", "6,4" => "NORM", "6,5" => "NORM", "6,6" => "NORM", "6,7" => "NORM", "6,8" => "NORM", "6,9" => "NORM", "6,10" => "NORM", "6,11" => "NORM", "6,12" => "NORM", "7,1" => "NORM", "7,2" => "NORM", "7,3" => "NORM", "7,4" => "NORM", "7,5" => "NORM", "7,6" => "NORM", "7,7" => "NORM", "7,8" => "NORM", "7,9" => "NORM", "7,10" => "NORM", "7,11" => "NORM", "7,12" => "NORM", "8,1" => "NORM", "8,2" => "NORM", "8,3" => "NORM", "8,4" => "NORM", "8,5" => "NORM", "8,6" => "NORM", "8,7" => "NORM", "8,8" => "NORM", "8,9" => "NORM", "8,10" => "NORM", "8,11" => "NORM", "8,12" => "NORM", "9,1" => "NORM", "9,2" => "NORM", "9,3" => "NORM", "9,4" => "NORM", "9,5" => "NORM", "9,6" => "NORM", "9,7" => "NORM", "9,8" => "NORM", "9,9" => "NORM", "9,10" => "NORM", "9,11" => "NORM", "9,12" => "NORM", "10,1" => "NORM", "10,2" => "NORM", "10,3" => "NORM", "10,4" => "NORM", "10,5" => "NORM", "10,6" => "NORM", "10,7" => "NORM", "10,8" => "NORM", "10,9" => "NORM", "10,10" => "NORM", "10,11" => "NORM", "10,12" => "NORM"]);
+
+
+                DB::table('halls')->insert([
+                    'nameHall' => $request["name"],
+                    'col' => 12,
+                    'row' => '10',
+                    'countVip' => 1000,
+                    'countNormal' => 500,
+                    'open' => false,
+                    'typeOfSeats' => $seats,
+                ]);
+
+                $conf = $request['confstep'] ?: ['conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed'];
+                $conf[0] = 'conf-step__header_opened';
+                //dd($conf);
+                return redirect()->route('admin.home')->with(['confstep' => $conf]);// нельзя передать
+                //return view('admin.home', ['confstep' => $conf]);
+                //return redirect()->back();
             }
+        } catch (App\Exceptions\CustomDatabaseException $exception) {
+            //return redirect()->back()->withException($e);
+            //return redirect()->back()
+                //->withInput();
+                //->withErrors($validator->errors());
 
-            //$seats = json_encode($seats);
-            $seats = json_encode(["1,1"=>"NORM","1,2"=>"NORM","1,3"=> "NORM", "1,4"=>"NORM","1,5"=>"NORM","1,6"=> "NORM", "1,7"=>"NORM","1,8"=>"NORM","1,9"=> "NORM","1,10"=>"NORM","1,11"=>"NORM","1,12"=> "NORM", "2,1"=>"NORM","2,2"=>"NORM","2,3"=> "NORM", "2,4"=>"NORM","2,5"=>"NORM","2,6"=> "NORM", "2,7"=>"NORM","2,8"=>"NORM","2,9"=> "NORM","2,10"=>"NORM","2,11"=>"NORM","2,12"=> "NORM", "3,1"=>"NORM","3,2"=>"NORM","3,3"=> "NORM", "3,4"=>"NORM","3,5"=>"NORM","3,6"=> "NORM", "3,7"=>"NORM","3,8"=>"NORM","3,9"=> "NORM","3,10"=>"NORM","3,11"=>"NORM","3,12"=> "NORM","4,1"=>"NORM","4,2"=>"NORM","4,3"=> "NORM", "4,4"=>"NORM","4,5"=>"NORM","4,6"=> "NORM", "4,7"=>"NORM","4,8"=>"NORM","4,9"=> "NORM","4,10"=>"NORM","4,11"=>"NORM","4,12"=> "NORM","5,1"=>"NORM","5,2"=>"NORM","5,3"=> "NORM", "5,4"=>"NORM","5,5"=>"NORM","5,6"=> "NORM", "5,7"=>"NORM","5,8"=>"NORM","5,9"=> "NORM","5,10"=>"NORM","5,11"=>"NORM","5,12"=> "NORM","6,1"=>"NORM","6,2"=>"NORM","6,3"=> "NORM", "6,4"=>"NORM","6,5"=>"NORM","6,6"=> "NORM", "6,7"=>"NORM","6,8"=>"NORM","6,9"=> "NORM","6,10"=>"NORM","6,11"=>"NORM","6,12"=> "NORM", "7,1"=>"NORM","7,2"=>"NORM","7,3"=> "NORM", "7,4"=>"NORM","7,5"=>"NORM","7,6"=> "NORM", "7,7"=>"NORM","7,8"=>"NORM","7,9"=> "NORM","7,10"=>"NORM","7,11"=>"NORM","7,12"=> "NORM", "8,1"=>"NORM","8,2"=>"NORM","8,3"=> "NORM", "8,4"=>"NORM","8,5"=>"NORM","8,6"=> "NORM", "8,7"=>"NORM","8,8"=>"NORM","8,9"=> "NORM","8,10"=>"NORM","8,11"=>"NORM","8,12"=> "NORM", "9,1"=>"NORM","9,2"=>"NORM","9,3"=> "NORM", "9,4"=>"NORM","9,5"=>"NORM","9,6"=> "NORM", "9,7"=>"NORM","9,8"=>"NORM","9,9"=> "NORM","9,10"=>"NORM","9,11"=>"NORM","9,12"=> "NORM", "10,1"=>"NORM","10,2"=>"NORM","10,3"=> "NORM", "10,4"=>"NORM","10,5"=>"NORM","10,6"=> "NORM", "10,7"=>"NORM","10,8"=>"NORM","10,9"=> "NORM","10,10"=>"NORM","10,11"=>"NORM","10,12"=> "NORM"]);
-
-
-            DB::table('halls')->insert([
-                'nameHall' => $request["name"],
-                'col' => 12,
-                'row' => '10',
-                'countVip' => 1000,
-                'countNormal' => 500,
-                'open'=> false,
-                'typeOfSeats' => $seats,
-            ]);
-
-            $conf= $request['confstep'] ?? ['conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed'];
-            $conf[0]= 'conf-step__header_opened';
-            //dd($conf);
-            return redirect()->route('admin.home')->with(['confstep' => $conf]);// нельзя передать
-            //return view('admin.home', ['confstep' => $conf]);
+            //return back()->withError($exception->getMessage())->withInput();
+            throw new CustomDatabaseException($exception->getMessage());
             //return redirect()->back();
-        }
+        }/*
+        catch (Throwable $e) {
+            report($e);
+
+            return false;
+        }*/
+
+        $conf = $request['confstep'] ?: ['conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed'];
+        $conf[0] = 'conf-step__header_opened';
+        //dd($conf);
+        return redirect()->route('admin.home')->with(['confstep' => $conf]);
+
     }
 
     /**
