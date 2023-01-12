@@ -172,11 +172,11 @@
 
             <p class="conf-step__paragraph">Установите цены для типов кресел:</p>
             <div class="conf-step__legend">
-                <label class="conf-step__label">Цена, рублей<input id="countNormal" type="text" class="conf-step__input count" placeholder="0" value="{{ $halls->where('id',$selected_hall)->first()->countNormal }}" @if ($open === '1' || $edit_hall === '0') disabled @endif ></label>
+                <label class="conf-step__label">Цена, рублей<input id="countNormal" type="text" class="conf-step__input count" placeholder="0" value="{{ $halls->where('id',$selected_hall)->first()->countNormal ?: $halls->all()->first()->countNormal }}" @if ($open === '1' || $edit_hall === '0') disabled @endif ></label>
                 за <span class="conf-step__chair conf-step__chair_standart"></span> обычные кресла
             </div>
             <div class="conf-step__legend">
-                <label class="conf-step__label">Цена, рублей<input id="countVip" type="text" class="conf-step__input count" placeholder="0" value="{{ $halls->where('id',$selected_hall)->first()->countVip }}" @if ($open === '1' || $edit_hall === '0') disabled @endif ></label>
+                <label class="conf-step__label">Цена, рублей<input id="countVip" type="text" class="conf-step__input count" placeholder="0" value="{{ $halls->where('id',$selected_hall)->first()->countVip ?: $halls->all()->first()->countNormal }}" @if ($open === '1' || $edit_hall === '0') disabled @endif ></label>
                 за <span class="conf-step__chair conf-step__chair_vip"></span> VIP кресла
             </div>
 
@@ -250,14 +250,25 @@
                             //print_r($all_seances);
                             //$sorted = $all_seances->sortBy('startSeance');
                             // Сортируем и выводим получившийся массив
-                            $sean= $seances->where('hall_id', $hall->id)->where(substr('startSeance', -8, 5), '05:05:00')->first();
-                            $sean2= collect($seances->where('hall_id', $hall->id)->where('startSeance', '2023-01-10 05:05:00')->first());
-                            $se= collect($seances->where('hall_id', $hall->id));
-                            $collection = $seances->where('hall_id', $hall->id)->min('startSeance');
-                            $collection2 = $seances->where('hall_id', $hall->id)->values()->unique(substr('startSeance', -8, 5));
+                            //$sean= $seances->where('hall_id', $hall->id)->where(substr('startSeance', -8, 5), '05:05:00')->first();
+                            //$sean2= collect($seances->where('hall_id', $hall->id)->where('startSeance', '2023-01-10 05:05:00')->first());
+                            //$se= collect($seances->where('hall_id', $hall->id));
+                            //$collection = $seances->where('hall_id', $hall->id)->min('startSeance');
+                            //$collection2 = $seances->where('hall_id', $hall->id)->values()->unique(substr('startSeance', -8, 5));
                             //$collection = $seances->where('hall_id', $hall->id)->max('startSeance');
-
-                             //dump($collection2);
+                            //$collection23 = $seances->where('hall_id', $hall->id)->unique('startSeance')->all();
+                            //$collection24=App\Models\Seance::distinct()->get(substr('startSeance', -8, 5));
+                             //$collection25 = App\Models\Seance::where('hall_id', $hall->id)->select('startSeance');
+                            // $ccc= App\Models\Seance::where('hall_id', $hall->id)->select('startSeance')->distinct()->get();
+                            // $ccc= collect(App\Models\Seance::where('hall_id', $hall->id)->get());
+                             //$unique = collect(App\Models\Seance::where('hall_id', $hall->id)->get())->unique(function ($item) {
+                                //return substr($item['startSeance'], -8, 5);
+                                //});
+                             //foreach ($unique as $item){
+                                 //var_dump($item);
+                             //}
+                             //$CCC2=[];
+                             //dump($unique);
                              //dump($sean);
                              //dump($sean2);
                              //dump($se);
@@ -268,13 +279,17 @@
                             // упорядочить по дате поле startSeance
                             //https://translated.turbopages.org/proxy_u/en-ru.ru.c2af9fe9-63a36136-4101588f-74722d776562/https/stackoverflow.com/questions/37567751/laravel-sort-an-array-by-date
                         @endphp
+
+                        {{--@foreach ($ccc as $hall)--}}
                             @php
                                 //$all_seances = $seances->where('hall_id', $hall->id)->where('film_id', $film->id)->sortBy('startSeance');
                                 $all_seances = $seances->where('hall_id', $hall->id)->unique('startSeance')->sortBy('startSeance')->values()->all();
-
+                                $unique = collect(App\Models\Seance::where('hall_id', $hall->id)->get())->unique(function ($item) {
+                                return substr($item['startSeance'], -8, 5);
+                                })->sortBy('startSeance')->values()->all();
                             @endphp
                             {{--@foreach ($seances->where('hall_id', $hall->id)->where('film_id', $film->id) as $seance)--}}
-                            @foreach ($all_seances as $seance)
+                            @foreach ($unique as $seance)
                             <div class="conf-step__seances-movie" draggable="true" style="width: calc({{ $films->where('id', $seance->{'film_id'})->first()->duration }}px*0.5); background-color: rgb(133, 255, 137); left: {{$coord}}px;">
                                 <p class="conf-step__seances-movie-title">{{ $films->where('id', $seance->{'film_id'})->first()->title }}</p>
                                 {{--}}<p class="conf-step__seances-movie-title">{{ $film->title }}</p> --}}
@@ -770,6 +785,7 @@
 
                 card.closest('.conf-step__seances-movie').addEventListener('mousemove', (e) => {
                     e.preventDefault(); // не даём выделять элементы
+                    e.stopPropagation();
                     if (!isDrag) {
                         return;
                     }
@@ -798,6 +814,24 @@
                             e.stopPropagation();
                         });
                     }
+
+                    // сбрасываем все остальные обработчики (mousemove раньше всех)
+                    document.removeEventListener('mouseup', (e) => {
+                        e.preventDefault();
+                        //e.stopPropagation();
+                    });
+
+                    for (const card of cardsIseances) {
+
+                        card.removeEventListener('mousedown', (e) => {
+                            e.preventDefault();
+                            //e.stopPropagation();
+                        });
+
+                        card.onmouseenter = null;
+                        card.onmouseleave = null;
+                    }
+
 
                     if (!isDrag) {
                         return;
@@ -872,7 +906,7 @@
 
 
                     // сбрасываем все остальные обработчики (mousemove раньше всех)
-                    document.removeEventListener('mouseup', (e) => {
+                    /*document.removeEventListener('mouseup', (e) => {
                         e.preventDefault();
                         //e.stopPropagation();
                     });
@@ -886,7 +920,7 @@
 
                         card.onmouseenter = null;
                         card.onmouseleave = null;
-                    }
+                    }*/
 
                     //показать попап
                     shows2(idd);
@@ -1020,7 +1054,7 @@
         let selected = Array.from(document.forms[`seance${id}`].select_hall.options);
         console.log('select ', selected, document.forms[`seance${id}`].select_hall.innerText, document.forms[`seance${id}`].select_hall.selectedIndex);
         console.log('элемент', selected[document.forms[`seance${id}`].select_hall.selectedIndex].innerText, 'id',selected[document.forms[`seance${id}`].select_hall.selectedIndex].value, form.elements[2].value);
-        alert('seance');
+        //alert('seance');
         let url = "{{route('admin.createSeance', ['film_id'=> 'filmId', 'hall_id'=> 'hallId', 'start_seance' => 'startSeance'])}}";
         //alert(json_count);
         url = url.replace('startSeance', form.elements[2].value);
@@ -1029,7 +1063,7 @@
         console.log('replace url  ', url);
         url = url.replaceAll('&amp;', '&');
         console.log('получили url для обновления   ',url);
-        alert(url);
+        //alert(url);
         window.location.href = url;
     }
 
@@ -1052,9 +1086,6 @@
 
     //Закрыть форму добавления зала/фильма
     function cl2(id){
-        /*console.log(id);
-        console.log(document.getElementById(id).closest('.conf-step'));
-        console.log(document.getElementById(id).closest('.conf-step').children[2]);*/
         document.getElementById(id).closest('.conf-step').children[2].classList.remove("active");
     }
 

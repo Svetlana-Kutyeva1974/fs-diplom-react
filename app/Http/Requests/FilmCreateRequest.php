@@ -28,7 +28,7 @@ class FilmCreateRequest extends FormRequest
         return [
             'title' => ['string', 'required'],
             'description' => ['string', 'required'],
-            'duration' => ['integer', 'required'],
+            'duration' => ['integer', 'required', 'max:200'],
             'origin' => ['string', 'required' ],
             'imageText' => ['string'],
             'imagePath' => ['file', 'required'],

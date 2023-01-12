@@ -32,18 +32,18 @@ class FilmController extends Controller
      */
     public function create(FilmCreateRequest $request)
     {
-        var_dump($request->all());//
-        dump('image path ');
-        dump($request["imagePath"]);
+        //var_dump($request->all());//
+        //dump('image path ');
+        //dump($request["imagePath"]);
         if ($request->isMethod('post') && $request->file('imagePath')) {
 
             $file = $request->file('imagePath');
-            dump('basename ');
-            dump($request->file('imagePath'));
+            //dump('basename ');
+            //dump($request->file('imagePath'));
             $upload_folder = 'public/i';
             $filename = $file->getClientOriginalName(); // image.jpg
 
-            dump($filename);
+            //dump($filename);
             Storage::putFileAs($upload_folder, $file, $filename);
 
         }

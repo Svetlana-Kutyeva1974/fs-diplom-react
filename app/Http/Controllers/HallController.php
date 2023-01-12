@@ -21,12 +21,12 @@ class HallController extends Controller
 
     public function editHallSeats(Hall $hall, array $json_seat)
     {
-        dump($hall);
-        dump('обрезка seats');
-        dump($json_seat);
+        //dump($hall);
+        //dump('обрезка seats');
+        //dump($json_seat);
         $hall_decode = json_decode($hall['typeOfSeats']);
-        dump('hall decode');
-        dump($hall_decode);
+        //dump('hall decode');
+        //dump($hall_decode);
         /*$max_col = ($json_seat[1] !=0 ) ? $json_seat[1] : $hall['col'] ;
         $max_row = ($json_seat[0] != 0 ) ? $json_seat[0] : $hall['row'] ;
         */
@@ -114,7 +114,7 @@ class HallController extends Controller
                 //return view('admin.home', ['confstep' => $conf]);
                 //return redirect()->back();
             }
-        } catch (App\Exceptions\CustomDatabaseException $exception) {
+        } catch (\Exception $exception) {
             //return redirect()->back()->withException($e);
             //return redirect()->back()
                 //->withInput();
@@ -174,19 +174,19 @@ class HallController extends Controller
      */
     public function edit(Request $request, Hall $hall)
     {
-        dump($request->all());
+        //dump($request->all());
         $json_seat = json_decode($request['json_seat']);
-        dump($json_seat);
+        //dump($json_seat);
 
         $hall1 = $request['hall'];
-        dump('edit hall:');
-        dump($request['hall']);
+        //dump('edit hall:');
+        //dump($request['hall']);
         ////dump($hall1['id']);//dump(json_decode($request['newTypeOfSeats']));
 
         $hall_new_decode = json_decode($request['newTypeOfSeats']);
         $hall_decode = json_decode($hall1['typeOfSeats']);
-        dump($hall_decode);
-        dump($hall_new_decode);
+        //dump($hall_decode);
+        //dump($hall_new_decode);
         $i=0;
         foreach ($hall_decode as $key => $value) {
             //dump($i);dump($key);dump($hall_new_decode[$i]->{"value"});
@@ -210,13 +210,13 @@ class HallController extends Controller
             $hall['typeOfSeats']= $this->editHallSeats($hall, $json_seat);
 
         }
-        dump('typeofseats после изменения мест\рядов');
-        dump($hall['typeOfSeats']);
-        dump($hall);
+        //dump('typeofseats после изменения мест\рядов');
+        //dump($hall['typeOfSeats']);
+        //dump($hall);
 
         // сохраняем новое количество рядов в новом зале...
-        dump($json_seat[0], $json_seat[1]);
-        dump($json_seat[1] != 0);
+        //dump($json_seat[0], $json_seat[1]);
+        //dump($json_seat[1] != 0);
         if ($json_seat[1] != 0) {
             $hall['col'] = $json_seat[1];
         }
@@ -225,10 +225,10 @@ class HallController extends Controller
         }
 
 
-        dump($hall);
-        $hall->save();
         //dump($hall);
-        var_dump($hall);
+        $hall->save();
+
+        //var_dump($hall);
 
         $confstep= $request['confstep'] ?? ['conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed'];
         $confstep[1]= 'conf-step__header_opened';
@@ -240,8 +240,8 @@ class HallController extends Controller
     public function editPriceHall(Request $request, Hall $hall)
     {
 
-        dump($request->all());
-        dump($request->open);
+        //dump($request->all());
+        //dump($request->open);
         $hall1 = $request['hall'];
         $hall = Hall::find($hall1['id']);
         $count = json_decode($request['count']);
@@ -252,8 +252,8 @@ class HallController extends Controller
             $hall['countNormal'] = $count[0];
         }
         $hall->save();
-        dump($hall['open']);
-        dump($hall['id']);
+        //dump($hall['open']);
+        //dump($hall['id']);
         $confstep= $request['confstep'] ?? ['conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed'];
         $confstep[2]= 'conf-step__header_opened';
         //dd();
@@ -297,7 +297,8 @@ class HallController extends Controller
             return redirect()->back()->with('status','Ошибка удаления : В зале ' ."/".$hall->nameHall. "/".' существуют сеансы');
         } else {
             Hall::find($id)->delete();//Hall::find($request->id)->delete();
-            return redirect()->back();
+            //return redirect()->back();
+            return redirect()->route('admin.home');
         }
         //return redirect()->route('admin.home');
     }

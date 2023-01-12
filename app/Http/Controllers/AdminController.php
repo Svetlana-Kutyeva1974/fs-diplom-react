@@ -28,7 +28,7 @@ class AdminController extends Controller
     {
         $user = Auth::user();
         //dump($user);
-        dump($request->all());
+        //dump($request->all());
 
         /*if (! $user->is_admin) {
         return redirect('/');
@@ -56,8 +56,7 @@ class AdminController extends Controller
                 $i++;
             }
 
-            dump($hall_holy);
-        //dd();
+            //dump($hall_holy);
 
             $selected_hall = ($request->selected_hall) ?: $hall_holy;
             //было так первый зал выбирался по умолчанию! $selected_hall = ($request->selected_hall) ?: $halls->first()->id;
@@ -100,11 +99,11 @@ class AdminController extends Controller
             //dump($text);
             //if($this->route->hasRoute('admin.open'))
             //var_dump($halls);
-            dump($request->confstep);
+            //dump($request->confstep);
             $i = session()->get('confstep');
-            dump($i);
+            //dump($i);
             $confstep = $request['confstep'] ?: ['conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed'];
-            dump($confstep);
+            //dump($confstep);
             return view('admin.home', ['confstep'=> $confstep ,'open'=> $open, 'text'=> $text ,'selected_hall' => $selected_hall, 'user'=> $user, 'films' => $films, 'halls' => $halls, 'seances'=> $seances, 'dateCurrent' => $dateCurrent, 'dateChosen'=> $dateChosen, 'seats'=> $seats]);
     }
 

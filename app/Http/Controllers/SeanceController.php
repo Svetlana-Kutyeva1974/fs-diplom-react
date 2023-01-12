@@ -37,9 +37,9 @@ class SeanceController extends Controller
         dump($seance_id_last);
         dump($request->all());
         $data = explode(" ", Carbon::now());
-        dump($data);
+       // dump($data);
         $data[1]=$request['start_seance'];
-        dump($data);
+        //dump($data);
         $data = implode(" ", $data);
         //dd($data);
         //
@@ -75,10 +75,10 @@ class SeanceController extends Controller
                 //dd(seat);
             }
         }
-        dump($seance);
+        //dump($seance);
         if($request['confstep']) {
             $confstep = $request['confstep'];
-            dump($confstep);
+            //dump($confstep);
         } else {
             $confstep = ['conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_opened', 'conf-step__header_closed'];
         }
@@ -88,11 +88,11 @@ class SeanceController extends Controller
         //for ($dn = 1; $dn <= 13; $dn++) {
             //dump($request->all());
             $data = explode(" ", Carbon::now()->addDays(1));
-            dump($data);
+            //dump($data);
             $data[1] = $request['start_seance'];
-            dump($data);
+            //dump($data);
             $data = implode(" ", $data);
-            dump($data);
+            //dump($data);
             //
             DB::table('seances')->insert([
                 'film_id' => $request['film_id'],// не нужно, опрределяем через seance
@@ -109,12 +109,12 @@ class SeanceController extends Controller
             print_r($seance->id);
             $hall = $seance->hall;//через отношение получаем зал
             //$hall = Hall::all()->where('id', $seance['hall_id'])->first();
-            dump($hall);
+            //dump($hall);
             //redirect()->route('admin.createSeat', ['seance'=> $seance]);
             for ($ii = 1; $ii <= $hall['row']; $ii++) {
                 for ($jj = 1; $jj <= $hall['col']; $jj++) {
-                    dump(' *************************************** ');
-                    dump($jj);
+                    //dump(' *************************************** ');
+                    //dump($jj);
                     $seat = new Seat();
                     $seat->hall_id = $seance['hall_id'];
                     $seat->colNumber = $jj;// $seat->colNumber= Hall::all()->where('id', $seance['hall_id'])->col;
@@ -188,16 +188,66 @@ class SeanceController extends Controller
     //public function destroy(Seance $seance)
     public function destroy($id)
     {
-        dump($id);
+        //dump($id);
         $seance = Seance::find($id);
-        dump('зал');
-        var_dump(Seance::find($id));
+        //dump('зал');
+        dump(Seance::find($id));
         //$seance->seats()->delete()ж//удаление сеанса с местами!!!
-        dump($seance->seats);
-        dump($seance->tickets);
+        //dump($seance->seats);
+        //dump($seance->tickets);
+        $unique = Seance::all()->where('film_id', $seance['film_id'])->where('hall_id', $seance['hall_id'])->values();//
+        $unique2= Seance::all()->where('film_id', $seance['film_id'])->where('hall_id', $seance['hall_id'])->unique(function ($item, $key) {
+            return substr($item['startSeance'], -8, 5);
+        });
+        //$unique3= Seance::all()->where('film_id', $seance['film_id'])->where('hall_id', $seance['hall_id'])->reject(function ($item, $seance){
+         //   return substr($item['startSeance'], -8, 5) = substr($seance['startSeance'], -8, 5);
+
+        //});
+        $r = Seance::all()->where('film_id', $seance['film_id'])->where('hall_id', $seance['hall_id'])->pluck('startSeance');
+    //where('startSeance','=', $seance['startSeance']);
+        //search(function ($item, $key) {
+            //if( substr($item['startSeance'], -8, 5) == substr($seance['startSeance'], -8, 5)) {
+
+            //return $item['startSeance'] <=14;
+            //}
+        //}, true);
+        //where(substr('startSeance', -8, 5), substr($seance['startSeance'], -8, 5));//where(substr('startSeance', -8, 5), substr($seance['startSeance'], -8, 5));//->get();//->values()->all();
+        foreach($r as $s) {
+            print_r('cccccccccccccccc'.'/n');
+            if (substr($s, -8,5) == substr($seance['startSeance'], -8,5)){
+                dump( substr($s, -8,5));
+            }
+        }
+        $ss=[];
+        for($i=0; $i<count($r); $i++){
+            if (substr($r[$i], -8,5) == substr($seance['startSeance'], -8,5)){
+                dump( substr($s, -8,5));
+                var_dump($i);
+                dump($r[$i]);
+                dump($unique[$i]);
+                array_push($ss,$unique[$i] );
+            }
+        }
+        dump('уникальноеееееееееееееееееееееееееееее'.'/n');
+        dump($unique);
+        dump($unique2);
+        //dump($unique3->all());
+        dump($r);
+        dump($ss);
+        foreach($ss as $seance) {
+            $seance->seats()->delete();//удаление всех связанных с сеансом мест!!!
+            $seance->tickets()->delete();//удаление всех связанных с сеансом билетов!!!
+            $seance->delete();//удаление самого сеанса
+        }
+        //dd();
+
+
+        /*
         $seance->seats()->delete();//удаление всех связанных с сеансом мест!!!
         $seance->tickets()->delete();//удаление всех связанных с сеансом билетов!!!
         $seance->delete();//удаление самого сеанса
+        */
+
         return redirect()->route('admin.home');
 
     }
