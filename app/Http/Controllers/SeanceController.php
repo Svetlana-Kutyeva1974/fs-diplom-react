@@ -34,7 +34,7 @@ class SeanceController extends Controller
         $open= $request->open ?? 0;
         $selected_hall= $request->hall->{'id'} ?? '1';
         $seance_id_last= Seance::all()->last()->id;
-        dump($seance_id_last);
+        //dump($seance_id_last);
         dump($request->all());
         $data = explode(" ", Carbon::now());
        // dump($data);
@@ -58,7 +58,7 @@ class SeanceController extends Controller
         $seance =  Seance::all()->last();
         //$hall= $seance->hall;//через отношение получаем зал
         $hall = Hall::all()->where('id', $seance['hall_id'])->first();
-        dump($hall);
+        //dump($hall);
         //redirect()->route('admin.createSeat', ['seance'=> $seance]);
         for ($i = 1; $i <= $hall['row']; $i++) {
             for ($j = 1; $j <= $hall['col']; $j++) {
@@ -106,7 +106,7 @@ class SeanceController extends Controller
 
             // seats создаем для созданного сеанса
             $seance = Seance::all()->last();
-            print_r($seance->id);
+            //print_r($seance->id);
             $hall = $seance->hall;//через отношение получаем зал
             //$hall = Hall::all()->where('id', $seance['hall_id'])->first();
             //dump($hall);
@@ -206,9 +206,9 @@ class SeanceController extends Controller
         for($i=0; $i<count($r); $i++){
             if (substr($r[$i], -8,5) == substr($seance['startSeance'], -8,5)){
                 //dump( substr($s, -8,5));
-                var_dump($i);
-                dump($r[$i]);
-                dump($unique[$i]);
+                //var_dump($i);
+                //dump($r[$i]);
+                //dump($unique[$i]);
                 array_push($ss,$unique[$i] );
             }
         }
