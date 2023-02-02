@@ -23,8 +23,6 @@ class FilmController extends Controller
 
     }
 
-
-
     /**
      * Show the form for creating a new resource.
      *
@@ -32,14 +30,11 @@ class FilmController extends Controller
      */
     public function create(FilmCreateRequest $request)
     {
-        //var_dump($request->all());//
-        //dump('image path ');
-        //dump($request["imagePath"]);
+
         if ($request->isMethod('post') && $request->file('imagePath')) {
 
             $file = $request->file('imagePath');
-            //dump('basename ');
-            //dump($request->file('imagePath'));
+
             $upload_folder = 'public/i';
             $filename = $file->getClientOriginalName(); // image.jpg
 
@@ -47,9 +42,7 @@ class FilmController extends Controller
             Storage::putFileAs($upload_folder, $file, $filename);
 
         }
-        //dd($request->imagePath);
-        //$request->imagePath->store('$request->imagePath'); //filename.jpg = $request["imagePath"]
-        //dd($path);
+
         DB::table('films')->insert([
             'title' => $request["title"],
             'description' => $request["description"],
@@ -58,8 +51,7 @@ class FilmController extends Controller
             'imageText' => '' ?? $request["title"],
             'origin'=> $request["origin"] ?? '',
         ]);
-        // dd($seats);
-        //return redirect()->route('admin.home');
+
         return redirect()->back();
     }
 
@@ -71,20 +63,6 @@ class FilmController extends Controller
      */
     public function store(Request $request)//: JsonResponse
     {
-        /*
-        try {
-            $all = $request->all();
-            $newFilm = Film::create($all);
-            return response()->json([
-                    'success' => true,
-                    'data' => $newFilm,
-            ]);
-        } catch (\Exception $e) {
-            //error_log($e->getMessage());
-            return response()->json([
-                'status' => 'error',
-            ], 500);
-        }*/
     }
 
     /**
@@ -128,10 +106,8 @@ class FilmController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-        //public function destroy(Film $film): JsonResponse
     {
         if(count(Film::find($id)->seances)>0){
-            //dd('');
             return redirect()->back()->with('status','Ошибка удаления : для фильм ' ."/".Film::find($id)->title. "/".' существуют сеансы');
         } else {
             Film::find($id)->delete();
@@ -139,18 +115,13 @@ class FilmController extends Controller
         }
     }
 
-    public function seance()//: JsonResponse
+    public function seance()
     {
         try {
             $films = Film::all();
             foreach ($films as $film) {
                 $film->seance()->where('hall_id', '=', 1)->get();
             }
-            /*$category = Category::find(1);
-            foreach ($category->posts as $post) {
-                dump($post->title);
-            }*/
-
 
             return response()->json([
                 'success' => true,

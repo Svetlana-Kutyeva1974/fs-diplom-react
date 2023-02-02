@@ -13,7 +13,6 @@ class IndexController extends Controller
 {
     public function __invoke(Request $request)
     {
-        //dump($request->all());//
         $films = DB::table('films')->get();
         $seances = DB::table('seances')->get();
         $halls = DB::table('halls')->get();

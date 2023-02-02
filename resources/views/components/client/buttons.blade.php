@@ -54,12 +54,8 @@
         Array.of(document.querySelectorAll('button.buying-scheme__chair_selected')).forEach((element, index, array) => {
             for(let i=0; i<element.length; i++) {
                 selected.push(element[i].id);
-            }//console.log('выбрано:', selected);
-            const json=JSON.stringify(selected);//console.log('json  selectedddd', json);
-
-            // заглушка была: let url = "{{route('client.ticket', ['hall'=> $hall, 'seance'=> $seance, 'film'=> $film, 'dateChosen'=> $dateChosen, 'seats'=> $seats->where('hall_id', $hall['id'])->where('seance_id', $seance['id']), 'selected' => 'json'])}}";
-            // Надо перенаправить сначала на роут
-            // сохранения новых характеристик выбранных мест и потом создания нового тикета:
+            }
+            const json=JSON.stringify(selected);
 
             let url = "{{route('client.seat', ['hall'=> $hall, 'seance'=> $seance, 'film'=> $film, 'dateChosen'=> $dateChosen, 'seats'=> $seats->where('hall_id', $hall['id'])->where('seance_id', $seance['id']), 'selected' => 'json'])}}";
             url = url.replace('json', json);

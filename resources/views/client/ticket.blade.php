@@ -1,7 +1,5 @@
 {{-- Электронный билет--}}
 
-{{--json_decode($selected)[0]--}}{{--count(json_decode($selected))--}}{{--var_dump(explode( ',', json_decode($selected)[1])--}}{{--substr( ',', $selected)--}}
-
 @extends('layouts.header')
 @section('content')
 <main>

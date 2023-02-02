@@ -34,32 +34,21 @@ class SeanceController extends Controller
         $open= $request->open ?? 0;
         $selected_hall= $request->hall->{'id'} ?? '1';
         $seance_id_last= Seance::all()->last()->id;
-        dump($seance_id_last);
-        dump($request->all());
         $data = explode(" ", Carbon::now());
-       // dump($data);
         $data[1]=$request['start_seance'];
-        //dump($data);
+
         $data = implode(" ", $data);
-        //dd($data);
-        //
         DB::table('seances')->insert([
-            'film_id' => $request['film_id'],// не нужно, опрределяем через seance
-            'hall_id' => $request['hall_id'],
-            //'seance_id' => seance_id_last,//Hash::make('секрет'),
+            'film_id' => $request['film_id'],// не нужно, определяем через seance
+            'hall_id' => $request['hall_id'], //'seance_id' => seance_id_last,//Hash::make('секрет'),
             'created_at' => Carbon::now(), //date("Y-m-d H:i:s"),//Carbon::now()
             'updated_at' => Carbon::now(),//date("Y-m-d H:i:s"),//Carbon::now()
             'startSeance'=> $data,
         ]);
-        //dd($new_seance);
-
 
         // seats создаем для созданного сеанса
-        $seance =  Seance::all()->last();
-        //$hall= $seance->hall;//через отношение получаем зал
+        $seance =  Seance::all()->last();//$hall= $seance->hall;//через отношение можно получить зал
         $hall = Hall::all()->where('id', $seance['hall_id'])->first();
-        dump($hall);
-        //redirect()->route('admin.createSeat', ['seance'=> $seance]);
         for ($i = 1; $i <= $hall['row']; $i++) {
             for ($j = 1; $j <= $hall['col']; $j++) {
 
@@ -72,28 +61,21 @@ class SeanceController extends Controller
                 $seat->free = true;
 
                 $seance->seats()->save($seat);
-                //dd(seat);
             }
         }
-        //dump($seance);
+
         if($request['confstep']) {
             $confstep = $request['confstep'];
-            //dump($confstep);
         } else {
             $confstep = ['conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_opened', 'conf-step__header_closed'];
         }
 
-
         //!!!!повтор   cо второго дня  на 14
         for ($dn = 1; $dn <= 13; $dn++) {
-            //dump($request->all());
             $data = explode(" ", Carbon::now()->addDays($dn));
-            //dump($data);
             $data[1] = $request['start_seance'];
-            //dump($data);
             $data = implode(" ", $data);
-            //dump($data);
-            //
+
             DB::table('seances')->insert([
                 'film_id' => $request['film_id'],// не нужно, опрределяем через seance
                 'hall_id' => $request['hall_id'],
@@ -101,15 +83,10 @@ class SeanceController extends Controller
                 'updated_at' => Carbon::now()->addMinute(),//date("Y-m-d H:i:s"),//Carbon::now()
                 'startSeance' => $data,
             ]);
-            //dd($new_seance);
-
 
             // seats создаем для созданного сеанса
-            $seance = Seance::all()->last();
-            print_r($seance->id);
+            $seance = Seance::all()->last();//print_r($seance->id);
             $hall = $seance->hall;//через отношение получаем зал
-            //$hall = Hall::all()->where('id', $seance['hall_id'])->first();
-            //dump($hall);
             for ($ii = 1; $ii <= $hall['row']; $ii++) {
                 for ($jj = 1; $jj <= $hall['col']; $jj++) {
                     $seat = new Seat();
@@ -119,14 +96,11 @@ class SeanceController extends Controller
                     $seat->ticket_id = 0;
                     $seat->seance_id = $seance['id'];//Seance::all()->last()->id;
                     $seat->free = true;
-
                     $seance->seats()->save($seat);
                 }
             }
 
         } //for for days
-
-        //dd();
         return redirect()->route('admin.home', ['confstep'=> $confstep, 'open'=> $open, 'selected_hall' => $selected_hall]);
     }
 
@@ -184,82 +158,30 @@ class SeanceController extends Controller
     //public function destroy(Seance $seance)
     public function destroy($id)
     {
-        //dump($id);
         $seance = Seance::find($id);
-        //dump('зал');
-        //dump(Seance::find($id));
-        //$seance->seats()->delete()ж//удаление сеанса с местами!!!
-        //dump($seance->seats);
-        //dump($seance->tickets);
         $unique = Seance::all()->where('film_id', $seance['film_id'])->where('hall_id', $seance['hall_id'])->values();//// все сеансы в зале с выбранным фильмом
         $unique2= Seance::all()->where('film_id', $seance['film_id'])->where('hall_id', $seance['hall_id'])->unique(function ($item, $key) {
             return substr($item['startSeance'], -8, 5);
         });// все уникальные сеансы в зале с выбранным фильмом
         $r = Seance::all()->where('film_id', $seance['film_id'])->where('hall_id', $seance['hall_id'])->pluck('startSeance');// все начала сеансов в зале с выбранным фильмом
-        /*foreach($r as $s) {
-            print_r('cccccccccccccccc'.'/n');
-            if (substr($s, -8,5) == substr($seance['startSeance'], -8,5)){
-                dump( substr($s, -8,5));
-            }
-        }*/
         $ss=[];//
         for($i=0; $i<count($r); $i++){
             if (substr($r[$i], -8,5) == substr($seance['startSeance'], -8,5)){
-                //dump( substr($s, -8,5));
-                var_dump($i);
-                dump($r[$i]);
-                dump($unique[$i]);
                 array_push($ss,$unique[$i] );
             }
         }
-        //dump($unique);
-        //dump($unique2);
-        //dump($unique3->all());
-        //dump($r);
-        //dump($ss);
         foreach($ss as $seance) {
             $seance->seats()->delete();//удаление всех связанных с сеансом мест!!!
             $seance->tickets()->delete();//удаление всех связанных с сеансом билетов!!!
             $seance->delete();//удаление самого сеанса
         }
 
-
-        /*
-        $seance->seats()->delete();//удаление всех связанных с сеансом мест!!!
-        $seance->tickets()->delete();//удаление всех связанных с сеансом билетов!!!
-        $seance->delete();//удаление самого сеанса
-        */
-
         return redirect()->route('admin.home');
 
     }
 
-    public function film()//: JsonResponse
+    public function film()
     {
-        //try {
-            /*$seances = Seance::find(1);
-            dump($seances->film);
-*/
-            /*foreach($seances as $s) {
-                $s->film()->where('hall_id','=', 1)->get();
-            }*/
-            /*$category = Category::find(1);
-
-            foreach ($category->posts as $post) {
-                dump($post->title);
-            }*/
-
-            /*$films= Film::all();
-            return response()->json([
-                'success' => true,
-                'data' => $films,
-            ]);
-        } catch (\Exception $e) {
-            //error_log($e->getMessage());
-
-            return response()->json([
-                'success' => false,
-            ], 500);*/
-        //}
+        //
     }
 }

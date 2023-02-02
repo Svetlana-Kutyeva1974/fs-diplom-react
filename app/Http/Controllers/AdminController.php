@@ -26,84 +26,32 @@ class AdminController extends Controller
      */
     public function index(Request $request)
     {
-        $user = Auth::user();
-        //dump($user);
-        //dump($request->all());
-
-        /*if (! $user->is_admin) {
-        return redirect('/');
-        }*/
-        //return view('admin.home', compact('user'));
-
+            $user = Auth::user();
             $films = DB::table('films')->get();
             $seances = DB::table('seances')->get();
             $halls = DB::table('halls')->get();
             $seats = DB::table('seats')->get();
-            //$seances1 = Seance::all();$fl = Film::all()->first();
             $dateCurrent = $request->dateCurrent ?? substr(Carbon::now(), 0, 10);//'2022-11-05 16:00:22'
             $dateChosen = $request->dateChosen ?? substr(Carbon::now(), 0, 10);//'2022-11-05 16:00:22'
-            //dump($halls);dump($halls->first());dump(Hall::all()->first()->seances);
-
             $hall_holy =  $halls->first()->id;
             $i=0;
             foreach (Hall::all() as $value) {
                 $value;
-                //dump($value);
                 if(count($value->seances)<=0) {
                   $hall_holy = $value->id;
                   break;
                 }
                 $i++;
             }
-
-            //dump($hall_holy);
-
             $selected_hall = ($request->selected_hall) ?: $hall_holy;
             //было так первый зал выбирался по умолчанию! $selected_hall = ($request->selected_hall) ?: $halls->first()->id;
 
-        //dump($selected_hall);
-        //dump($halls->first()->id);
-
-
-
-            //dump('request2    ');
-           //dump($request->selected_hall);
-        //dump('zal vib    ');
-        //var_dump(Hall::all()->where('id',$selected_hall)->first());
-        //var_dump(Hall::all()->where('id',$selected_hall)->first()->id);
-        //dump($halls->where('id',$selected_hall)[1]);!!! нельзя так, офсет будет разный у залов , правильно, как выше
-
-        //dump($halls->where('id',$selected_hall)->first());
-        //dump($halls->where('id',$selected_hall)->first()->id);
-
-            //dump($halls[$selected_hall]);//здесь не по id а по порядку номеров в коллекции второй по id это первый!
-            //dump($halls[$selected_hall]->id);
-        //dump('новое selected-hall  ');
-            //var_dump($selected_hall);
-            //dump($seats->first());
-            //dump($seances);
-        /*if($param === 1) {
-            $text = "Приостановить продажу билетов";
-        } else {
-            $text = "Открыть продажу билетов";
-        }*/
             $open = $request->open;
-            //var_dump($open);
             if ($request->open === null) return redirect()->route('admin.open', ['param' => 0]);
             $text= ($request->open == null || $request->open == '0' ) ? 'Открыть продажу билетов' : 'Приостановить продажу билетов'  ;
 
-            //dump(Route::currentRouteName());
-            //dump(Route::getCurrentRoute());
-
-            //dump($request->all());
-            //dump($text);
-            //if($this->route->hasRoute('admin.open'))
-            //var_dump($halls);
-            //dump($request->confstep);
             $i = session()->get('confstep');
-            //dump($i);
             $confstep = $request['confstep'] ?: ['conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed'];
-            //dump($confstep);
             return view('admin.home', ['confstep'=> $confstep ,'open'=> $open, 'text'=> $text ,'selected_hall' => $selected_hall, 'user'=> $user, 'films' => $films, 'halls' => $halls, 'seances'=> $seances, 'dateCurrent' => $dateCurrent, 'dateChosen'=> $dateChosen, 'seats'=> $seats]);
     }
 
@@ -179,4 +127,4 @@ class AdminController extends Controller
     }
 
 }
-//https://codepen.io/webdevtips-ru/pen/OJmydVd
+

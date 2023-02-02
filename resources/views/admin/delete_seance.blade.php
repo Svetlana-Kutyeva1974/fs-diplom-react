@@ -6,7 +6,6 @@
                     Снятие с сеанса
                     <a class="popup__dismiss" href="#" onclick = " window.location.href='{{ route('admin.home', ['open'=> $open,'selected_hall' => $hall->{'id'}]) }}' "><img src="i/close.png" alt="Закрыть"></a>
                 </h2>
-
             </div>
             <div class="popup__wrapper">
                 {{-- seance_delete{{$seance->id}} - id реального сеанса--}}
@@ -18,7 +17,6 @@
                     <div class="conf-step__buttons text-center">
                         <input id="{{$seance->id}}" type="submit" value="Удалить" class="conf-step__button conf-step__button-accent" @if ($open === '1') disabled @endif >
                         <button onclick = " window.location.href='{{ route('admin.home', ['confstep' => ['conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_opened', 'conf-step__header_closed'],'open'=> $open,'selected_hall' => $hall->{'id'}]) }}' " href="#" class="conf-step__button conf-step__button-regular"  @if ($open === '1') disabled @endif>Отменить</button>
-                        {{--}}<button id="button{{$seance->id}}" class="conf-step__button conf-step__button-regular" onclick ="popupToggle2(id)" >Отменить</button>--}}
                     </div>
                 </form>
             </div>

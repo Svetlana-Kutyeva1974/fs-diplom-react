@@ -36,9 +36,6 @@
                         Изображение фильма
                         <input type="file" class="form-control-file" name="imagePath" accept="image/png, image/jpeg" @if ($open === '1') disabled @endif >
                     </label>
-                    {{--
-                    input type="file" class="form-control-file" name="image" accept="image/png, image/jpeg">
-                    --}}
 
                     <div class="conf-step__buttons text-center">
                         <input type="submit" value="Добавить фильм" class="conf-step__button conf-step__button-accent" @if ($open === '1') disabled @endif >

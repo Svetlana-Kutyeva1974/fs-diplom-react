@@ -2,14 +2,6 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<!--
-<div style="width: 1000px; margin: 10px auto 0; border: 2px solid;">
-    <div>Привет, {{$user->name}}</div><br>
-    <div> Ваш ID : {{$user->id}}</div><br>
-    <div>Email: {{$user->email}}</div><br>
-    {{--<hr style="color: #333; border: 1px solid;width: 50%;"><br>--}}
-</div>
--->
 
 <head>
     <meta charset="UTF-8">
@@ -40,9 +32,6 @@
             </a>
     </span>
     </div>
-    <!--<div> Ваш ID : {{$user->id}}</div><br>
-    <div>Email: {{$user->email}}</div><br>-->
-
 </header>
 
 
@@ -53,9 +42,6 @@
             {{session('status')}}
         </div>
     @endif
-    {{--@if(session('exeption'))
-    <h2>{{ $exception->getMessage() }}</h2>
-    @endif--}}
     <section id="1" class="conf-step">
         <header class="conf-step__header {{$confstep[0]}}">
             <h2 class="conf-step__title">Управление залами</h2>
@@ -91,9 +77,8 @@
             <p class="conf-step__paragraph">Выберите зал для конфигурации:</p>
             <ul class="conf-step__selectors-box">
                 @foreach ($halls as $hall)
-                    <li>{{--$selected_hall--}}{{--dd(count($halls))--}}
+                    <li>
                         @php
-
                             $hall_seances= $seances->where('hall_id', $hall->id);
                             if(count($hall_seances)>0) {
                              $edit_hall = '0';
@@ -103,8 +88,7 @@
                         @endphp
                         {{--можно поставить проверку если  $edit_hall = '1', то рисовать залы if кода ниже
                         (при этом убрать  в input  условие с $edit_hall)--}}
-                        @if($hall->{'id'} == $selected_hall) {{-- @if($i === $selected_hall ))   id="{{$hall->id}}"--}}
-                           {{--var_dump($hall->id)--}}
+                        @if($hall->{'id'} == $selected_hall)
 
                             <input id="{{$hall->{'id'} }}" onclick = "clickRadio(id)" type="radio" class="conf-step__radio"  name="chairs-hall" value="{{$hall->nameHall}}" checked @if ($open === '1') disabled @endif @if ($edit_hall === '0') disabled @endif  ><span class="conf-step__selector tooltip" data-tooltip="Зал не доступен для редактирования при наличии в нем сеансов">{{$hall->nameHall}}</span></li>
                     @else
@@ -131,8 +115,7 @@
                 @php
                 $isTrue = false;
             @endphp
-            {{--dd($halls->where('id', $selected_hall))--}} {{--var_dump($halls->where('id',$selected_hall)->first())--}}
-            {{--var_dump($halls->where('id',$selected_hall)->first()->id)--}}
+
             <x-admin.buttons :open="$open" :disabled="$isTrue" :seats="$seats" :seance="$seances" :film="$films" :hall="$halls->where('id',$selected_hall)->first()" :selected_hall="$selected_hall">
             </x-admin.buttons>
 
@@ -152,7 +135,6 @@
 
                     <li>
                         @php
-                            //$edit_hall = '1';
                             $hall_seances= $seances->where('hall_id', $hall->id);
                             if(count($hall_seances)>0) {
                              $edit_hall = '0';
@@ -188,12 +170,8 @@
             </fieldset>
         </div>
     </section>
-    {{--dd($halls)--}}
-    {{--dd($halls->where('id',$selected_hall)->first())--}}
 
     {{-- Конец секции установки цен  +++++++++++++++++++++++++++++++++++++--}}
-
-
 
     {{--Формирование сетки сеансов  +++++++++++++++++++++++++++++++++++++++++++ --}}
 
@@ -208,8 +186,6 @@
             {{--Блок оглавления фильмов --}}
 
             <div class="conf-step__movies">
-
-
                 @foreach ($films as $film)
 
                     <div class="conf-step__movie" draggable="true" style="cursor: grabbing;">
@@ -218,12 +194,10 @@
                         <form  action="{{ route('admin.destroyFilm', ['id' => $film->id]) }}" method="post" onsubmit="return confirm('Удалить этот фильм?')">
                             @csrf
                             @method('DELETE')
-
-
                             @php
                                 $path= 'storage/folder/'.$film->imagePath;
                             @endphp
-                            {{--Возможность удаления фильма по нажатию на изображение!!! сделать проверку на наличие сеанса при удалении/ либо вместе с сеансом удалять--}}
+                            {{--Возможность удаления фильма  --}}
                             <button type="image" @if ($open === '1') disabled @endif ><img class="conf-step__movie-poster" alt="{{$film->imageText}}" src="{{ asset($film->imagePath)}}" ></button>
                             <h3 class="conf-step__movie-title">{{$film->title}}</h3>
                             <p class="conf-step__movie-duration">{{$film->duration}} минут</p>
@@ -246,53 +220,16 @@
                     <div class="conf-step__seances-timeline drop-area">
                         @php
                             $coord = 0;
-                            //$all_seances = $seances->where('hall_id', $hall->id)->where('film_id', $film->id);
-                            //print_r($all_seances);
-                            //$sorted = $all_seances->sortBy('startSeance');
-                            // Сортируем и выводим получившийся массив
-                            //$sean= $seances->where('hall_id', $hall->id)->where(substr('startSeance', -8, 5), '05:05:00')->first();
-                            //$sean2= collect($seances->where('hall_id', $hall->id)->where('startSeance', '2023-01-10 05:05:00')->first());
-                            //$se= collect($seances->where('hall_id', $hall->id));
-                            //$collection = $seances->where('hall_id', $hall->id)->min('startSeance');
-                            //$collection2 = $seances->where('hall_id', $hall->id)->values()->unique(substr('startSeance', -8, 5));
-                            //$collection = $seances->where('hall_id', $hall->id)->max('startSeance');
-                            //$collection23 = $seances->where('hall_id', $hall->id)->unique('startSeance')->all();
-                            //$collection24=App\Models\Seance::distinct()->get(substr('startSeance', -8, 5));
-                             //$collection25 = App\Models\Seance::where('hall_id', $hall->id)->select('startSeance');
-                            // $ccc= App\Models\Seance::where('hall_id', $hall->id)->select('startSeance')->distinct()->get();
-                            // $ccc= collect(App\Models\Seance::where('hall_id', $hall->id)->get());
-                             //$unique = collect(App\Models\Seance::where('hall_id', $hall->id)->get())->unique(function ($item) {
-                                //return substr($item['startSeance'], -8, 5);
-                                //});
-                             //foreach ($unique as $item){
-                                 //var_dump($item);
-                             //}
-                             //$CCC2=[];
-                             //dump($unique);
-                             //dump($sean);
-                             //dump($sean2);
-                             //dump($se);
-                             //
-
-                            //uasort($array, $callbackCmpFunction); // вторым параметром указываем нашу callback функцию
-                            //print_r($sorted);
-                            // упорядочить по дате поле startSeance
-                            //https://translated.turbopages.org/proxy_u/en-ru.ru.c2af9fe9-63a36136-4101588f-74722d776562/https/stackoverflow.com/questions/37567751/laravel-sort-an-array-by-date
                         @endphp
-
-                        {{--@foreach ($ccc as $hall)--}}
-                            @php
-                                //$all_seances = $seances->where('hall_id', $hall->id)->where('film_id', $film->id)->sortBy('startSeance');
+                        @php
                                 $all_seances = $seances->where('hall_id', $hall->id)->unique('startSeance')->sortBy('startSeance')->values()->all();
                                 $unique = collect(App\Models\Seance::where('hall_id', $hall->id)->get())->unique(function ($item) {
                                 return substr($item['startSeance'], -8, 5);
                                 })->sortBy('startSeance')->values()->all();
-                            @endphp
-                            {{--@foreach ($seances->where('hall_id', $hall->id)->where('film_id', $film->id) as $seance)--}}
+                        @endphp
                             @foreach ($unique as $seance)
                             <div class="conf-step__seances-movie" draggable="true" style="width: calc({{ $films->where('id', $seance->{'film_id'})->first()->duration }}px*0.5); background-color: rgb(133, 255, 137); left: {{$coord}}px;">
                                 <p class="conf-step__seances-movie-title">{{ $films->where('id', $seance->{'film_id'})->first()->title }}</p>
-                                {{--}}<p class="conf-step__seances-movie-title">{{ $film->title }}</p> --}}
                                 <p class="conf-step__seances-movie-start">{{ substr($seance->{'startSeance'}, -8,5) }}</p>
                                 @include('admin.delete_seance', ['seance'=> $seance, 'film'=> $films->where('id', $seance->{'film_id'})->first(), 'hall'=>$hall])
                             </div>
@@ -301,50 +238,18 @@
                             @endphp
 
                             @endforeach
-                   {{--     <div class="conf-step__seances-movie" style="width: 60px; background-color: rgb(133, 255, 137); left: 0;">
-                            <p class="conf-step__seances-movie-title">Миссия выполнима</p>
-                            <p class="conf-step__seances-movie-start">00:00</p>
-                        </div>
-                        <div class="conf-step__seances-movie" style="width: 60px; background-color: rgb(133, 255, 137); left: 360px;">
-                            <p class="conf-step__seances-movie-title">Миссия выполнима</p>
-                            <p class="conf-step__seances-movie-start">12:00</p>
-                        </div>
-
-
-                        <div class="conf-step__seances-movie" style="width: 65px; background-color: rgb(202, 255, 133); left: 420px;">
-                            <p class="conf-step__seances-movie-title">Звёздные войны XXIII: Атака клонированных клонов</p>
-                            <p class="conf-step__seances-movie-start">14:00</p>
-                        </div>--}}
 
                     </div>
                 </div>
-                {{--}}
-                <div id="{{$hall->id}}" class="conf-step__seances-hall">
-                    <h3 class="conf-step__seances-title">{{$hall->nameHall}}</h3>
-                    <div class="conf-step__seances-timeline drop-area">
-                        <div class="conf-step__seances-movie" style="width: 65px; background-color: rgb(202, 255, 133); left: 595px;">
-                            <p class="conf-step__seances-movie-title">Звёздные войны XXIII: Атака клонированных клонов</p>
-                            <p class="conf-step__seances-movie-start">19:50</p>
-                        </div>
-                        <div class="conf-step__seances-movie" style="width: 60px; background-color: rgb(133, 255, 137); left: 660px;">
-                            <p class="conf-step__seances-movie-title">Миссия выполнима</p>
-                            <p class="conf-step__seances-movie-start">22:00</p>
-                        </div>
-                    </div>
-                </div>
-            </div>--}}
             @endforeach
             <fieldset class="conf-step__buttons text-center">
                 {{--}}<button class="conf-step__button conf-step__button-regular" href="#" @if ($open === '1') disabled @endif >Отмена</button>--}}
                 <button  id="cancel"  onclick = " window.location.href='{{ route('admin.home', ['confstep' => ['conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_opened', 'conf-step__header_closed'],'open'=> $open,'selected_hall' => $hall->{'id'}]) }}' " href="#" class="conf-step__button conf-step__button-regular" @if ($open === '1') disabled @endif >Отмена</button>
                 <input  type="submit" value="Сохранить"  id="save"  onclick = " window.location.href='{{ route('admin.home', ['confstep' => ['conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_opened', 'conf-step__header_closed'],'open'=> $open,'selected_hall' => $hall->{'id'}]) }}' " href="#" class="conf-step__button conf-step__button-accent" @if ($open === '1') disabled @endif >
-
-                {{--}}<input type="submit" value="Сохранить" class="conf-step__button conf-step__button-accent" href="#" @if ($open === '1') disabled @endif >--}}
             </fieldset>
         </div>
         {{--Конец блока сетки фильмов <div class="conf-step__seances">--}}
             @include('admin.add_film') {{-- подключаем Меню popup добавления фильма--}}
-
         </div> {{-- wrapper?--}}
     </section>
     {{-- Конец секции сетки сеансов!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!--}}
@@ -358,7 +263,6 @@
         <div class="conf-step__wrapper text-center">
             <p class="conf-step__paragraph">Всё готово, теперь можно:</p>
             <button id="open" onclick = "clickOpen(id)" class="conf-step__button conf-step__button-accent active" value="{{$open}}">{{$text}}</button>
-            {{--}}<button id="open" class="conf-step__button conf-step__button-accent">Приостановить продажу билетов</button>--}}
         </div>
     </section>
     {{--Конец секции открытие продажи  ++++++++++++++++++++++++++++++++++++++++++++++  --}}
@@ -394,9 +298,6 @@
 
         }
     });
-    //console.log('count massiv:',count[0], count[1], count.length);
-    //const json=JSON.stringify(count);
-    //console.log('count json:', json);
     document.getElementById('update');
 
 
@@ -412,27 +313,14 @@
             console.log('конец');
             console.log(button.value, count_row_col, count_row_col.length);
             console.log('count json_row_col:', json_row_col);
-            //alert('idLast:');
-            //alert(idLast);
-            //вызов обработчика editSeats(id)
             editSeats(idLast);
         }
     });
-    //console.log('count_row_col massive:', count_row_col[0], count_row_col[1], count_row_col.length);
-    /*
-    for(let j=0; j<count_row_col.length; j++){
-        console.log('count_row_col massive:', count_row_col[j]);
-    }*/
-    //const json_row_col=JSON.stringify(count_row_col);
-    //console.log('count json_row:', json_row_col);
-    //document.getElementById('update');
-
     // обработка установки цветности карточек сеансов
     const backcolor = ['#caff85', '#85ff89', '#85ffd3','#85e2ff', '#8599ff', '#ba85ff', 'ff85fb','#ff85b1', '#ffa285'];
     const movieparent = Array.from(document.querySelectorAll('.conf-step__movie'));//кнопки h3
     const movie = Array.from(document.querySelectorAll('.conf-step__movie-title'));//кнопки h3
     const seance = Array.from(document.querySelectorAll('.conf-step__seances-movie-title'));//h3
-    //closest('.conf-step__seances-movie')
     movieparent.forEach((pp, index,arr) => {
         console.log('ht,tyjr',pp);
     });
@@ -443,18 +331,13 @@
         const idxelementparent = movieparent.findIndex((el)=> el == element.closest('.conf-step__movie'));
         (idxelementparent != -1 && idxelementparent<9) ? p.closest('.conf-step__seances-movie').style.backgroundColor= backcolor[idxelementparent] : backcolor[0];
 
-        //console.log('element:\n',element, element.offsetParent);
-        //console.log('indexelementparent:\n',idxelementparent);
-        //console.log('elementparent seance:\n',p.closest('.conf-step__seances-movie'),p.closest('.conf-step__seances-movie').style.backgroundColor= backcolor[idxelementparent]);
     });
 
     //для диплома drag-drop film
     let idHallForSelect= 0;
 
     const shows1 = (id) => {
-        //поставить нужный зал select
-        //const id_popup = `${id}`;
-        //alert('id_popup',id_popup);
+        //поставить нужный зал в select
         let selected = Array.from(document.forms[`seance${id}`].select_hall.options);
         selected.forEach((p, index, arr) => {
             console.log('element:\n',p.value);
@@ -475,15 +358,8 @@
     const shows2 = (id) => {
 
         // показать меню удаления сеанса
-        //id=2;//id фильма!!!
-        //let id_del = id.split('_');
-        //let id_film = id_del[1];
-        //let id_seance = id_del[0];
-        //const popupe = `.conf-step__seances-movie #seance25OnFilm${id}.popup`;
         const popupe = `.conf-step__seances-movie #id?.popup`;
-       // const popupe = `#${id}.popup`;
         console.log(popupe);
-        //alert(id);
         const headers = document.getElementById(`${id}`);
         console.log('popup element', headers);
         headers.classList.toggle('active');
@@ -515,28 +391,16 @@
                     let draggedEl = null;
                     let ghostEl = null;
 
-
-                    //let element2 = event.target.closest('.div-body');
-                    //console.log('===========', e.target, element2 );
-
                     let element3 = event.target.closest('.conf-step__movie');
-                    //let element_color = element3.style.backgroundColor;   ///
-                    //let element_color = element3.closest('.conf-step__movies').children[3].backgroundColor;
-                    //let element_color = element3.closest('.conf-step__movies').backgroundColor;
-
-                    // работало let element_color = element3.backgroundColor;
                     console.log('===========e.target =======element3!!!!', event.target, element3);              ///
-
 
                     if (!e.target.classList.contains('conf-step__movie')) {
                         return;
                     }                                                             ///
 
-
                     if (event.target.closest('.conf-step__movie').classList.contains('conf-step__movie')) {
 
                         element3.style.cursor = 'grabbing';
-
                         draggedEl = element3;
                         console.log('тянем это div', draggedEl);
 
@@ -551,13 +415,9 @@
                         ghostEl.style.backgroundColor = 'green';
                         ghostEl.style.opacity = 0.6;
                         console.log('скопировали это dip', ghostEl);
-                        //document.querySelector('.conf-step__seances-timeline.drop-area').style.backgroundColor = 'yellow';
-                        //document.querySelector('.conf-step__seances-timeline.drop-area').style.backgroundColor = 'blue';
                     }
 
                     console.log('слушаем это dip', card.closest('.conf-step__movies').nextElementSibling);
-                    //console.log('слушаем2 это dip', card.closest('.conf-step__wrapper'));
-
                     card.closest('.conf-step__movies').nextElementSibling.addEventListener('mousemove', (e) => {
                         e.preventDefault(); // не даём выделять элементы
                         if(!isDragging){
@@ -587,9 +447,6 @@
                             });
                         }
 
-
-
-
                         if(!isDragging){
                             return;
                         }
@@ -610,19 +467,14 @@
                         let closestParent = closest.closest('.conf-step__movie');//div
                         console.log('closestparent   2el\n', closestParent);
 
-                        //const parent = closest.closest('div.conf-step__seances-hall');
                         console.log('element3\n', element3);
-                        //let parent = element3.closest(".conf-step__seances-hall");
-                        //let parent = closest.closest('.conf-step__seances-timeline.drop-area');
-                        //let parent =closestParent.closest('.conf-step__seances-hall');
                         let parent, col;
                         for (const el of [...Array.from(document.elementsFromPoint(e.clientX, e.clientY))]) {
                             if (el.classList.contains('conf-step__seances-timeline')) {
                                 console.log("ребенок ok555555", el);
                                 parent = el;
                                 idHallForSelect= parent.parentElement.id;
-                                //col =  parent.style.backgroundColor;
-                                //parent.style.backgroundColor = 'yellow';
+
                             }
                             console.log("ребенок", el);
                             console.log("idHallForSelect", idHallForSelect);
@@ -634,45 +486,17 @@
                         console.log('кидаем это на e.currentTarget', '\n ghostEl', ghostEl, '\n dragged', draggedEl, '\n etarget', e.target, '\n closest', closest, '\n carrenttag', e.currentTarget);
                         console.log('childrene.currentTarget', e.currentTarget.children);
                         console.log('childrene.Target', e.target.children);
-                        //console.log('parent', parent);
-                        //console.log('closestparent', closestParent);
+
                         const {top} = closest.getBoundingClientRect();
-                        /*if (e.pageY > window.scrollY + top + closest.offsetHeight / 2) {
-                           parent.children[1].appendChild(draggedEl);
-                        } else {
-                          parent.children[1].insertBefore(draggedEl, closestParent);
-                        }*/
-
-                        //if (e.pageX > window.scrollX + top + closest.offsetWidth / 2) {
                         console.log('вставляем сюда', parent);
-                        // parent.children[1].appendChild(draggedEl);
-                        //показать попап / предотвратить дроп
-                        //shows1(1);
 
-                        /*draggedEl.style.width = '60px';
-                        draggedEl.style.height = '40px';
-                        draggedEl.style.overflow = 'hidden';
-                        draggedEl.style.opacity = 0.6;
-                        draggedEl.style.left = '60px';
-                        draggedEl.classList.value = 'conf-step__seances-movie';
-                        //document.querySelector('.conf-step__seances-timeline').append(draggedEl);
-                            parent.append(draggedEl);*/
-
-
-
-
-
-                            document.body.removeChild(ghostEl);
-                        //parent.style.backgroundColor = col;
-                        //document.body.remove(ghostEl);
-
+                        document.body.removeChild(ghostEl);
                         console.log('\n ghostEl', ghostEl.children[1].id[5]);
                         const idd = ghostEl.children[1].id[5];
 
                         ghostEl = null;
                         draggedEl = null;
                         //card.onmouseenter = null;
-                        //e.preventDefault();
 
 
                         // сбрасываем все остальные обработчики (mousemove раньше всех)
@@ -699,12 +523,7 @@
 
                         //показать попап
                         shows1(idd);
-                        //event.preventDefault();
                         isDragging = false;
-                        //card.onmousedown = null;
-                        //document.onmouseup = null;
-                        //card.closest('.conf-step__movies').nextElementSibling.onmousemove = null;
-                        //return;
                     });
                 });//  mousedown
             //}; //if
@@ -712,7 +531,6 @@
 
         card.onmouseleave = function Leave(ev) {
             ev.preventDefault();
-            //ev.target.closest('.conf-step__movie').style.cursor = 'pointer';
         };
 
     }//for
@@ -743,28 +561,16 @@
                 let draggedEl = null;
                 let ghostEl = null;
 
-
-                //let element2 = event.target.closest('.div-body');
-                //console.log('===========', e.target, element2 );
-
                 let element3 = event.target.closest('.conf-step__seances-movie');
-                //let element_color = element3.style.backgroundColor;   ///
-                //let element_color = element3.closest('.conf-step__movies').children[3].backgroundColor;
-                //let element_color = element3.closest('.conf-step__movies').backgroundColor;
-
-                // работало let element_color = element3.backgroundColor;
                 console.log('===========e.target =======element3!!!!', event.target, element3);              ///
-
 
                 if (!e.target.classList.contains('conf-step__seances-movie')) {
                     return;
                 }                                                             ///
 
-
                 if (event.target.closest('.conf-step__seances-movie').classList.contains('conf-step__seances-movie')) {
 
                     element3.style.cursor = 'grabbing';
-
                     draggedEl = element3;
                     console.log('тянем это div', draggedEl);
 
@@ -779,8 +585,6 @@
                     ghostEl.style.backgroundColor = 'green';
                     ghostEl.style.opacity = 0.6;
                     console.log('скопировали это dip', ghostEl);
-                    //document.querySelector('.conf-step__seances-timeline.drop-area').style.backgroundColor = 'yellow';
-                    //document.querySelector('.conf-step__seances-timeline.drop-area').style.backgroundColor = 'blue';
                 }
 
                 card.closest('.conf-step__seances-movie').addEventListener('mousemove', (e) => {
@@ -794,7 +598,6 @@
                         return;
                     }
 
-
                     ghostEl.style.left = `${e.pageX - ghostEl.offsetWidth / 2}px`;
                     ghostEl.style.top = `${e.pageY - ghostEl.offsetHeight / 2}px`;
                     console.log('позиция', ghostEl.style.left, ghostEl.style.top);
@@ -804,7 +607,7 @@
 
                 //up
                 document.addEventListener('mouseup', (e) => {
-                    //e.stopPropagation();
+
                     e.preventDefault(); // не даём выделять элементы
 
                     //сразу сбросить обработчик движения
@@ -818,14 +621,14 @@
                     // сбрасываем все остальные обработчики (mousemove раньше всех)
                     document.removeEventListener('mouseup', (e) => {
                         e.preventDefault();
-                        //e.stopPropagation();
+
                     });
 
                     for (const card of cardsIseances) {
 
                         card.removeEventListener('mousedown', (e) => {
                             e.preventDefault();
-                            //e.stopPropagation();
+
                         });
 
                         card.onmouseenter = null;
@@ -836,7 +639,7 @@
                     if (!isDrag) {
                         return;
                     }
-                    // e.stopPropagation();
+
                     console.log('event mouseup!!!!!!', e.target, e.currentTarget, e.relatedTarget);
                     console.log('draddedEl', draggedEl);
                     console.log('ghost', ghostEl);
@@ -853,78 +656,38 @@
                     let closestParent = closest.closest('.conf-step__seances-movie');//div
                     console.log('closestparent   2el\n', closestParent);
 
-                    //const parent = closest.closest('div.conf-step__seances-hall');
                     console.log('element3\n', element3);
-                    //let parent = element3.closest(".conf-step__seances-hall");
-                    //let parent = closest.closest('.conf-step__seances-timeline.drop-area');
-                    //let parent =closestParent.closest('.conf-step__seances-hall');
+
                     let parent, col;
                     for (const el of [...Array.from(document.elementsFromPoint(e.clientX, e.clientY))]) {
                         if (el.classList.contains('conf-step__seances-timeline')) {
                             console.log("ребенок ok555555", el);
                             parent = el;
                             idHallForSelect = parent.parentElement.id;
-                            //col =  parent.style.backgroundColor;
-                            //parent.style.backgroundColor = 'yellow';
+
                         }
                         console.log("ребенок", el);
                         console.log("idHallForSelect", idHallForSelect);
                     }
 
                     console.log('parent conf-step__seances-hall\n', parent);
-                    //let parent = closest.closest('.conf-step__seances-timeline.drop-area');
 
                     console.log('кидаем это на e.currentTarget', '\n ghostEl', ghostEl, '\n dragged', draggedEl, '\n etarget', e.target, '\n closest', closest, '\n carrenttag', e.currentTarget);
                     console.log('childrene.currentTarget', e.currentTarget.children);
                     console.log('childrene.Target', e.target.children);
-                    //console.log('parent', parent);
-                    //console.log('closestparent', closestParent);
-                    const {top} = closest.getBoundingClientRect();
-                    /*if (e.pageY > window.scrollY + top + closest.offsetHeight / 2) {
-                       parent.children[1].appendChild(draggedEl);
-                    } else {
-                      parent.children[1].insertBefore(draggedEl, closestParent);
-                    }*/
 
-                    //if (e.pageX > window.scrollX + top + closest.offsetWidth / 2) {
+                    const {top} = closest.getBoundingClientRect();
                     console.log('вставляем сюда', parent);
 
                     document.body.removeChild(ghostEl);
-                    //parent.style.backgroundColor = col;
-                    //document.body.remove(ghostEl);
-
-                    //console.log('\n ghostEl', ghostEl.children[1].id[5]);
-                    //const idd = ghostEl.children[1].id[5];
                     console.log('\n ghostEl', ghostEl.children[2].id);
                     const idd = ghostEl.children[2].id;//id=seance_id_film_id
-
 
                     ghostEl = null;
                     draggedEl = null;
                     //card.onmouseenter = null;
-                    //e.preventDefault();
-
-
-                    // сбрасываем все остальные обработчики (mousemove раньше всех)
-                    /*document.removeEventListener('mouseup', (e) => {
-                        e.preventDefault();
-                        //e.stopPropagation();
-                    });
-
-                    for (const card of cardsIseances) {
-
-                        card.removeEventListener('mousedown', (e) => {
-                            e.preventDefault();
-                            //e.stopPropagation();
-                        });
-
-                        card.onmouseenter = null;
-                        card.onmouseleave = null;
-                    }*/
-
                     //показать попап
                     shows2(idd);
-                    //event.preventDefault();
                     isDrag = false;
                 });//  mouseup
             });//down
@@ -978,11 +741,6 @@
     function editSeats(id){
         // Меняем массив typeOfSeats - типы мест в зале(нажатие сохранить)
         console.log('editSeats');
-        //idLast = id;
-        //alert('idLast:', idLast);
-        //alert(idLast);
-        //alert(id);
-        //let newTypeOfSeats= {};
         let newTypeOfSeats= [];
         Array.of(document.querySelectorAll('button.conf-step__chair')).forEach((element, index, array) => {
             console.log('кнопка',index, array[index]);
@@ -993,12 +751,7 @@
                 let key = elementSplite[0];
                 let value = elementSplite[1];
                 newTypeOfSeats.push({key: key, value: value});
-                //newTypeOfSeats.key= key;
-                //newTypeOfSeats.value = value;
-               // const newTypeOfSeats = {...key};
                 console.log('massiv',newTypeOfSeats[i]);
-                //console.log('massiv',newTypeOfSeats[i]);
-
             }
         });
 
@@ -1008,40 +761,27 @@
         // было работало let url = "{{--route('admin.editHall', ['hall'=> $halls->where('id', $selected_hall)[0], 'newTypeOfSeats' => 'json', 'json_seat' => 'json_row_col'])--}}";
         let url = "{{route('admin.editHall', ['hall'=> $halls->where('id', $selected_hall)->first(), 'newTypeOfSeats' => 'json_string', 'json_seat' => 'json_row_col'])}}";
 
-        //?????? let url = "{{--route('admin.editHall', ['hall'=> $hall_sel, 'newTypeOfSeats' => 'json', 'json_seat' => 'json_row_col'])--}}";
-
         url = url.replace('json_string', json_string);//console.log('replace url  ', url);
         url = url.replace('json_row_col', json_row_col);
         console.log('replace url  ', url);
         console.log('count json_row:', json_row_col);
-        //alert(json_row_col);
         url = url.replaceAll('&amp;', '&');
         console.log('получили url для обновления   ',url);
-        //alert(url);
         window.location.href = url;
     }
     // редактирование цен
     function clickEditPrice(id){
-        //idLast = id;//?
-
         let url = "{{route('admin.editPriceHall', ['hall'=> $halls->where('id', $selected_hall)->first(), 'count' => 'json_count'])}}";
-        //alert(json_count);
         url = url.replace('json_count', json_count);
         console.log('replace url  ', url);
         url = url.replaceAll('&amp;', '&');
         console.log('получили url для обновления   ',url);
-       // alert(url);
         window.location.href = url;
-
     }
     // создание сеанса
     function clickCreateSeance(id) {
-        //idLast = id;//?
         const  formsSeance= document.forms;
         console.log('формs\n', formsSeance);
-        //for (const el of formsSeance) {
-         //   console.log('форма', el);
-        //}
         Array.from(formsSeance).forEach((pp, index,arr) => {
             console.log('formmmmmm',pp);
         });
@@ -1054,16 +794,13 @@
         let selected = Array.from(document.forms[`seance${id}`].select_hall.options);
         console.log('select ', selected, document.forms[`seance${id}`].select_hall.innerText, document.forms[`seance${id}`].select_hall.selectedIndex);
         console.log('элемент', selected[document.forms[`seance${id}`].select_hall.selectedIndex].innerText, 'id',selected[document.forms[`seance${id}`].select_hall.selectedIndex].value, form.elements[2].value);
-        //alert('seance');
         let url = "{{route('admin.createSeance', ['film_id'=> 'filmId', 'hall_id'=> 'hallId', 'start_seance' => 'startSeance'])}}";
-        //alert(json_count);
         url = url.replace('startSeance', form.elements[2].value);
         url = url.replace('filmId', id);
         url = url.replace('hallId', selected[document.forms[`seance${id}`].select_hall.selectedIndex].value);
         console.log('replace url  ', url);
         url = url.replaceAll('&amp;', '&');
         console.log('получили url для обновления   ',url);
-        //alert(url);
         window.location.href = url;
     }
 
@@ -1107,7 +844,6 @@
     function clickRadio(id){
         console.log('clickradio', id);
         idLast = id;
-        //alert( idLast);
         let url = "{{ route('admin.home',['confstep'=> ['conf-step__header_closed',  'conf-step__header_opened', 'conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_closed'], 'selected_hall' => 'id', 'open'=> $open, 'text'=> $text]) }}";
         let idi = String(id);
         console.log('idi', id);
@@ -1121,28 +857,21 @@
     function clickRadio2(id){
         console.log('clickradio', id);
         idLast = id;
-        //alert( idLast);
         let url = "{{ route('admin.home',['confstep'=> ['conf-step__header_closed', 'conf-step__header_closed', 'conf-step__header_opened', 'conf-step__header_closed', 'conf-step__header_closed'], 'selected_hall' => 'id', 'open'=> $open, 'text'=> $text]) }}";
         let idi = String(id);
         console.log('idi', id);
-        url = url.replace('id', +idi);    //url = url.replace('open_2', `${ {{--$open --}}}`);
+        url = url.replace('id', +idi);
         url = url.replaceAll('&amp;', '&');
-        console.log('replaceed amp url  ', url);   // alert(url);
         window.location.href= url
     }
-
-
 
     // переключатель блокировка/разблокировка редактирования(добавление св-ва disabled)
     function disabled(parametr) {
         console.log(parametr);
         input_button.forEach((element, index, array) => {
-           // alert('кнопкb',element.length,index, array[index]);
             for(let i=0; i<element.length; i++) {
-                //element[i].disabled = !element[i].disabled;
                 element[i].disabled = parametr;
                 console.log('massiv ',element[i], element[i].disabled);
-                //console.log('massiv',newTypeOfSeats[i]);
             }
         });
     }
@@ -1152,9 +881,7 @@
     {
         elem = document.getElementById(`${id}`);
         console.log(elem, +elem.value, !Boolean(+elem.value));
-        //alert(elem, +elem.value, !Boolean(+elem.value));
         url = "{{ route('admin.open',['param' => 'id']) }}";
-
         url = url.replace('id', +!Boolean(+elem.value));
         url = url.replaceAll('&amp;', '&');
         console.log('replaceed amp url  ', url);
@@ -1171,35 +898,16 @@
     }
 
     function popupToggle(id){
-        //alert(id);
         let p= 'popup'+`${id}`;
-        //alert(p);
         const  popup = document.getElementById(p);
-       // alert(popup.classList);
         popup.classList.toggle('active')
     }
     function popupToggle2(id){
-
         const  popup = document.getElementById(id);
         const pop = popup.closest('.popup');
-        // alert(popup.classList);
         pop.classList.toggle('active')
     }
-
     //dragdrop
 </script>
 </body>
 </html>
-
-<!--
-@auth
-    @if(Auth::user()->isAdmin())
-        Это видит только админ
-@endif
-@endauth
-
-width: calc(1440px * 0.5);
-//1440 минут в сутках. 1 минута = 0,5 пикселя. Блок фильма длиной 120 минут будет 60 пикселей по ширине.
-https://codelab.pro/drag-and-drop-api-podrobnoe-rukovodstvo-na-javascript/ drad-drop
-https://qna.habr.com/q/256784
--->
