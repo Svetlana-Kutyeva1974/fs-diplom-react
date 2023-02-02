@@ -115,7 +115,7 @@ class SeatController extends Controller
             //var_dump($seatts[$i]);dump($seatts[$i]);//var_dump($seatts[$i]['free']);dump($seatts[$i]['ticket_id']);
             $seatts[$i]["free"]= "0";
             $seatts[$i]["ticket_id"]= (string) ($ticket+1);
-            $ticket++;
+            //$ticket++; не нужно плюсовать
             $ij = $seatts[$i]['rowNumber'].','.$seatts[$i]['colNumber'];
             //dd($ij);
             if($hall_decode[$ij]==='NORM') {
